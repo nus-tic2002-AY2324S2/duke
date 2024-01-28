@@ -6,6 +6,11 @@ import java.util.NoSuchElementException;
 public class Duke {
     private String chatBotName = "Jenkins";
     public static String userInput = "";
+    public static Boolean chatBotOnline = true;
+
+    //Overrides echo isBotAlive -> echo user
+    public static String[] wordDiary = new String[100];
+    public static int listSize = 0;
 
     public Duke(){
         String chatBotName = "Jenkins";
@@ -26,19 +31,18 @@ public class Duke {
     }
 
     public void stopProgram(){
+        chatBotOnline = false;
         System.out.print(getChatBotName() + ": Bye. Hope to see you again soon!\n");
     }
 
-    //Top cases are corner cases. Bottom for future
-    public void chatBotFunctions(String userInput){
-        //case 1: stop program
-        if (userInput.equals(getChatBotName() + ": bye")){
+    //all the returns are for early termination, so they don't run the other if statements
+    public void scanKeyword(String userInput){
+        if (userInput.equals("bye")) {
             stopProgram();
             return;
         }
 
-        //case 2: change chat-bot name
-        else if (userInput.equals("change bot name")){
+        if (userInput.equals("change bot name")){
             System.out.println(getChatBotName() + ": Sure! Please key in my new name");
             Scanner sc = new Scanner(System.in); //open scanner!
             userInput = sc.nextLine();
@@ -51,45 +55,67 @@ public class Duke {
             return;
         }
 
-//        //case: future implementations
-//        else if (true){
-//            //future implementations do something
-//        }
+        //        //case: future implementations
+        //        else if (true){
+        //            //future implementations do something
+        //        }
 
-        //Last case: echos user
-        else {
-            echoUserInput(userInput);
+        else if (userInput.equals("list")){
+            printWordDiary();
             return;
         }
 
+        //
+        else {
+            echoUserInput(userInput);
+        }
+        listenForInput(); //important function to keep program alive. After you scan, Listen again
     }
 
     public void listenForInput() {
-        drawLine();
-        Scanner sc = new Scanner(System.in);
+        if (chatBotOnline) {
+            drawLine();
+            Scanner sc = new Scanner(System.in);
 
-        userInput  = sc.nextLine();
+            userInput = sc.nextLine();
 
-         if (userInput.isEmpty()) {
-             System.out.println("Sorry, I did not receive any commands");
-             System.out.println("Please type something to let me understand");
-             listenForInput();
+            if (userInput.isEmpty()) {
+                System.out.println("Sorry, I did not receive any commands");
+                System.out.println("Please type something to let me understand");
+            }
+
+            else {
+                scanKeyword(userInput);
+            }
         }
-         else {
-             chatBotFunctions(userInput);
-         }
     }
 
+    public void storeWord(String s){
+        wordDiary[listSize] = s;
+        listSize++;
+    }
+
+    //For developer internal tests only
+    public static void printListSize(){
+        System.out.println(listSize);
+    }
+
+    public static void printWordDiary(){
+        for (int i = 0, j = 1; i<listSize; i++, j++ ){
+            System.out.print(j + ". ");
+            System.out.println(wordDiary[i]);
+        }
+    }
 
     public void echoUserInput(String s){
-       System.out.println(s);
+       storeWord(s);
+       System.out.println("added: " + s);
        listenForInput();
     }
 
     public void drawLine() {
         System.out.println("____________________________________________________________");
     }
-
 
     public static void main(String[] args) {
         Duke Jenkins = new Duke();
