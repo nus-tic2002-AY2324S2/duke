@@ -1,19 +1,18 @@
 import java.lang.System;
 import java.util.Scanner;
-import java.util.NoSuchElementException;
 
 
 public class Duke {
     private String chatBotName = "Jenkins";
     public static String userInput = "";
     public static Boolean chatBotOnline = true;
+    public static byte blankUserInput = 0;
 
     //Overrides echo isBotAlive -> echo user
     public static String[] wordDiary = new String[100];
     public static int listSize = 0;
 
     public Duke(){
-        String chatBotName = "Jenkins";
         chatBotGreetings();
         listenForInput();
     }
@@ -35,8 +34,32 @@ public class Duke {
         System.out.print(getChatBotName() + ": Bye. Hope to see you again soon!\n");
     }
 
-    //all the returns are for early termination, so they don't run the other if statements
+    public void botGetsImpatient(int blankUserInput){
+        final int botMaxPatience = 2; //Feel free to change, I think 2 is good enough
+        int botPatience = botMaxPatience - blankUserInput;
+
+        if (botPatience > 1) {
+            System.out.println("Sorry, I did not receive any commands");
+            System.out.println("I will leave if there's no one around. " + botPatience + " more chance");
+            listenForInput();
+        }
+
+        else if (botPatience == 1) {
+            System.out.println("Last Chance! Please issue a command or I will leave!");
+            listenForInput();
+        }
+
+        else {
+            System.out.println("Looks like no one's here. Good bye");
+            stopProgram();
+        }
+    }
+
+
+//Can't terminate early, else program stops prematurely
     public void scanKeyword(String userInput){
+        blankUserInput = 0;
+
         if (userInput.equals("bye")) {
             stopProgram();
             return;
@@ -52,7 +75,7 @@ public class Duke {
 
             System.out.println(getChatBotName() + ": Right away!");
             chatBotGreetings();
-            return;
+
         }
 
         //        //case: future implementations
@@ -62,32 +85,35 @@ public class Duke {
 
         else if (userInput.equals("list")){
             printWordDiary();
-            return;
         }
 
         //
         else {
             echoUserInput(userInput);
         }
+
         listenForInput(); //important function to keep program alive. After you scan, Listen again
     }
 
     public void listenForInput() {
+
         if (chatBotOnline) {
             drawLine();
             Scanner sc = new Scanner(System.in);
 
             userInput = sc.nextLine();
 
-            if (userInput.isEmpty()) {
-                System.out.println("Sorry, I did not receive any commands");
-                System.out.println("Please type something to let me understand");
+            if (userInput.isBlank()) {
+                botGetsImpatient(blankUserInput++);
             }
 
-            else {
+            else{
                 scanKeyword(userInput);
             }
+
         }
+
+        //chatBot Offline, program will return until it closes itself
     }
 
     public void storeWord(String s){
@@ -101,6 +127,11 @@ public class Duke {
     }
 
     public static void printWordDiary(){
+        if (listSize == 0){
+            System.out.println("List is empty!");
+            return;
+        }
+
         for (int i = 0, j = 1; i<listSize; i++, j++ ){
             System.out.print(j + ". ");
             System.out.println(wordDiary[i]);
@@ -119,7 +150,6 @@ public class Duke {
 
     public static void main(String[] args) {
         Duke Jenkins = new Duke();
-        Jenkins.listenForInput();
     }
 
 }
