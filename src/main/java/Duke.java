@@ -1,16 +1,23 @@
 public class Duke {
-    public static void main(String[] args) {
-        String chatbotname = "Sid";
-        String logo = " ____        _        \n"
-                + "|  _ \\ _   _| | _____ \n"
-                + "| | | | | | | |/ / _ \\\n"
-                + "| |_| | |_| |   <  __/\n"
-                + "|____/ \\__,_|_|\\_\\___|\n";
-        System.out.println("Hello from\n" + logo);
+    private static Gui gui;
 
-        System.out.printf("Hello! I'm %s \nWhat can I do for you?\n", chatbotname);
-        System.out.println("Bye. Hope to see you again soon!");
-        System.exit(0);
+    public static void main(String[] args) {
+        gui = new Gui();
+        gui.welcome();
+
+        String userinput = gui.userInput(); //Takes in user input
+
+        System.out.println(userinput); //Prints out user input
+
+        switch(userinput) {
+            case "LIST":
+                break;
+            case "BYE":
+                gui.bye();
+                break;
+            default:
+                System.out.println("Invalid Command! Please try again!");
+        }
 
     }
 }
