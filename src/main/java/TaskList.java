@@ -17,11 +17,12 @@ public class TaskList {
      * Iterate through task list and print it out
      */
     public void printTaskList(){
-        System.out.println("******Task List******\n");
+        System.out.println("*******************Task List******************\n******[Index]--[Task description][Status]******");
         for(int i = 0; i < this.tasklist.size(); i++){
-            System.out.println(i+1 + "--" + this.tasklist.get(i).taskDescription());
+            Task currenttask = this.tasklist.get(i);
+            System.out.println(i+1 + "--" + currenttask.taskDescription() + " [ " + currenttask.getStatusIcon() + " ]\n");
         }
-        System.out.println("\n******Task List******\n");
+        System.out.println("\n*******************Task List******************\n");
     }
 
     /**
@@ -30,6 +31,20 @@ public class TaskList {
     public void insertTask(Task task){
         this.tasklist.add(task);
         System.out.println("Added task: " + task.taskDescription() + " to the task list.\n\n");
+        this.printTaskList();
+    }
+
+    /**
+     * Update task object in array
+     * @param index of task object to be modified
+     * @param status - True = done, False = not done
+     */
+    public void updateTask(int index, boolean status){
+        if (status){
+            this.tasklist.get(index).markAsDone();
+        }else{
+            this.tasklist.get(index).markAsNotDone();
+        }
         this.printTaskList();
     }
 }

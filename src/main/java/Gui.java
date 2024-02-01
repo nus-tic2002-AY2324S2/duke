@@ -36,8 +36,9 @@ public class Gui {
         System.out.println("******Commands List******\n");
         System.out.println("[ADD:<Input Task>] | ADD:read a book | Add task to the list");
         System.out.println("[LIST] | LIST | Print out task list");
+        System.out.println("[STATUS:<Index>-<true/false>] | STATUS:2-false | Indicate if task is done (true/false)");
         System.out.println("[BYE] | BYE | To exit =(");
-        System.out.println("\n******Commands List******\n");
+        System.out.println("******Commands List******\n");
         System.out.println("Please input commands:");
     }
 

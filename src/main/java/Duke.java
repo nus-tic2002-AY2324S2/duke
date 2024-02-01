@@ -32,6 +32,11 @@ public class Duke {
         System.out.println("Command is:" + command); //Prints out user input
 
         switch(command) {
+            case "STATUS":
+                int index = Integer.parseInt(instruction.split("-")[0].trim()) - 1;
+                boolean status = Boolean.parseBoolean(instruction.split("-")[1].toLowerCase());
+                tasklist.updateTask(index, status);
+                break;
             case "ADD":
                 task = new Task(instruction);
                 tasklist.insertTask(task);
