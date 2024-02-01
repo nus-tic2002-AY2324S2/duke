@@ -16,7 +16,6 @@ public class Gui {
     /**
      * This method will
      * (1) Print initial message
-     * (2) Provide a list of commands for user to input
      */
     public void welcome() {
         String logo = " ____        _        \n"
@@ -27,9 +26,19 @@ public class Gui {
 
         System.out.println("Hello from\n" + logo);
         System.out.println("Welcome! I'm Sid \nWhat can I do for you?\n");
-        System.out.println("These are the possible commands you can input:\n[COMMANDS] ---> Description");
-        System.out.println("[LIST] ---> No idea what it does yet");
-        System.out.println("[BYE] ---> To exit =(");
+    }
+
+    /**
+     * (1) Provide a list of commands for user to input
+     */
+    public void printCommands(){
+        System.out.println("These are the possible commands you can input:\n[COMMAND SYNTAX] | EXAMPLE | Description");
+        System.out.println("******Commands List******\n");
+        System.out.println("[ADD:<Input Task>] | ADD:read a book | Add task to the list");
+        System.out.println("[LIST] | LIST | Print out task list");
+        System.out.println("[BYE] | BYE | To exit =(");
+        System.out.println("\n******Commands List******\n");
+        System.out.println("Please input commands:");
     }
 
     /**
@@ -42,7 +51,7 @@ public class Gui {
 
     /**
      * This method will
-     * (1) Print a exit message
+     * (1) Print an exit message
      * (2) End the program
      */
     public void bye() {
