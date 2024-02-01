@@ -1,6 +1,7 @@
 public class Duke {
     private static Gui gui;
     private static TaskList tasklist;
+    private static Task task;
 
     /**
      * Constructor
@@ -32,7 +33,8 @@ public class Duke {
 
         switch(command) {
             case "ADD":
-                tasklist.insertTask(instruction);
+                task = new Task(instruction);
+                tasklist.insertTask(task);
                 break;
             case "LIST":
                 tasklist.printTaskList();
