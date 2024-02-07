@@ -3,6 +3,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Duke {
+    private static Scanner in = new Scanner(System.in);
     public static void printUnderScoreLine() {
         int underScoreLineLength = 50;
         char[] underScoreLine = new char[underScoreLineLength];
@@ -40,7 +41,6 @@ public class Duke {
             System.out.println("Add any fish?");
             printUnderScoreLine();
             String line;
-            Scanner in = new Scanner(System.in);
             line = in.nextLine();
             String temp = line.toUpperCase();
             if (line.isEmpty()) {
@@ -78,9 +78,7 @@ public class Duke {
         printUnderScoreLine();
 
         String line;
-        Scanner in = new Scanner(System.in);
         line = in.nextLine();
-
 
         printUnderScoreLine();
         switch (line.toUpperCase()) {
