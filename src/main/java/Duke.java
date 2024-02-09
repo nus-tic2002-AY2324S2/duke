@@ -3,6 +3,8 @@ public class Duke {
     private static TaskList tasklist;
     private static Task task;
     private static Deadline deadline;
+    private static ToDo todo;
+    private static Event event;
 
     /**
      * Constructor
@@ -33,6 +35,13 @@ public class Duke {
         System.out.println("Command is:" + command); //Prints out user input
 
         switch(command) {
+            case "EVENT":
+                String event_description = instruction.split("-")[0].trim();
+                String start = instruction.split("-")[1].trim();
+                String end = instruction.split("-")[2].trim();
+                event = new Event(event_description,start,end);
+                tasklist.insertTask(event);
+                break;
             case "DEADLINE":
                 String description = instruction.split("-")[0].trim();
                 String by = instruction.split("-")[1].trim();
@@ -44,9 +53,9 @@ public class Duke {
                 boolean status = Boolean.parseBoolean(instruction.split("-")[1].toLowerCase());
                 tasklist.updateTask(index, status);
                 break;
-            case "ADD":
-                task = new Task(instruction);
-                tasklist.insertTask(task);
+            case "TODO":
+                todo = new ToDo(instruction);
+                tasklist.insertTask(todo);
                 break;
             case "LIST":
                 tasklist.printTaskList();

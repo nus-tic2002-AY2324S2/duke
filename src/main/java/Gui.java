@@ -32,10 +32,14 @@ public class Gui {
      * (1) Provide a list of commands for user to input
      */
     public void printCommands(){
-        System.out.println("These are the possible commands you can input:\n[COMMAND SYNTAX] | EXAMPLE | Description");
-        System.out.println("******Commands List******\n");
-        System.out.println("[ADD:<Input Task>] | ADD:read a book | Add task to the list");
-        System.out.println("[DEADLINE:<Input Task>-<Deadline>] | DEADLINE:return a book-Sunday | Add deadline to list");
+        System.out.println("These are the possible commands you can input:\n" +
+                "[COMMAND SYNTAX] | EXAMPLE | Description\n");
+        System.out.println("******Commands List******");
+        System.out.println("[TODO:<Input Task>] | TODO:read a book | Task without date/time");
+        System.out.println("[DEADLINE:<Input Task>-<Deadline>] | DEADLINE:return a book-Sunday | " +
+                "Task to be completed by");
+        System.out.println("[Event:<Input Task>-<Start Time>-<End Time] | Event:project meeting-Sunday-Wed | " +
+                "Task with a duration");
         System.out.println("[LIST] | LIST | Print out task list");
         System.out.println("[STATUS:<Index>-<true/false>] | STATUS:2-false | Indicate if task is done (true/false)");
         System.out.println("[BYE] | BYE | To exit =(");
