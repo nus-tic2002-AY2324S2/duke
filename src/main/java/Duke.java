@@ -2,6 +2,7 @@ public class Duke {
     private static Gui gui;
     private static TaskList tasklist;
     private static Task task;
+    private static Deadline deadline;
 
     /**
      * Constructor
@@ -32,6 +33,12 @@ public class Duke {
         System.out.println("Command is:" + command); //Prints out user input
 
         switch(command) {
+            case "DEADLINE":
+                String description = instruction.split("-")[0].trim();
+                String by = instruction.split("-")[1].trim();
+                deadline = new Deadline(description,by);
+                tasklist.insertTask(deadline);
+                break;
             case "STATUS":
                 int index = Integer.parseInt(instruction.split("-")[0].trim()) - 1;
                 boolean status = Boolean.parseBoolean(instruction.split("-")[1].toLowerCase());
