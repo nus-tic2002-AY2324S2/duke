@@ -20,6 +20,10 @@ public class Task {
         System.out.println("Updated task description: " + task);
     }
 
+    public String toString(){
+        return " [ " + getStatusIcon() + " ] " + this.description;
+    }
+
     /**
      * Mark task as done
      */

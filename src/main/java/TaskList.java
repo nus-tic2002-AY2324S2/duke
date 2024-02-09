@@ -17,10 +17,11 @@ public class TaskList {
      * Iterate through task list and print it out
      */
     public void printTaskList(){
-        System.out.println("*******************Task List******************\n******[Index]--[Task description][Status]******");
+        System.out.println("*******************Task List******************");
+        System.out.println("******[Index]-- [Task Type] [Status] [Task description]******\n");
         for(int i = 0; i < this.tasklist.size(); i++){
-            Task currenttask = this.tasklist.get(i);
-            System.out.println(i+1 + "--" + currenttask.taskDescription() + " [ " + currenttask.getStatusIcon() + " ]\n");
+            Task task = this.tasklist.get(i);
+            System.out.println(i+1 + "--" + task.toString() + "\n" );
         }
         System.out.println("\n*******************Task List******************\n");
     }
