@@ -5,14 +5,16 @@ import java.util.Scanner;
 public class Duke {
     private static Task[] todoList = new Task[0];
 
-    public static void testMenu(){
+    public static void helpMenu(){
         System.out.println("**********************************************");
-        System.out.println("*          How may I help you today?         *");
-        System.out.println("*                                            *");
-        System.out.println("*  1. Add ToDo List     (Enter 1 or add)     *");
-        System.out.println("*  2. Coming Event     (Enter 2 or event)    *");
-        System.out.println("*  3. Coming Deadline  (Enter 3 or deadline) *");
-        System.out.println("*  0. Exit             (Enter 0 or bye)      *");
+        System.out.println("*        Please use following commands       *");
+        System.out.println("**********************************************");
+        System.out.println("* 1. todo itemName                           *");
+        System.out.println("* 2. event eventName /by Date                *");
+        System.out.println("* 3. deadline eventName /from Date /to Date  *");
+        System.out.println("* 4. mark/unmark itemNumber                  *");
+        System.out.println("* 5. list                                    *");
+        System.out.println("* 6. quit/bye             (To exit program)  *");
         System.out.println("*                                            *");
         System.out.println("**********************************************");
     }
@@ -21,8 +23,9 @@ public class Duke {
         System.out.println("//  Here are the things need to follow up //");
         System.out.println("////////////////////////////////////////////");
         for(int i = 0; i < todoList.length; i++){
-            String space = todoList[i].getStatusIcon();
-            System.out.println("["+ space +"]"+ "["+ space +"]" +" "+ (i+1) +"."+ todoList[i].getTaskName());
+            String status = todoList[i].getStatusIcon();
+            Character type = todoList[i].getEventType();
+            System.out.println("["+ type +"]"+ "["+ status +"]" +" "+ (i+1) +"."+ todoList[i].getTaskName());
         }
         System.out.println("                                            ");
         System.out.println("============================================");
@@ -71,7 +74,7 @@ public class Duke {
 
         if(todoList.length == 0){
             System.out.println("////////////////////////////////////////////");
-            System.out.println("//   You have nothing to need to be done  //");
+            System.out.println("//     You have nothing need to be done   //");
             System.out.println("////////////////////////////////////////////");
         }else{
             welcomeMenu();
@@ -92,63 +95,89 @@ public class Duke {
             //test output
             //System.out.println(userInput);
 
-            //Add task
-            if(userInput.equalsIgnoreCase("add")){
-                System.out.println("Tell me what you would like to add?\n");
-                while(true){
-                    //todolist tasks
-                    in = new Scanner(System.in);
-                    userInput = in.nextLine();
-                    newTask = new Task(userInput);
-                    //quit add function
-                    if(userInput.equalsIgnoreCase("done")){
-                        welcomeMenu();
-                        break;
-                    }
-                    //add item to array
-                    todoList = add(todoList, newTask);
-                    System.out.println("added: " + userInput + "\nAnything else?");
-
-                    //test output
-                    //System.out.println(Arrays.toString(todoList));
-                }
-                continue;
-            }
-
-            //todo function
+            //Todo function
             if(wordList[0].equalsIgnoreCase("todo")){
+                if(wordList.length == 1){
+                    System.out.println("Please give your task a name");
+                    continue;
+                }
                 todoList = add(todoList, newTask);
+                newTask.setEventType('T');
                 System.out.println("Alright, added "+ taskinfo +" into todo list");
                 System.out.println("   [T]"+ "["+ newTask.getStatusIcon() +"] " + newTask.getTaskName());
                 System.out.println("You have "+ todoList.length +" things in your todo list");
 
             }
-            //list function
+            //List function
             else if(wordList[0].equalsIgnoreCase("list")){
                 if(todoList.length == 0){
                     System.out.println("////////////////////////////////////////////");
-                    System.out.println("//   You have nothing to need to be done  //");
+                    System.out.println("//     You have nothing need to be done   //");
                     System.out.println("////////////////////////////////////////////");
                 }else{
                     welcomeMenu();
                 }
             }
-
-
-            else if(userInput.equalsIgnoreCase("3") || userInput.equalsIgnoreCase("deadline")){
-                //deadline
-                while(!userInput.equalsIgnoreCase("back")){
-                    //todolist tasks
-                    in = new Scanner(System.in);
-                    userInput = in.nextLine();
+            //Mark function
+            else if(wordList[0].equalsIgnoreCase("mark") || wordList[0].equalsIgnoreCase("unmark")){
+                int itemNum = Integer.parseInt(wordList[1]);
+                boolean status = false;
+                if(wordList[0].equalsIgnoreCase("mark")){
+                    status = true;
                 }
-                continue;
-            }
+                if(todoList.length == 0){
+                    System.out.println("////////////////////////////////////////////");
+                    System.out.println("//        You have nothing to mark        //");
+                    System.out.println("////////////////////////////////////////////");
+                }else{
+                    if(itemNum >= 1 && itemNum <= todoList.length){
+                        if(todoList[itemNum-1].getStatus() == status && todoList[itemNum-1].getStatus() == true){
+                            System.out.println("The task "+ itemNum +" is already marked as done");
+                        }else if(todoList[itemNum-1].getStatus() == status && todoList[itemNum-1].getStatus() == false){
+                            System.out.println("The task "+ itemNum +" is already marked as not done");
+                        }else{
+                            if(status == true){
+                                System.out.println("Okay, I've marked task "+ itemNum + " as done");
+                            }else{
+                                System.out.println("Okay, I've marked task "+ itemNum + " as not done yet");
+                            }
+                            todoList[itemNum-1].setStatus(status);
+                            System.out.println("   "+ "["+ todoList[itemNum-1].getStatusIcon() +"] " + todoList[itemNum-1].getTaskName());
 
+                        }
+                    }else{
+                        System.out.println("No such task in your list :(");
+                    }
+
+                }
+            }
+            //Event function
+            else if(wordList[0].equalsIgnoreCase("event")){
+                if(wordList.length == 1){
+                    System.out.println("Please give your event a name");
+                    continue;
+                }
+                todoList = add(todoList, newTask);
+                newTask.setEventType('E');
+
+            }
+            //Deadline function
+            else if(wordList[0].equalsIgnoreCase("deadline")){
+                if(wordList.length == 1){
+                    System.out.println("Please give your deadline a name");
+                    continue;
+                }
+                todoList = add(todoList, newTask);
+                newTask.setEventType('D');
+            }
             //Exit program
-            if(userInput.equalsIgnoreCase("bye") || userInput.equalsIgnoreCase("0") ){
+            else if(userInput.equalsIgnoreCase("bye") || userInput.equalsIgnoreCase("quit") ){
                 System.out.println("See you next time!");
                 break;
+            }
+            else {
+                System.out.println("I don't get it, I prepared following functions for you.");
+                helpMenu();
             }
         }
 

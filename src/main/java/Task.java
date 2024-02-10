@@ -4,6 +4,8 @@ public class Task {
     protected String description;
     protected boolean isDone;
 
+    protected Character type = 'T';
+
     public Task(String description) {
         this.description = description;
         this.isDone = false;
@@ -12,11 +14,21 @@ public class Task {
     public String getStatusIcon() {
         return (isDone ? "X" : " "); // mark done task with X
     }
+    public boolean getStatus(){
+        return isDone;
+    }
     public String getTaskName() {
         return description;
+    }
+    public Character getEventType(){
+        return type;
+    }
+    public void setEventType(Character type){
+        this.type = type;
     }
     public void setStatus(boolean status) {
         isDone = status;
     }
+
 
 }
