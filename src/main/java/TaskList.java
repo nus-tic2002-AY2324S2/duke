@@ -39,8 +39,20 @@ public class TaskList {
      * Update task object in array
      * @param index of task object to be modified
      * @param status - True = done, False = not done
+     * Error handling
+     * (1) Check if command have 2 parameters
+     * (2) Check if 1st parameter is a valid index in task list
+     *               -Check if parameter is an integer
+     *               -Check if that integer is a valid index
+     * (3) Check if 2nd parameter is a boolean
      */
-    public void updateTask(int index, boolean status){
+    public void updateTask(String input) throws DukeException {
+        DukeException.checkNumParameters(input,2);
+        String[] inputSplit = input.split("-");
+        int maxIndex = this.tasklist.size() -1;
+        int index = DukeException.getIndex(inputSplit[0], maxIndex);
+        boolean status = DukeException.isBoolean(inputSplit[1]);
+
         if (status){
             this.tasklist.get(index).markAsDone();
         }else{
@@ -48,5 +60,7 @@ public class TaskList {
         }
         this.printTaskList();
     }
+
+
 
 }

@@ -25,6 +25,12 @@ public class Duke {
         String command;
         String input = "";
 
+        /*
+        Split the user input into the various sub parts (commands, inputs)
+        Check for exception (1) BYE/LIST should not contain other inputs
+                            (2) Other commands must contain inputs after :
+         */
+
         if (userinput.contains(":")){
             String[] userInputArray = userinput.split(":");
             if (userinput.contains("BYE") || userinput.contains("LIST")){
@@ -41,6 +47,9 @@ public class Duke {
 
         System.out.println("Command is:" + command); //Prints out user input
 
+        /*
+        Switch case to execute the various commands
+         */
         switch(command) {
 
             case "EVENT":
@@ -52,9 +61,7 @@ public class Duke {
                 tasklist.insertTask(deadline);
                 break;
             case "STATUS":
-                int index = Integer.parseInt(input.split("-")[0].trim()) - 1;
-                boolean status = Boolean.parseBoolean(input.split("-")[1].toLowerCase());
-                tasklist.updateTask(index, status);
+                tasklist.updateTask(input);
                 break;
             case "TODO":
                 todo = new ToDo(input);

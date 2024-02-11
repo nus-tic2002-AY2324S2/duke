@@ -3,11 +3,12 @@ public class Event extends Task {
     protected String start;
     protected String end;
 
+    /*
+    Constructor with exception handling to ensure user input 3 parameters for this command
+     */
     public Event(String input) throws DukeException {
         super(input.split("-")[0].trim());
-        if (input.split("-").length != 3){
-            throw new DukeException("[SYNTAX ERROR] Event command expects 3 parameters delimited by '-'");
-        }
+        DukeException.checkNumParameters(input,3);
         String start = input.split("-")[1].trim();
         String end = input.split("-")[2].trim();
 

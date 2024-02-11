@@ -2,6 +2,9 @@ public class Task {
     protected String description;
     protected boolean isDone;
 
+    /*
+    Constructor with exception handling
+     */
     public Task(String description) throws DukeException {
         if (description.isEmpty()){
             throw new DukeException("Please input task!");
