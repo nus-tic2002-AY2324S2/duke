@@ -47,11 +47,8 @@ public class Duke {
                 event = new Event(input);
                 tasklist.insertTask(event);
                 break;
-                /*
             case "DEADLINE":
-                String description = input.split("-")[0].trim();
-                String by = input.split("-")[1].trim();
-                deadline = new Deadline(description,by);
+                deadline = new Deadline(input);
                 tasklist.insertTask(deadline);
                 break;
             case "STATUS":
@@ -59,15 +56,9 @@ public class Duke {
                 boolean status = Boolean.parseBoolean(input.split("-")[1].toLowerCase());
                 tasklist.updateTask(index, status);
                 break;
-
-             */
             case "TODO":
-                try {
-                    todo = new ToDo(input);
-                    tasklist.insertTask(todo);
-                }catch (DukeException error){
-                    System.out.println(error);
-                }
+                todo = new ToDo(input);
+                tasklist.insertTask(todo);
                 break;
             case "LIST":
                 tasklist.printTaskList();
@@ -76,7 +67,7 @@ public class Duke {
                 gui.bye();
                 break;
             default:
-                System.out.println("Invalid Command! Please try again!");
+                throw new DukeException("Invalid Command! Please try again!");
         }
     }
 

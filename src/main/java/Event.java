@@ -5,8 +5,7 @@ public class Event extends Task {
 
     public Event(String input) throws DukeException {
         super(input.split("-")[0].trim());
-        String[] splitInput = input.split("-");
-        if (splitInput.length != 3){
+        if (input.split("-").length != 3){
             throw new DukeException("[SYNTAX ERROR] Event command expects 3 parameters delimited by '-'");
         }
         String start = input.split("-")[1].trim();

@@ -20,7 +20,7 @@ public class Task {
      */
     public void updateTaskDescription(String task) throws DukeException{
         if (task.isEmpty()){
-            throw new DukeException("Task cannot be empty.Please input task!\n");
+            throw new DukeException("Description of task cannot be empty.Please input task!\n");
         }
         this.description = task;
         System.out.println("Updated task description: " + task);
