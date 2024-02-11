@@ -18,16 +18,23 @@ public class Duke {
     /**
      * Start the program
      */
-    public void programExecution(){
+    public void programExecution() throws DukeException {
         gui.printCommands();
 
         String userinput = gui.userInput().trim(); //Takes in user input
         String command;
-        String instruction = "";
+        String input = "";
 
         if (userinput.contains(":")){
+            String[] userInputArray = userinput.split(":");
+            if (userinput.contains("BYE") || userinput.contains("LIST")){
+                throw new DukeException("[SYNTAX ERROR] Input command has no ':'");
+            }
+            if (userInputArray.length <= 1){
+                throw new DukeException("[SYNTAX ERROR] Please input task instructions after ':'\n");
+            }
             command = userinput.split(":")[0].trim();
-            instruction = userinput.split(":")[1].trim();
+            input = userinput.split(":")[1].trim();
         }else{
             command = userinput.trim();
         }
@@ -35,27 +42,34 @@ public class Duke {
         System.out.println("Command is:" + command); //Prints out user input
 
         switch(command) {
+            /*
             case "EVENT":
-                String event_description = instruction.split("-")[0].trim();
-                String start = instruction.split("-")[1].trim();
-                String end = instruction.split("-")[2].trim();
+                String event_description = input.split("-")[0].trim();
+                String start = input.split("-")[1].trim();
+                String end = input.split("-")[2].trim();
                 event = new Event(event_description,start,end);
                 tasklist.insertTask(event);
                 break;
             case "DEADLINE":
-                String description = instruction.split("-")[0].trim();
-                String by = instruction.split("-")[1].trim();
+                String description = input.split("-")[0].trim();
+                String by = input.split("-")[1].trim();
                 deadline = new Deadline(description,by);
                 tasklist.insertTask(deadline);
                 break;
             case "STATUS":
-                int index = Integer.parseInt(instruction.split("-")[0].trim()) - 1;
-                boolean status = Boolean.parseBoolean(instruction.split("-")[1].toLowerCase());
+                int index = Integer.parseInt(input.split("-")[0].trim()) - 1;
+                boolean status = Boolean.parseBoolean(input.split("-")[1].toLowerCase());
                 tasklist.updateTask(index, status);
                 break;
+
+             */
             case "TODO":
-                todo = new ToDo(instruction);
-                tasklist.insertTask(todo);
+                try {
+                    todo = new ToDo(input);
+                    tasklist.insertTask(todo);
+                }catch (DukeException error){
+                    System.out.println(error);
+                }
                 break;
             case "LIST":
                 tasklist.printTaskList();
@@ -72,7 +86,11 @@ public class Duke {
         Duke program = new Duke();
         gui.welcome();
         while(true){
-            program.programExecution();
+            try {
+                program.programExecution();
+            }catch (DukeException error){
+                System.out.println(error);
+            }
         }
 
     }

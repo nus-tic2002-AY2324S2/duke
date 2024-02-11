@@ -2,7 +2,10 @@ public class Task {
     protected String description;
     protected boolean isDone;
 
-    public Task(String description) {
+    public Task(String description) throws DukeException {
+        if (description.isEmpty()){
+            throw new DukeException("Please input task!");
+        }
         this.description = description;
         this.isDone = false;
     }
@@ -15,7 +18,10 @@ public class Task {
      * Update the task description
      * @param string description of task
      */
-    public void updateTaskDescription(String task){
+    public void updateTaskDescription(String task) throws DukeException{
+        if (task.isEmpty()){
+            throw new DukeException("Task cannot be empty.Please input task!\n");
+        }
         this.description = task;
         System.out.println("Updated task description: " + task);
     }
@@ -51,4 +57,5 @@ public class Task {
     public String taskDescription(){
         return description;
     }
+
 }
