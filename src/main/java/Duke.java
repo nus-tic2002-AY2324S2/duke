@@ -42,14 +42,12 @@ public class Duke {
         System.out.println("Command is:" + command); //Prints out user input
 
         switch(command) {
-            /*
+
             case "EVENT":
-                String event_description = input.split("-")[0].trim();
-                String start = input.split("-")[1].trim();
-                String end = input.split("-")[2].trim();
-                event = new Event(event_description,start,end);
+                event = new Event(input);
                 tasklist.insertTask(event);
                 break;
+                /*
             case "DEADLINE":
                 String description = input.split("-")[0].trim();
                 String by = input.split("-")[1].trim();
