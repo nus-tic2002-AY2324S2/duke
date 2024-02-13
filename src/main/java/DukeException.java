@@ -18,7 +18,7 @@ public class DukeException  extends Exception{
         }
     }
 
-        /*
+    /*
     Helper method to check if string input is boolean
     isBoolean() method will check input if it is a boolean
     */
@@ -48,7 +48,7 @@ public class DukeException  extends Exception{
         int index;
 
         if (!DukeException.isInteger(inputSplit.trim())){
-            throw new DukeException("First parameter must be an integer!");
+            throw new DukeException("Parameter must be an integer!");
         }
 
         index = Integer.parseInt(inputSplit.trim()) - 1;

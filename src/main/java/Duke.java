@@ -51,7 +51,9 @@ public class Duke {
         Switch case to execute the various commands
          */
         switch(command) {
-
+            case "DELETE":
+                tasklist.deleteTask(input);
+                break;
             case "EVENT":
                 event = new Event(input);
                 tasklist.insertTask(event);

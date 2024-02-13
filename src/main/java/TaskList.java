@@ -61,6 +61,17 @@ public class TaskList {
         this.printTaskList();
     }
 
-
+    /**
+     * Delete task based on index given
+     * @param input string
+     * @throws DukeException if input is not integer or not in task list
+     */
+    public void deleteTask(String input) throws DukeException {
+        int maxIndex = this.tasklist.size() -1;
+        int index = DukeException.getIndex(input, maxIndex);
+        System.out.println("Deleting task: " + this.tasklist.get(index).taskDescription());
+        this.tasklist.remove(index);
+        System.out.println("Remaining task in the list: " + this.tasklist.size() + "\n");
+    }
 
 }
