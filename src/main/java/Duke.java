@@ -2,20 +2,23 @@ import java.lang.System;
 import java.util.Scanner;
 
 
-public class Duke {
+public class Duke extends Word{
     private String chatBotName = "Jenkins";
     public static String userInput = "";
     public static Boolean chatBotOnline = true;
     public static byte blankUserInput = 0;
 
     //Overrides echo isBotAlive -> echo user
-    public static String[] wordDiary = new String[100];
-    public static int listSize = 0;
+
+    //Del for L3
+//    public static String[] wordDiary = new String[100];
+//    public static int listSize = 0;
 
     public Duke(){
         chatBotGreetings();
         listenForInput();
     }
+
 
     public String getChatBotName(){
         return this.chatBotName;
@@ -116,16 +119,14 @@ public class Duke {
         //chatBot Offline, program will return until it closes itself
     }
 
-    public void storeWord(String s){
-        wordDiary[listSize] = s;
-        listSize++;
-    }
 
     //For developer internal tests only
+    //Del for L3
     public static void printListSize(){
         System.out.println(listSize);
     }
 
+    //Del for L3
     public static void printWordDiary(){
         if (listSize == 0){
             System.out.println("List is empty!");
@@ -138,6 +139,9 @@ public class Duke {
         }
     }
 
+
+
+    //Del for L3
     public void echoUserInput(String s){
        storeWord(s);
        System.out.println("added: " + s);
