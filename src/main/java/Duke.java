@@ -8,6 +8,7 @@ public class Duke {
         protected String description;
         protected boolean isDone;
 
+
         public Task(String description) {
             this.description = description;
             this.isDone = false;
@@ -19,6 +20,60 @@ public class Duke {
 
         public void markAsDone() {
             this.isDone = true;
+        }
+
+        public String toString() {
+            if (this.isDone) {
+            return "[X] " + description; }
+            else {
+                return "[] " + description;
+            }
+        }
+    }
+
+    public static class Deadline extends Task {
+
+        protected String by;
+
+        public Deadline(String description, String by) {
+            super(description);
+            this.by = by;
+        }
+
+        @Override
+        public String toString() {
+            return "[D]" + super.toString() + " (by: " + by + ")";
+        }
+    }
+
+    public static class Todo extends Task {
+
+        public Todo(String description) {
+            super(description);
+        }
+
+
+        @Override
+        public String toString() {
+            return "[T]" + super.toString();
+        }
+    }
+
+    public static class Events extends Task {
+        protected String startTime;
+        protected String endTime;
+
+
+        public Events(String description, String startTime, String endTime) {
+            super(description);
+            this.startTime = startTime;
+            this.endTime = endTime;
+
+        }
+
+        @Override
+        public String toString() {
+            return "[E]" + super.toString() + "from: " + this.startTime + "to: " + this.endTime;
         }
     }
 
@@ -48,6 +103,34 @@ public class Duke {
             else if (input.startsWith("mark ")) {
                 markTaskAsDone(input);
             }
+            else if (input.startsWith("todo")) {
+                Todo td = new Todo(input.substring(5));
+                tasks[taskCount] = td;
+                taskCount++;
+                System.out.println("Got it. I've added this task:");
+                System.out.println(td.toString());
+                System.out.printf("Now you have %d tasks in the list." + "\n", taskCount);
+            }
+            else if (input.startsWith("deadline")) {
+                String[] parts = input.split("/by");
+                parts[0] = parts[0].replace("deadline", "");
+                Deadline dl = new Deadline(parts[0], parts[1]);
+                tasks[taskCount] = dl;
+                taskCount++;
+                System.out.println("Got it. I've added this task:");
+                System.out.println(dl.toString());
+                System.out.printf("Now you have %d tasks in the list." + "\n", taskCount);
+            }
+            else if(input.startsWith("event")) {
+                String[] parts = input.split("/from|/to");
+                parts[0] = parts[0].replace("event", "");
+                Events evt = new Events(parts[0], parts[1], parts[2]);
+                tasks[taskCount] = evt;
+                taskCount++;
+                System.out.println("Got it. I've added this task:");
+                System.out.println(evt.toString());
+                System.out.printf("Now you have %d tasks in the list." + "\n", taskCount);
+            }
             else {
                 Task t = new Task(input);
                 System.out.println("added: " + t.description);
@@ -65,9 +148,9 @@ public class Duke {
         } else {
             System.out.println("Tasks:");
             for (int i = 0; i < taskCount; i++) {
-                String marked =  tasks[i].getStatusIcon();
+                String marked =  tasks[i].toString();
 
-                System.out.printf("%d. [%s] %s \n", i + 1, marked, tasks[i].description);
+                System.out.printf("%d. %s \n", i + 1, marked);
 
 
             }
