@@ -14,9 +14,13 @@ public class TaskListManager {
         }
     }
     public static void displayList() {
-        System.out.println("======= Scroll of Puny Tasks =======");
-        for (int i = 0; i < taskCount; i++) {
-            System.out.println("    " + (i + 1) + ". " + taskList[i]);
+        if (taskCount == 0) {
+            System.out.println("    Your feeble Task List is Empty!");
+        } else {
+            System.out.println("    ======= Scroll of Puny Tasks =======");
+            for (int i = 0; i < taskCount; i++) {
+                System.out.println("        " + (i + 1) + ". " + taskList[i]);
+            }
         }
         Duke.printHorizontalLine();
     }
