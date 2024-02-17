@@ -1,8 +1,20 @@
 package src.main.java;
-public class Event extends Deadline {
+public class Event extends Task {
     String from;
-    public Event(String description, String by, String from) {
-        super(description, by);
+    String by;
+    public Event(String description, String from, String by) {
+        super(description);
         this.from = from;
+        this.by = by;
+    }
+    public String getFrom() {
+        return from;
+    }
+    public String getBy() {
+        return by;
+    }
+    @Override
+    public String toString() {
+        return super.toString() + " (from: " + from + " to: "+ by +")";
     }
 }

@@ -1,3 +1,5 @@
+import src.main.java.Deadline;
+import src.main.java.Event;
 import src.main.java.Task;
 
 import java.util.Arrays;
@@ -25,7 +27,18 @@ public class Duke {
         for(int i = 0; i < todoList.length; i++){
             String status = todoList[i].getStatusIcon();
             Character type = todoList[i].getEventType();
-            System.out.println("["+ type +"]"+ "["+ status +"]" +" "+ (i+1) +"."+ todoList[i].getTaskName());
+            String from = todoList[i].getFrom();
+            String by = todoList[i].getBy();
+            if(type.equals('T')){
+                System.out.println("["+ type +"]"+ "["+ status +"]" +" "+ (i+1) +"."+ todoList[i].getTaskName());
+            }else if(type.equals('E')){
+                System.out.println("["+ type +"]"+ "["+ status +"]" +" "+ (i+1) +"."+ todoList[i].getTaskName() +
+                                    " ( From: " + from + " To: " + by + ")");
+            }else if(type.equals('D')){
+                System.out.println("["+ type +"]"+ "["+ status +"]" +" "+ (i+1) +"."+ todoList[i].getTaskName() +
+                        " ( By: " + by + ")");
+            }
+
         }
         System.out.println("                                            ");
         System.out.println("============================================");
@@ -90,8 +103,9 @@ public class Duke {
             in = new Scanner(System.in);
             userInput = in.nextLine();
             String[] wordList = userInput.split(" ");
-            String taskinfo = combineArray(wordList);
-            Task newTask = new Task(taskinfo);
+            String taskName = new String();
+            String by = new String();
+            String from = new String();
             //test output
             //System.out.println(userInput);
 
@@ -101,10 +115,13 @@ public class Duke {
                     System.out.println("Please give your task a name");
                     continue;
                 }
+                taskName = combineArray(wordList);
+                Task newTask = new Task(taskName);
                 todoList = add(todoList, newTask);
                 newTask.setEventType('T');
-                System.out.println("Alright, added "+ taskinfo +" into todo list");
-                System.out.println("   [T]"+ "["+ newTask.getStatusIcon() +"] " + newTask.getTaskName());
+
+                System.out.println("Alright, added "+ taskName +" into todo list");
+                System.out.println("   "+ newTask.toString());
                 System.out.println("You have "+ todoList.length +" things in your todo list");
 
             }
@@ -157,8 +174,46 @@ public class Duke {
                     System.out.println("Please give your event a name");
                     continue;
                 }
-                todoList = add(todoList, newTask);
-                newTask.setEventType('E');
+                String stage = "name";
+                boolean fromChecker = false;
+                boolean toChecker = false;
+                for(String item:wordList){
+                    if(item.equalsIgnoreCase("event")){
+                        continue;
+                    }
+                    else if(item.equalsIgnoreCase("/from")){
+                        stage = "from";
+                        fromChecker = true;
+                        continue;
+                    }else if(item.equalsIgnoreCase("/to")){
+                        stage = "to";
+                        toChecker = true;
+                        continue;
+                    }
+                    if(stage.equalsIgnoreCase("name")){
+                        taskName += item;
+                        taskName += " ";
+                    }else if(stage.equalsIgnoreCase("from")){
+                        from += item;
+                        from +=" ";
+
+                    }else if (stage.equalsIgnoreCase("to")){
+                        by += item;
+                        by += " ";
+                    }
+                }
+                if(fromChecker == false || toChecker == false){
+                    System.out.println("Your event format seems wrong, please try following pattern:");
+                    System.out.println("event + event Name + /from + Date + /to + Date");
+                    continue;
+                }
+
+                Event newEvent = new Event(taskName,from,by);
+                todoList = add(todoList, newEvent);
+                newEvent.setEventType('E');
+                System.out.println("Alright, added "+ taskName +" into todo list");
+                System.out.println("   "+ newEvent.toString());
+                System.out.println("You have "+ todoList.length +" things in your todo list");
 
             }
             //Deadline function
@@ -167,8 +222,35 @@ public class Duke {
                     System.out.println("Please give your deadline a name");
                     continue;
                 }
-                todoList = add(todoList, newTask);
-                newTask.setEventType('D');
+                boolean byChecker = false;
+                for(String item:wordList){
+                    if(item.equalsIgnoreCase("deadline")){
+                        continue;
+                    }
+                    else if(item.equalsIgnoreCase("/by")){
+                        byChecker = true;
+                        continue;
+                    }
+                    if(!byChecker){
+                        taskName += item;
+                        taskName += " ";
+                    }else{
+                        by += item;
+                        by += " ";
+                    }
+                }
+                if(byChecker == false){
+                    System.out.println("Your deadline format seems wrong, please try following pattern:");
+                    System.out.println("deadline + deadline Name + /by + Date");
+                    continue;
+                }
+
+                Deadline newDeadline = new Deadline(taskName,by);
+                todoList = add(todoList, newDeadline);
+                newDeadline.setEventType('D');
+                System.out.println("Alright, added "+ taskName +" into todo list");
+                System.out.println("   "+ newDeadline.toString());
+                System.out.println("You have "+ todoList.length +" things in your todo list");
             }
             //Exit program
             else if(userInput.equalsIgnoreCase("bye") || userInput.equalsIgnoreCase("quit") ){

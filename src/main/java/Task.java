@@ -3,7 +3,6 @@ package src.main.java;
 public class Task {
     protected String description;
     protected boolean isDone;
-
     protected Character type = 'T';
 
     public Task(String description) {
@@ -30,5 +29,9 @@ public class Task {
         isDone = status;
     }
 
-
+    public String toString() {
+        return "["+ type +"]["+ getStatusIcon() +"]" + description;
+    }
+    public String getFrom(){return "";}
+    public String getBy(){return "";}
 }
