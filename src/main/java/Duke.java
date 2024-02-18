@@ -2,23 +2,18 @@ import java.lang.System;
 import java.util.Scanner;
 
 
-public class Duke extends Word{
+public class Duke extends Task{
     private String chatBotName = "Jenkins";
     public static String userInput = "";
     public static Boolean chatBotOnline = true;
     public static byte blankUserInput = 0;
 
-    //Overrides echo isBotAlive -> echo user
 
-    //Del for L3
-//    public static String[] wordDiary = new String[100];
-//    public static int listSize = 0;
 
     public Duke(){
         chatBotGreetings();
         listenForInput();
     }
-
 
     public String getChatBotName(){
         return this.chatBotName;
@@ -37,26 +32,7 @@ public class Duke extends Word{
         System.out.print(getChatBotName() + ": Bye. Hope to see you again soon!\n");
     }
 
-    public void botGetsImpatient(int blankUserInput){
-        final int botMaxPatience = 2; //Feel free to change, I think 2 is good enough
-        int botPatience = botMaxPatience - blankUserInput;
 
-        if (botPatience > 1) {
-            System.out.println("Sorry, I did not receive any commands");
-            System.out.println("I will leave if there's no one around. " + botPatience + " more chance");
-            listenForInput();
-        }
-
-        else if (botPatience == 1) {
-            System.out.println("Last Chance! Please issue a command or I will leave!");
-            listenForInput();
-        }
-
-        else {
-            System.out.println("Looks like no one's here. Good bye");
-            stopProgram();
-        }
-    }
 
 
 //Can't terminate early, else program stops prematurely
@@ -81,6 +57,16 @@ public class Duke extends Word{
 
         }
 
+        //obsolete test case
+        if (userInput.equals("a")){
+            System.out.println(getTaskSize());
+        }
+
+        else if (userInput.contains("mark ") || userInput.contains("unmark ")) {
+            markAsDone(userInput);
+        }
+
+
         //        //case: future implementations
         //        else if (true){
         //            //future implementations do something
@@ -92,6 +78,7 @@ public class Duke extends Word{
 
         //
         else {
+            createTask(userInput);
             echoUserInput(userInput);
         }
 
@@ -119,33 +106,31 @@ public class Duke extends Word{
         //chatBot Offline, program will return until it closes itself
     }
 
+    public void botGetsImpatient(int blankUserInput){
+        final int botMaxPatience = 2; //Feel free to change, I think 2 is good enough
+        int botPatience = botMaxPatience - blankUserInput;
 
-    //For developer internal tests only
-    //Del for L3
-    public static void printListSize(){
-        System.out.println(listSize);
-    }
-
-    //Del for L3
-    public static void printWordDiary(){
-        if (listSize == 0){
-            System.out.println("List is empty!");
-            return;
+        if (botPatience > 1) {
+            System.out.println("Sorry, I did not receive any commands");
+            System.out.println("I will leave if there's no one around. " + botPatience + " more chance");
+            listenForInput();
         }
 
-        for (int i = 0, j = 1; i<listSize; i++, j++ ){
-            System.out.print(j + ". ");
-            System.out.println(wordDiary[i]);
+        else if (botPatience == 1) {
+            System.out.println("Last Chance! Please issue a command or I will leave!");
+            listenForInput();
+        }
+
+        else {
+            System.out.println("Looks like no one's here. Good bye");
+            stopProgram();
         }
     }
 
 
-
-    //Del for L3
     public void echoUserInput(String s){
-       storeWord(s);
-       System.out.println("added: " + s);
-       listenForInput();
+        System.out.println("added: " + s);
+        listenForInput();
     }
 
     public void drawLine() {
