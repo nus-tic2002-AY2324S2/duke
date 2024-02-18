@@ -4,29 +4,50 @@ import java.util.Scanner;
 
 public class Duke {
     private static Scanner in = new Scanner(System.in);
+    private static Task[] tasks = new Task[100];
+    private static int taskCount = 0;
     public static void printUnderScoreLine() {
-        int underScoreLineLength = 50;
-        char[] underScoreLine = new char[underScoreLineLength];
+        char[] underScoreLine = new char[50];
         Arrays.fill(underScoreLine, '_');
         System.out.println(underScoreLine);
     }
+
     public static void printBye() {
         printUnderScoreLine();
         System.out.println("Bye. Hope to see you again meow!");
         printUnderScoreLine();
     }
+
+    public static void addTask(Task task) {
+
+        tasks[taskCount] = task;
+        taskCount++;
+        System.out.println("Meow, added : " + task);
+        printTaskCount();
+        printUnderScoreLine();
+    }
+    public static void listTask() {
+        System.out.println("Here are the tasks in your list:");
+        for (int i = 0; i < taskCount; i++) {
+            System.out.println((i + 1) + "." + tasks[i]);
+        }
+        printUnderScoreLine();
+    }
+
+    public static void printTaskCount() {
+        System.out.println("Now you have " + taskCount + " tasks in the list.");
+    }
+
     public static void echoInput() {
         System.out.println("Echo, meow?");
         printUnderScoreLine();
         while (true) {
-            String line;
-            Scanner in = new Scanner(System.in);
-            line = in.nextLine();
+            String line = in.nextLine();
             String temp = line.toUpperCase();
             if (temp.equals("BYE")) {
                 printBye();
                 break;
-            }else if (temp.equals("BACK")) {
+            } else if (temp.equals("BACK")) {
                 options();
                 break;
             }
@@ -35,24 +56,19 @@ public class Duke {
             printUnderScoreLine();
         }
     }
+
     public static void addInput() {
         ArrayList<String> input = new ArrayList<>();
         while (true) {
             System.out.println("Add any fish?");
             printUnderScoreLine();
-            String line;
-            line = in.nextLine();
+            String line = in.nextLine();
             String temp = line.toUpperCase();
             if (line.isEmpty()) {
                 System.out.println("Meow?");
             } else if (temp.equals("LIST")) {
-                ArrayList<String> inputTemp = new ArrayList<>(input);
-                int j = 1;
-                while (!inputTemp.isEmpty()) {
-                    String output = inputTemp.get(0);
-                    System.out.println(j + ". " + output);
-                    j++;
-                    inputTemp.remove(0);
+                for (int i = 0; i < input.size(); i++) {
+                    System.out.println((i + 1) + ". " + input.get(i));
                 }
                 printUnderScoreLine();
             } else if (temp.equals("BYE")) {
@@ -61,7 +77,7 @@ public class Duke {
             } else if (temp.equals("BACK")) {
                 options();
                 break;
-            }else {
+            } else {
                 printUnderScoreLine();
                 if (input.contains(line)) {
                     System.out.println("Duplicated!");
@@ -73,30 +89,53 @@ public class Duke {
             }
         }
     }
+
     public static void options() {
-        System.out.println("What can i do for you , meow?");
+        System.out.println("What can I do for you, meow?");
         printUnderScoreLine();
 
-        String line;
-        line = in.nextLine();
+        String line = in.nextLine();
 
         printUnderScoreLine();
-        switch (line.toUpperCase()) {
-            case "ADD":
+        switch (line) {
+            case "Add":
                 addInput();
                 break;
-            case "ECHO":
+            case "Echo":
                 echoInput();
                 break;
-            case "BYE":
+            case "Bye":
                 printBye();
                 break;
+            case "list":
+                listTask();
+                options();
+                break;
             default:
-                System.out.println("Meow?");
+                if (line.startsWith("todo")) {
+                    String description = line.substring(5).trim();
+                    addTask(new TodoTask(description));
+                } else if (line.startsWith("deadline")) {
+                    int byIndex = line.indexOf("/by");
+                    String[] parts = line.substring(9).split("/by");
+                    String description = parts[0].trim();
+                    String by = parts[1].trim();
+                    addTask(new DeadlineTask(description, by));
+                } else if (line.startsWith("event")) {
+                    String[] parts = line.substring(6).split("/from");
+                    String description = parts[0].trim();
+                    String[] dateTime = parts[1].split("/to");
+                    String from = dateTime[0].trim();
+                    String to = dateTime[1].trim();
+                    addTask(new EventTask(description, from, to));
+                } else {
+                    System.out.println("Meow?");
+                }
                 options();
                 break;
         }
     }
+
     public static void main(String[] args) {
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
@@ -108,9 +147,9 @@ public class Duke {
         printUnderScoreLine();
         String botName = "KunKun";
         System.out.println("My name is " + botName);
-
         options();
 
     }
 
 }
+
