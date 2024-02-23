@@ -1,0 +1,14 @@
+Hello. I'm BigChungus
+listing tasks
+added: task 1 add
+added: task 2 add
+listing tasks
+1.[ ] task 1 add
+2.[ ] task 2 add
+listing tasks
+1.[x] task 1 add
+2.[ ] task 2 add
+listing tasks
+1.[x] task 1 add
+2.[x] task 2 add
+gooda bye

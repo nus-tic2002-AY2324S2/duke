@@ -1,0 +1,36 @@
+list
+todo 1
+todo 2
+event e3 /sd 11/11/11 /ed 12/11/11 /st 1122 /et 1123
+event e4 /ed 12/11/11 /st 1122 /et 1123 /sd 11/11/11 
+event e5 /st 1122 /et 1123 /sd 11/11/11 /ed 12/11/11
+event e6 /et 1123 /sd 11/11/11 /ed 12/11/11 /st 1122
+event ewrong1 /sd 11/11/11 /ed 12/11/11 /st 1122
+event ewrong2 /et 1123 /ed 12/11/11 /st 1122
+event ewrong3 /et 1123 /sd 11/11/11 /st 1122
+event ewrong4 /et 1123 /sd 11/11/11 /ed 12/11/11
+event ewrong5 /et 1123 /sd 11/11/11 /ed 12/11/11 aabb
+event ewrong6 /et 1123 bbaa /sd 11/11/11 bbaa /ed 12/11/11 aabb
+event ewrong7 /sd 11/11/11 /ed 12/11/11 /st 1122 /et 1122 aabb
+deadline d7 /ed 11/11/11 /et 1122
+deadline d8 /et 1122 /ed 11/11/11
+deadline dwrong1 /et 1122 /ed 11/11/11 aabb
+deadline dwrong2 /et 1122 /ed 
+deadline dwrong3 /ed 11/11/11 /et
+deadline dwrong4 /et 1122 bbaa /ed 11/11/11 bbaa
+deadline dwrong5 /et 1122
+deadline dwrong6 /ed 1122
+list
+mark 1
+mark 2
+mark 3
+mark 8
+mark 9
+unmark 1
+unmark 2
+umark 9
+list
+mark 2
+list
+
+bye
