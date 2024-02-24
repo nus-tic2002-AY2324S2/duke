@@ -1,11 +1,13 @@
 import src.main.java.Deadline;
 import src.main.java.Event;
 import src.main.java.Task;
+import src.main.java.DukeException;
 
 import java.util.Arrays;
 import java.util.Scanner;
 public class Duke {
     private static Task[] todoList = new Task[0];
+    private static boolean format = true;
 
     public static void helpMenu(){
         System.out.println("**********************************************");
@@ -20,30 +22,144 @@ public class Duke {
         System.out.println("*                                            *");
         System.out.println("**********************************************");
     }
-    public static void welcomeMenu(){
-        System.out.println("////////////////////////////////////////////");
-        System.out.println("//  Here are the things need to follow up //");
-        System.out.println("////////////////////////////////////////////");
-        for(int i = 0; i < todoList.length; i++){
-            String status = todoList[i].getStatusIcon();
-            Character type = todoList[i].getEventType();
-            String from = todoList[i].getFrom();
-            String by = todoList[i].getBy();
-            if(type.equals('T')){
-                System.out.println("["+ type +"]"+ "["+ status +"]" +" "+ (i+1) +"."+ todoList[i].getTaskName());
-            }else if(type.equals('E')){
-                System.out.println("["+ type +"]"+ "["+ status +"]" +" "+ (i+1) +"."+ todoList[i].getTaskName() +
-                                    " ( From: " + from + " To: " + by + ")");
-            }else if(type.equals('D')){
-                System.out.println("["+ type +"]"+ "["+ status +"]" +" "+ (i+1) +"."+ todoList[i].getTaskName() +
-                        " ( By: " + by + ")");
+    public static void listMenu(){
+        if(todoList.length == 0){
+            System.out.println("////////////////////////////////////////////");
+            System.out.println("//     You have nothing need to be done   //");
+            System.out.println("////////////////////////////////////////////");
+        }else{
+            System.out.println("////////////////////////////////////////////");
+            System.out.println("//  Here are the things need to follow up //");
+            System.out.println("////////////////////////////////////////////");
+            for(int i = 0; i < todoList.length; i++){
+                String status = todoList[i].getStatusIcon();
+                Character type = todoList[i].getEventType();
+                String from = todoList[i].getFrom();
+                String by = todoList[i].getBy();
+                if(type.equals('T')){
+                    System.out.println("["+ type +"]"+ "["+ status +"]" +" "+ (i+1) +"."+ todoList[i].getTaskName());
+                }else if(type.equals('E')){
+                    System.out.println("["+ type +"]"+ "["+ status +"]" +" "+ (i+1) +"."+ todoList[i].getTaskName() +
+                            " ( From: " + from + " To: " + by + ")");
+                }else if(type.equals('D')){
+                    System.out.println("["+ type +"]"+ "["+ status +"]" +" "+ (i+1) +"."+ todoList[i].getTaskName() +
+                            " ( By: " + by + ")");
+                }
             }
-
+            System.out.println("                                            ");
+            System.out.println("============================================");
         }
-        System.out.println("                                            ");
-        System.out.println("============================================");
-    }
 
+    }
+    //Error handler
+    public static String checkUserInput(String userInput) {
+        String[] wordList = userInput.split(" ");
+        try {
+            if (wordList[0].equalsIgnoreCase("todo")) {
+                if(wordList.length == 1){
+                    throw new DukeException("Please give your task a name");
+                }else{
+                    return null;// No error
+                }
+            }
+            else if (wordList[0].equalsIgnoreCase("event")) {
+                if(wordList.length == 1){
+                    throw new DukeException("Please give your event a name");
+                }else{
+                    boolean fromChecker = false;
+                    boolean toChecker = false;
+                    //Check From stage and to stage
+                    for (int i = 0; i < wordList.length; i++) {
+                        if(wordList[1].equalsIgnoreCase("/from") ||
+                                wordList[1].equalsIgnoreCase("/to")){
+                            throw new DukeException("Please give your event a name");
+                        }
+                        else if(wordList[i].equalsIgnoreCase("/from")){
+                            if(i+1 < wordList.length && !wordList[i+1].equalsIgnoreCase("/to")){
+                                fromChecker = true;
+                                continue;
+                            }else{
+                                throw new DukeException("Can you tell me about the start date of this event?");
+                            }
+                        }
+                        else if(wordList[i].equalsIgnoreCase("/to")){
+                            if(i+1 < wordList.length && !wordList[i+1].equalsIgnoreCase("/from")){
+                                toChecker = true;
+                                continue;
+                            }else{
+                                throw new DukeException("Can you tell me about the end date of this event?");
+                            }
+                        }
+                    }
+                    //Handle error
+                    if(fromChecker == false || toChecker == false){
+                        throw new DukeException("Your event format seems wrong, please try following pattern:\n" +
+                                "event + event Name + /from + Date + /to + Date");
+                    }else{
+                        return null;
+                    }
+                }
+
+            }
+            else if (wordList[0].equalsIgnoreCase("deadline")) {
+                if(wordList.length == 1){
+                    throw new DukeException("Please give your deadline a name");
+                }else{
+
+                    boolean byChecker = false;
+                    //Check From stage and to stage
+                    for (int i = 0; i < wordList.length; i++) {
+                        if(wordList[1].equalsIgnoreCase("/by")){
+                            throw new DukeException("Please give your deadline a name");
+                        }
+                        else if(wordList[i].equalsIgnoreCase("/by")){
+                            if(i+1 < wordList.length){
+                                byChecker = true;
+                                break;
+                            }else{
+                                throw new DukeException("Can you tell me the due date?");
+                            }
+                        }
+                    }
+
+                    //Handle error
+                    if(byChecker == false){
+                        throw new DukeException("Your deadline format seems wrong, please try following pattern:\n" +
+                                "deadline + deadline Name + /by + Date");
+                    }else{
+                        return null;// No error
+                    }
+                }
+
+            }
+            else if(wordList[0].equalsIgnoreCase("mark") ||
+                    wordList[0].equalsIgnoreCase("unmark")){
+                if(wordList.length == 1){
+                    throw new DukeException("Please tell me which task you would like to mark/unmark");
+                }else{
+                    return null;// No error
+                }
+            }
+            else if(wordList[0].equalsIgnoreCase("delete")){
+                if(wordList.length == 1){
+                    throw new DukeException("Please tell me which task you would like to delete");
+                }else{
+                    return null;// No error
+                }
+            }
+            else if(wordList[0].equalsIgnoreCase("list") ||
+                    wordList[0].equalsIgnoreCase("bye")  ||
+                    wordList[0].equalsIgnoreCase("quit")  ){// Single command no need to check
+                return null;
+            }
+            else {
+                format = false;
+                throw new DukeException("I don't get it, I prepared following functions for you.");
+            }
+        } catch (DukeException e) {
+            return e.getMessage();// Return the error message
+        }
+    }
     //Add string array function
     public static Task[] add(Task[] array, Task element) {
         Task[] result = new Task[array.length + 1];
@@ -84,14 +200,7 @@ public class Duke {
         //Press to continue
         System.out.println("********** Press to continue ************");
         in.nextLine();
-
-        if(todoList.length == 0){
-            System.out.println("////////////////////////////////////////////");
-            System.out.println("//     You have nothing need to be done   //");
-            System.out.println("////////////////////////////////////////////");
-        }else{
-            welcomeMenu();
-        }
+        listMenu();
         System.out.println("How can I help you today?");
 
         //user list [event name] [event type] [status] [event start date] [event end date]
@@ -106,15 +215,22 @@ public class Duke {
             String taskName = new String();
             String by = new String();
             String from = new String();
+            format = true;
+            //Check error function
+            String errorMessage = checkUserInput(userInput);
+            if (errorMessage != null) {
+                System.out.println(errorMessage);
+                if(format == false){
+                    helpMenu();
+                }
+                continue; // Continue the loop if there's an error
+            }
             //test output
             //System.out.println(userInput);
 
+            //Proceed to main function if input no error
             //Todo function
             if(wordList[0].equalsIgnoreCase("todo")){
-                if(wordList.length == 1){
-                    System.out.println("Please give your task a name");
-                    continue;
-                }
                 taskName = combineArray(wordList);
                 Task newTask = new Task(taskName);
                 todoList = add(todoList, newTask);
@@ -127,13 +243,7 @@ public class Duke {
             }
             //List function
             else if(wordList[0].equalsIgnoreCase("list")){
-                if(todoList.length == 0){
-                    System.out.println("////////////////////////////////////////////");
-                    System.out.println("//     You have nothing need to be done   //");
-                    System.out.println("////////////////////////////////////////////");
-                }else{
-                    welcomeMenu();
-                }
+                listMenu();
             }
             //Mark function
             else if(wordList[0].equalsIgnoreCase("mark") || wordList[0].equalsIgnoreCase("unmark")){
@@ -170,11 +280,8 @@ public class Duke {
             }
             //Event function
             else if(wordList[0].equalsIgnoreCase("event")){
-                if(wordList.length == 1){
-                    System.out.println("Please give your event a name");
-                    continue;
-                }
                 String stage = "name";
+                //Seprate the input and record the eventName, EventFrom, EventTo
                 boolean fromChecker = false;
                 boolean toChecker = false;
                 for(String item:wordList){
@@ -202,12 +309,6 @@ public class Duke {
                         by += " ";
                     }
                 }
-                if(fromChecker == false || toChecker == false){
-                    System.out.println("Your event format seems wrong, please try following pattern:");
-                    System.out.println("event + event Name + /from + Date + /to + Date");
-                    continue;
-                }
-
                 Event newEvent = new Event(taskName,from,by);
                 todoList = add(todoList, newEvent);
                 newEvent.setEventType('E');
@@ -218,10 +319,7 @@ public class Duke {
             }
             //Deadline function
             else if(wordList[0].equalsIgnoreCase("deadline")){
-                if(wordList.length == 1){
-                    System.out.println("Please give your deadline a name");
-                    continue;
-                }
+                //Seprate the input and record the deadlineName, deadlineBy
                 boolean byChecker = false;
                 for(String item:wordList){
                     if(item.equalsIgnoreCase("deadline")){
@@ -239,12 +337,6 @@ public class Duke {
                         by += " ";
                     }
                 }
-                if(byChecker == false){
-                    System.out.println("Your deadline format seems wrong, please try following pattern:");
-                    System.out.println("deadline + deadline Name + /by + Date");
-                    continue;
-                }
-
                 Deadline newDeadline = new Deadline(taskName,by);
                 todoList = add(todoList, newDeadline);
                 newDeadline.setEventType('D');
@@ -254,12 +346,10 @@ public class Duke {
             }
             //Exit program
             else if(userInput.equalsIgnoreCase("bye") || userInput.equalsIgnoreCase("quit") ){
-                System.out.println("See you next time!");
+                System.out.println("Bye! See you next time!");
                 break;
-            }
-            else {
-                System.out.println("I don't get it, I prepared following functions for you.");
-                helpMenu();
+            }else{
+                break;//Code should never reach here.
             }
         }
 
