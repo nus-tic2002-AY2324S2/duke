@@ -1,11 +1,13 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Duke {
     private static Scanner in = new Scanner(System.in);
     private static Task[] tasks = new Task[100];
     private static int taskCount = 0;
+
     public static void printUnderScoreLine() {
         char[] underScoreLine = new char[50];
         Arrays.fill(underScoreLine, '_');
@@ -26,6 +28,7 @@ public class Duke {
         printTaskCount();
         printUnderScoreLine();
     }
+
     public static void listTask() {
         System.out.println("Here are the tasks in your list:");
         for (int i = 0; i < taskCount; i++) {
@@ -91,48 +94,106 @@ public class Duke {
     }
 
     public static void options() {
-        System.out.println("What can I do for you, meow?");
-        printUnderScoreLine();
+        try {
+            System.out.println("What can I do for you, meow?");
+            printUnderScoreLine();
 
-        String line = in.nextLine();
+            String line = in.nextLine();
 
-        printUnderScoreLine();
-        switch (line) {
-            case "Add":
-                addInput();
-                break;
-            case "Echo":
-                echoInput();
-                break;
-            case "Bye":
-                printBye();
-                break;
-            case "list":
-                listTask();
-                options();
-                break;
-            default:
-                if (line.startsWith("todo")) {
-                    String description = line.substring(5).trim();
-                    addTask(new TodoTask(description));
-                } else if (line.startsWith("deadline")) {
-                    int byIndex = line.indexOf("/by");
-                    String[] parts = line.substring(9).split("/by");
-                    String description = parts[0].trim();
-                    String by = parts[1].trim();
-                    addTask(new DeadlineTask(description, by));
-                } else if (line.startsWith("event")) {
-                    String[] parts = line.substring(6).split("/from");
-                    String description = parts[0].trim();
-                    String[] dateTime = parts[1].split("/to");
-                    String from = dateTime[0].trim();
-                    String to = dateTime[1].trim();
-                    addTask(new EventTask(description, from, to));
-                } else {
-                    System.out.println("Meow?");
-                }
-                options();
-                break;
+            printUnderScoreLine();
+            switch (line) {
+                case "Add":
+                    addInput();
+                    break;
+                case "Echo":
+                    echoInput();
+                    break;
+                case "Bye":
+                    printBye();
+                    break;
+                case "list":
+                    listTask();
+                    options();
+                    break;
+                default:
+                    if (line.startsWith("todo")) {
+                        String[] parts = line.split(" ");
+                        if (!Objects.equals(parts[0], "todo")) {
+                            options();
+                            break;
+                        }
+                        if (parts.length >= 2) {
+                            String description = parts[1].trim();
+                            addTask(new TodoTask(description));
+                        } else {
+                            throw new DukeException(" Meow!!! The description of a todo cannot be empty.");
+                        }
+                    } else if (line.startsWith("deadline")) {
+                        int byIndex = line.indexOf("/by");
+                        String[] parts = line.substring(9).split("/by");
+                        if (!Objects.equals(parts[0], "deadline")) {
+                            System.out.println("Meow?");
+                            options();
+                            break;
+                        }
+                        String description = parts[0].trim();
+                        String by = parts[1].trim();
+                        addTask(new DeadlineTask(description, by));
+                    } else if (line.startsWith("event")) {
+                        String[] parts = line.substring(6).split("/from");
+                        if (!Objects.equals(parts[0], "event")) {
+                            System.out.println("Meow?");
+                            options();
+                            break;
+                        }
+                        String description = parts[0].trim();
+                        String[] dateTime = parts[1].split("/to");
+                        String from = dateTime[0].trim();
+                        String to = dateTime[1].trim();
+                        addTask(new EventTask(description, from, to));
+                    } else if (line.startsWith("mark")) {
+                        String[] parts = line.split(" ");
+                        if (!Objects.equals(parts[0], "mark")) {
+                            System.out.println("Meow?");
+                            options();
+                            break;
+                        }
+                        if (parts.length >= 2) {
+                            int taskNumber = Integer.parseInt(parts[1]);
+                            if (taskNumber > 0 && taskNumber <= taskCount) {
+                                tasks[taskNumber - 1].markAsDone();
+                                System.out.println("Nice! I've marked this task as done:");
+                                System.out.println(tasks[taskNumber - 1]);
+                            } else {
+                                System.out.println("Meow?");
+                            }
+                        }
+                    } else if (line.startsWith("unmark")) {
+                        String[] parts = line.split(" ");
+                        if (!Objects.equals(parts[0], "unmark")) {
+                            System.out.println("Meow?");
+                            options();
+                            break;
+                        }
+                        if (parts.length >= 2) {
+                            int taskNumber = Integer.parseInt(parts[1]);
+                            if (taskNumber > 0 && taskNumber <= taskCount) {
+                                tasks[taskNumber - 1].markAsDone();
+                                System.out.println("OK, I've marked this task as not done yet:");
+                                System.out.println(tasks[taskNumber - 1]);
+                            } else {
+                                System.out.println("Meow?");
+                            }
+                        }
+                    } else {
+                        throw new DukeException("Fish! Fish! Fish!");
+                    }
+                    options();
+                    break;
+            }
+        }catch (DukeException e) {
+            System.out.println(e.getMessage());
+            options(); // Prompt again after handling exception
         }
     }
 
@@ -148,8 +209,6 @@ public class Duke {
         String botName = "KunKun";
         System.out.println("My name is " + botName);
         options();
-
     }
-
 }
 
