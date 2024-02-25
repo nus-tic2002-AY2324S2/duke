@@ -1,0 +1,15 @@
+Hello. I'm BigChungus
+listing tasks
+added Todo: 1
+added Todo: 2
+listing tasks
+1. [T][ ] 1
+1. [T][ ] 2
+task 1 done: [T][X] 1
+listing tasks
+1. [T][X] 1
+2. [T][ ] 2
+task 2 done: [T][X] 2
+listing tasks
+1. [T][X] 1
+2. [T][X] 2
