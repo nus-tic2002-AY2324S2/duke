@@ -2,7 +2,9 @@ import java.lang.System;
 import java.util.Scanner;
 
 
-public class Duke extends Task{
+public class Duke{
+    private static Task task;
+
     private String chatBotName = "Jenkins";
     public static String userInput = "";
     public static Boolean chatBotOnline = true;
@@ -12,6 +14,7 @@ public class Duke extends Task{
 
     public Duke(){
         chatBotGreetings();
+        task = new Task();
         listenForInput();
     }
 
@@ -39,12 +42,12 @@ public class Duke extends Task{
     public void scanKeyword(String userInput){
         blankUserInput = 0;
 
-        if (userInput.equals("bye")) {
+        if (userInput.equalsIgnoreCase("bye")) {
             stopProgram();
             return;
         }
 
-        if (userInput.equals("change bot name")){
+        if (userInput.equalsIgnoreCase("change bot name")){
             System.out.println(getChatBotName() + ": Sure! Please key in my new name");
             Scanner sc = new Scanner(System.in); //open scanner!
             userInput = sc.nextLine();
@@ -58,27 +61,48 @@ public class Duke extends Task{
         }
 
         //obsolete test case
+        ToDo todo;
         if (userInput.equals("a")){
-            System.out.println(getTaskSize());
+            System.out.println(Task.getTaskSize());
         }
 
         else if (userInput.contains("mark ") || userInput.contains("unmark ")) {
-            markAsDone(userInput);
+            task.markAsDone(userInput);
         }
 
+        //buggy. fake default constructor. Need to resolve user input logic
+        else if (userInput.contains("todo")){
+            todo = new ToDo(userInput);
+            task.createTask(todo);
+            echoUserInput(userInput);
+        }
+
+        //buggy. fake default constructor. Need to resolve user input logic
+        else if (userInput.contains("event")){
+            Event event = new Event(userInput);
+            task.createTask(event);
+            echoUserInput(userInput);
+        }
+
+        else if (userInput.contains("deadline")){
+            Deadline d = new Deadline(userInput);
+            task.createTask(d);
+            echoUserInput(userInput);
+        }
 
         //        //case: future implementations
         //        else if (true){
         //            //future implementations do something
         //        }
 
-        else if (userInput.equals("list")){
-            printWordDiary();
+        else if (userInput.equalsIgnoreCase("list")){
+            task.printWordDiary();
         }
 
         //
-        else {
-            createTask(userInput);
+        else { //normal task
+            Task t = new Task(userInput);
+            task.createTask(t);
             echoUserInput(userInput);
         }
 
@@ -139,6 +163,7 @@ public class Duke extends Task{
 
     public static void main(String[] args) {
         Duke Jenkins = new Duke();
+
     }
 
 }

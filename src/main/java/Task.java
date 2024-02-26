@@ -1,19 +1,22 @@
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Task {
+    private ArrayList<Task> tasksStorage;
 
-    private static List<Task> tasksStorage = new ArrayList<>();
-
-    private String description;
-    private boolean isDone;
+    protected String description;
+    protected boolean isDone;
 
     private static int taskSize = 0;
 
     //Constructors
     public Task(){
+        this.tasksStorage = new ArrayList<>();
+    }
+
+    public String toString(){
+        return "[" + getStatusIcon() + "] " + this.description;
     }
 
     public Task(String dukeUserInput) {
@@ -21,13 +24,14 @@ public class Task {
         this.isDone = false;
     }
 
-
-    public static void createTask(String s){
-        Task t = new Task(s);
-        tasksStorage.add(t);
+    public void createTask(Task t){
+        this.tasksStorage.add(t);
         taskSize++;
     }
 
+//    public void removeTask(Task t){
+//        //please continue here!
+//    }
 
     //Methods to filter Information
     public String getStatusIcon() {
@@ -38,20 +42,28 @@ public class Task {
         return taskSize;
     }
 
-    public static void printWordDiary(){
+    public String getBy() {
+        return "Deadline class will override me";
+    }
+    public String getFrom(){
+        return "Event class to be override me 1 of 2";
+    }
+    public String getTo(){
+        return "Event class to be override me 2 of 2";
+    }
+
+    public void printWordDiary(){
         if (taskSize == 0){
             System.out.println("List is empty!");
             return;
         }
 
-        for (Task task : tasksStorage) {
-            int runningNo = 1;
-            System.out.print(runningNo + ".");
-            System.out.print("[" + task.getStatusIcon() + "] ");
-            System.out.println(task.getTaskDescription());
+        for (int i = 0; i< this.tasksStorage.size(); i++){
+
+            Task t = this.tasksStorage.get(i);
+            System.out.print(i+1 + " " + t.toString() + "\n" );
         }
     }
-
 
     //Retrieve String description
     public String getTaskDescription(){
@@ -64,6 +76,8 @@ public class Task {
         return isDone;
     }
     public void markAsDone(String s){
+//        this.isDone = true;
+
 
         // Define a regular expression pattern to match numbers
         Pattern pattern = Pattern.compile("\\d+");
@@ -76,18 +90,20 @@ public class Task {
             // Extract the matched number
             String numberStr = matcher.group();
             int index = Integer.parseInt(numberStr);
-            index--;
-            System.out.println("Searching for task " + index + "...");
+            int counter = index--;
+
+            System.out.println("Searching for task " + counter + "...");
 
             // Check if the index is valid
             if (index >= 0 && index < tasksStorage.size()) {
                 // Toggle the isDone flag of the specified task
                 Task task = tasksStorage.get(index);
                 task.isDone = !task.isDone;
-                System.out.println("Task " + index + " marked as " + (task.isDone ? "done!" : "undone!"));
+
+                System.out.println("Task " + counter + " marked as " + (task.isDone ? "done!" : "undone!"));
 
 
-                System.out.print(++index + ".");
+                System.out.print(counter + ".");
                 System.out.print("[" + task.getStatusIcon() + "] ");
                 System.out.println(task.getTaskDescription());
 
