@@ -1,12 +1,13 @@
+package duke.exception;
 public class DukeException  extends Exception{
     public DukeException(String error){
         super(error);
     }
 
-    /*
-    Helper method to check if string input is number
-    isInteger() method will check input if it is an Integer
-    Reference: https://stackoverflow.com/questions/1102891/how-to-check-if-a-string-is-numeric-in-java
+    /**
+     * Helper method to check if string input is number
+     * isInteger() method will check input if it is an Integer
+     * Reference: https://stackoverflow.com/questions/1102891/how-to-check-if-a-string-is-numeric-in-java
      */
 
     public static boolean isInteger(String input){
@@ -18,9 +19,9 @@ public class DukeException  extends Exception{
         }
     }
 
-    /*
-    Helper method to check if string input is boolean
-    isBoolean() method will check input if it is a boolean
+    /**
+     * Helper method to check if string input is boolean
+     * isBoolean() method will check input if it is a boolean
     */
 
     public static boolean isBoolean(String input) throws DukeException {
@@ -32,8 +33,8 @@ public class DukeException  extends Exception{
         }
     }
 
-    /*
-    Helper method to check if the number of parameters in the command is correct
+    /**
+     * Helper method to check if the number of parameters in the command is correct
      */
     public static void checkNumParameters(String input, int num) throws DukeException {
         if (input.split("-").length != num){
@@ -41,8 +42,8 @@ public class DukeException  extends Exception{
         }
     }
 
-    /*
-    Helper method to check if the index to be updated is valid
+    /**
+     * Helper method to check if the index to be updated is valid
      */
     public static int getIndex(String inputSplit, int maxIndex) throws DukeException {
         int index;

@@ -1,9 +1,12 @@
+package duke.tasks;
+
+import duke.exception.DukeException;
 public class Task {
     protected String description;
     protected boolean isDone;
 
-    /*
-    Constructor with exception handling
+    /**
+     * Constructor with exception handling
      */
     public Task(String description) throws DukeException {
         if (description.isEmpty()){
@@ -13,6 +16,10 @@ public class Task {
         this.isDone = false;
     }
 
+    /**
+     * Check if task is completed
+     * @return string "Task Completed" if true else string "Task in Progress"
+     */
     public String getStatusIcon() {
         return (isDone ? "Task Completed" : "Task in Progress");
     }

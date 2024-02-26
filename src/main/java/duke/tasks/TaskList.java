@@ -1,3 +1,6 @@
+package duke.tasks;
+
+import duke.exception.DukeException;
 import java.util.ArrayList;
 
 /**

@@ -1,10 +1,13 @@
+package duke.tasks;
+
+import duke.exception.DukeException;
 public class Event extends Task {
 
     protected String start;
     protected String end;
 
-    /*
-    Constructor with exception handling to ensure user input 3 parameters for this command
+    /**
+     * Constructor with exception handling to ensure user input 3 parameters for this command
      */
     public Event(String input) throws DukeException {
         super(input.split("-")[0].trim());

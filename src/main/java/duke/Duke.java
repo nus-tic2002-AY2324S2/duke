@@ -1,10 +1,17 @@
+package duke;
+
+import duke.gui.Gui;
+import duke.tasks.Task;
+import duke.tasks.Deadline;
+import duke.tasks.TaskList;
+import duke.tasks.ToDo;
+import duke.tasks.Event;
+import duke.exception.DukeException;
+
 public class Duke {
     private static Gui gui;
     private static TaskList tasklist;
     private static Task task;
-    private static Deadline deadline;
-    private static ToDo todo;
-    private static Event event;
 
     /**
      * Constructor
@@ -55,18 +62,18 @@ public class Duke {
                 tasklist.deleteTask(input);
                 break;
             case "EVENT":
-                event = new Event(input);
+                Event event = new Event(input);
                 tasklist.insertTask(event);
                 break;
             case "DEADLINE":
-                deadline = new Deadline(input);
+                Deadline deadline = new Deadline(input);
                 tasklist.insertTask(deadline);
                 break;
             case "STATUS":
                 tasklist.updateTask(input);
                 break;
             case "TODO":
-                todo = new ToDo(input);
+                ToDo todo = new ToDo(input);
                 tasklist.insertTask(todo);
                 break;
             case "LIST":

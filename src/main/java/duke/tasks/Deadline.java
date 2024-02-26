@@ -1,9 +1,12 @@
+package duke.tasks;
+
+import duke.exception.DukeException;
 public class Deadline extends Task {
 
     protected String by;
 
-    /*
-    Constructor with exception handling to ensure user input 2 parameters for this command
+    /**
+     * Constructor with exception handling to ensure user input 2 parameters for this command
      */
     public Deadline(String input) throws DukeException {
         super(input.split("-")[0].trim());
