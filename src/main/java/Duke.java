@@ -71,23 +71,30 @@ public class Duke{
         }
 
         //buggy. fake default constructor. Need to resolve user input logic
-        else if (userInput.contains("todo")){
+        else if (userInput.contains("todo ")){
             todo = new ToDo(userInput);
             task.createTask(todo);
             echoUserInput(userInput);
         }
 
         //buggy. fake default constructor. Need to resolve user input logic
-        else if (userInput.contains("event")){
+        else if (userInput.contains("event ")){
             Event event = new Event(userInput);
             task.createTask(event);
             echoUserInput(userInput);
         }
 
-        else if (userInput.contains("deadline")){
+        else if (userInput.contains("deadline ")){
+//            String[] parts = userInput.split(" ");
+//            String taskName = parts[1].trim();
+//            String taskDeadline = parts[2].trim();
+
+            //Deadline d = new Deadline(taskName, taskDeadline);
+            String f = userInput.trim();
+
             Deadline d = new Deadline(userInput);
             task.createTask(d);
-            echoUserInput(userInput);
+            echoUserInput(f);
         }
 
         //        //case: future implementations
@@ -101,6 +108,8 @@ public class Duke{
 
         //
         else { //normal task
+
+
             Task t = new Task(userInput);
             task.createTask(t);
             echoUserInput(userInput);
@@ -122,7 +131,8 @@ public class Duke{
             }
 
             else{
-                scanKeyword(userInput);
+                String cleanText = userInput.trim();
+                scanKeyword(cleanText);
             }
 
         }
