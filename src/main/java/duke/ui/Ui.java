@@ -1,18 +1,17 @@
-package duke.gui;
+package duke.ui;
 
-import duke.exception.DukeException;
 import java.util.Scanner;
 
 /**
  * This class is to provide "GUI" like features
  */
-public class Gui {
+public class Ui {
     private static Scanner usrinput;
 
     /**
      * Constructor that will initialize a scanner object
      */
-    public Gui(){
+    public Ui(){
         usrinput = new Scanner(System.in);
     }
 
@@ -64,8 +63,7 @@ public class Gui {
      * (1) Print an exit message
      * (2) End the program
      */
-    public void bye() {
+    public static void bye() {
         System.out.println("Farewell!! Till we meet again.............");
-        System.exit(0);
     }
 }
