@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * This class manages the list of task
  */
 public class TaskList {
-    private ArrayList<Task> tasklist; //Create an attribute to hold a list of task
+    private final ArrayList<Task> tasklist; //Create an attribute to hold a list of task
 
     /**
      * Constructor
@@ -27,6 +27,20 @@ public class TaskList {
             System.out.println(i+1 + "--" + task.toString() + "\n" );
         }
         System.out.println("\n*******************Task List******************\n");
+    }
+
+    /**
+     * @return size of task list
+     */
+    public int getTaskListSize(){
+        return this.tasklist.size();
+    }
+
+    /**
+     * @return task of specific index from task list
+     */
+    public Task getTask(int index){
+        return this.tasklist.get(index);
     }
 
     /**
