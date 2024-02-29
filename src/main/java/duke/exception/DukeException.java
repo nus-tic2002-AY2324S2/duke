@@ -37,7 +37,7 @@ public class DukeException  extends Exception{
      * Helper method to check if the number of parameters in the command is correct
      */
     public static void checkNumParameters(String input, int num) throws DukeException {
-        if (input.split("-").length != num){
+        if (input.split("_").length != num){
             throw new DukeException(String.format("Command expects " + String.valueOf(num) + " parameters"));
         }
     }

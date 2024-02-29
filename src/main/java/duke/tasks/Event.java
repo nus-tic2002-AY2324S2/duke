@@ -10,10 +10,10 @@ public class Event extends Task {
      * Constructor with exception handling to ensure user input 3 parameters for this command
      */
     public Event(String input) throws DukeException {
-        super(input.split("-")[0].trim());
+        super(input.split("_")[0].trim());
         DukeException.checkNumParameters(input,3);
-        String start = input.split("-")[1].trim();
-        String end = input.split("-")[2].trim();
+        String start = input.split("_")[1].trim();
+        String end = input.split("_")[2].trim();
 
         this.start = start;
         this.end = end;

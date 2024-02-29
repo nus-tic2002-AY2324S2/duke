@@ -68,7 +68,7 @@ public class Storage {
                         System.out.println("Event " + taskStatus + " " + taskDescription
                                 + " Start: " + start + " End: " + end);
 
-                        Event eventTask = new Event(taskDescription+"-"+start+"-"+end);
+                        Event eventTask = new Event(taskDescription+"_"+start+"_"+end);
 
 
 
@@ -90,7 +90,7 @@ public class Storage {
                         System.out.println("Deadlline " + taskStatus + " " + taskDescription
                                 + " by: " + by);
 
-                        Deadline deadlineTask = new Deadline(taskDescription+"-"+by);
+                        Deadline deadlineTask = new Deadline(taskDescription+"_"+by);
 
 
 

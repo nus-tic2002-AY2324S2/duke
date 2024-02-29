@@ -65,7 +65,7 @@ public class TaskList {
      */
     public void updateTask(String input) throws DukeException {
         DukeException.checkNumParameters(input,2);
-        String[] inputSplit = input.split("-");
+        String[] inputSplit = input.split("_");
         int maxIndex = this.tasklist.size() -1;
         int index = DukeException.getIndex(inputSplit[0], maxIndex);
         boolean status = DukeException.isBoolean(inputSplit[1]);

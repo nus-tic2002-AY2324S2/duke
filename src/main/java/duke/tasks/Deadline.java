@@ -9,10 +9,10 @@ public class Deadline extends Task {
      * Constructor with exception handling to ensure user input 2 parameters for this command
      */
     public Deadline(String input) throws DukeException {
-        super(input.split("-")[0].trim());
+        super(input.split("_")[0].trim());
         DukeException.checkNumParameters(input,2);
 
-        this.by = input.split("-")[1].trim();
+        this.by = input.split("_")[1].trim();
     }
 
     @Override

@@ -13,13 +13,17 @@ public class Parser {
         String command;
         String input = "";
         
-        if (userinput.contains(":")){
+        if ( (userinput.contains(":")) && ( (!userinput.split(":")[0].trim().equals("BYE"))
+                && (!userinput.split(":")[0].trim().equals("LIST")) ) ){
             String[] userInputArray = userinput.split(":");
             if (userInputArray.length <= 1){
                 throw new DukeException("[SYNTAX ERROR] Please input task instructions after ':'\n");
             }
             command = userinput.split(":")[0].trim();
             input = userinput.split(":")[1].trim();
+        }else if ( ((userinput.contains(":")) && (!userinput.split(":")[0].trim().equals("BYE"))
+                || ((userinput.contains(":")) && (!userinput.split(":")[0].trim().equals("LIST")))) ){
+            throw new DukeException("[SYNTAX ERROR] 'BYE' and 'LIST' should not be followed with ':' \n");
         }else{
             command = userinput.trim();
         }
