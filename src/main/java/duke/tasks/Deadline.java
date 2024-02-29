@@ -25,11 +25,17 @@ public class Deadline extends Task {
         return this.by;
     }
 
+    /**
+     * Return a string format
+     */
     @Override
     public String toString() {
         return "|D|" + super.toString() + " |by= " + by + "|";
     }
 
+    /**
+     * Return string format for display - Change the date format
+     */
     @Override
     public String toDisplay() {
         try {

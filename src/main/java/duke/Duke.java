@@ -19,7 +19,9 @@ public class Duke {
         tasklist = new TaskList();
     }
 
-
+    /**
+     * Start the chatbox application
+     */
     public void run() throws DukeException {
 
         boolean isExit = false;

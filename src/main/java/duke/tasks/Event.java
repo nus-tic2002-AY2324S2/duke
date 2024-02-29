@@ -21,11 +21,17 @@ public class Event extends Task {
         this.end = TimeDate.checkFormat(end);
     }
 
+    /**
+     * Return a string format
+     */
     @Override
     public String toString() {
         return "|E|" + super.toString() + " |from " + start + " to "
                 + end + " |";
     }
+    /**
+     * Return string format for display - Change the date format
+     */
     @Override
     public String toDisplay() {
         try {

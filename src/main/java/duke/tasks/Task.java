@@ -35,7 +35,9 @@ public class Task {
         this.description = task;
         System.out.println("Updated task description: " + task);
     }
-
+    /**
+     * Return a string format
+     */
     public String toString(){
         return " |" + getStatusIcon() + "| " + this.description;
     }

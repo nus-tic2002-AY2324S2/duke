@@ -8,7 +8,11 @@ public class Parser {
     public Parser(){
         
     }
-    
+
+    /**
+     * Parse user input and break it up and store it in Command object.
+     * Conduct input validation on the user input syntax
+     */
     public static Command parser(String userinput) throws DukeException {
         String command;
         String input = "";

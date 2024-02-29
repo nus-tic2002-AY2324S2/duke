@@ -65,6 +65,9 @@ public class Command {
         }
     }
 
+    /**
+     * Check if the command is an exit command. Print bye message if it is exit command
+     */
     public boolean isExit(){
         if (this.exit){
             Ui.bye();

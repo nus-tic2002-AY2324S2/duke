@@ -9,11 +9,17 @@ public class ToDo extends Task {
         super(description);
     }
 
+    /**
+     * Return a string format
+     */
     @Override
     public String toString() {
         return "|T|" + super.toString();
     }
 
+    /**
+     * Return string format for display - Change the date format
+     */
     @Override
     public String toDisplay() {
         return "|T|" + super.toString();

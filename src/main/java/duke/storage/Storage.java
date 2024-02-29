@@ -123,6 +123,9 @@ public class Storage {
 
     }
 
+    /**
+     * Iterate through the tasklist and write the task into a database
+     */
     public static void save(TaskList list) throws DukeException{
         initialise();
         try{
@@ -138,6 +141,10 @@ public class Storage {
         }
     }
 
+    /**
+     * Check the file path and if the database file exist
+     * If they do not exist, this method will create them
+     */
     public static void initialise() throws DukeException{
         if (!dbDir.exists()){
             dbDir.mkdirs();
