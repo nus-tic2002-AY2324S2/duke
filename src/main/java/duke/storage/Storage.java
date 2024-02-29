@@ -87,7 +87,7 @@ public class Storage {
                         break;
 
                     case "D":
-                        String [] deadlineSplit = taskElement[5].trim().split(":");
+                        String [] deadlineSplit = taskElement[5].trim().split("=");
                         String by = deadlineSplit[1].trim();
 
                         System.out.println("Loading ... ");

@@ -23,11 +23,30 @@ public class Event extends Task {
 
     @Override
     public String toString() {
+        return "|E|" + super.toString() + " |from " + start + " to "
+                + end + " |";
+    }
+    @Override
+    public String toDisplay() {
         try {
-            return "|E|" + super.toString() + " |from: " + TimeDate.displayFormat(start) + " to: "
+            return "|E|" + super.toString() + " |from " + TimeDate.displayFormat(start) + " to "
                     + TimeDate.displayFormat(end) + " |";
         } catch (DukeException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Return start time
+     */
+    public String getStart(){
+        return this.start;
+    }
+
+    /**
+     * Return end time
+     */
+    public String getEnd(){
+        return this.end;
     }
 }

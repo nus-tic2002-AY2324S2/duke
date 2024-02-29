@@ -28,6 +28,9 @@ public class Command {
      */
     public void execute(TaskList tasklist) throws DukeException {
         switch(commandType) {
+            case "CHECK":
+                tasklist.check(commandInput);
+                break;
             case "DELETE":
                 tasklist.deleteTask(commandInput);
                 Storage.save(tasklist);

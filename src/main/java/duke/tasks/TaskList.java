@@ -1,6 +1,8 @@
 package duke.tasks;
 
 import duke.exception.DukeException;
+import duke.parser.TimeDate;
+
 import java.util.ArrayList;
 
 /**
@@ -24,7 +26,22 @@ public class TaskList {
         System.out.println("******[Index]-- [Task Type] [Status] [Task description]******\n");
         for(int i = 0; i < this.tasklist.size(); i++){
             Task task = this.tasklist.get(i);
-            System.out.println(i+1 + "--" + task.toString() + "\n" );
+            System.out.println(i+1 + "--" + task.toDisplay() + "\n" );
+        }
+        System.out.println("\n*******************Task List******************\n");
+    }
+
+    /**
+     * Print out the task that falls on the user defined date
+     */
+    public void check(String date) throws DukeException {
+        System.out.println("*******************Task List on " + date + " ******************");
+        System.out.println("******[Index]-- [Task Type] [Status] [Task description]******\n");
+        for(int i = 0; i < this.tasklist.size(); i++){
+            Task task = this.tasklist.get(i);
+            if (TimeDate.eventOnDate(task, date)){
+                System.out.println(i+1 + "--" + task.toDisplay() + "\n" );
+            }
         }
         System.out.println("\n*******************Task List******************\n");
     }

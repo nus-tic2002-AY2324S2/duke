@@ -40,6 +40,10 @@ public class Task {
         return " |" + getStatusIcon() + "| " + this.description;
     }
 
+    public String toDisplay(){
+        return " |" + getStatusIcon() + "| " + this.description;
+    }
+
     /**
      * Mark task as done
      */

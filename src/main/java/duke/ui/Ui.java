@@ -42,6 +42,7 @@ public class Ui {
                 "| Task to be completed by");
         System.out.println("[Event:<Input Task>_<Start Time>_<End Time] | " +
                 "Event:project meeting_2022-01-01 2200 _ 2022-02-01 2300 | Task with a duration");
+        System.out.println("[CHECK:<date> | CHECK:2022-01-01 | Return all task on that date");
         System.out.println("[LIST] | LIST | Print out task list");
         System.out.println("[DELETE:<Index>] | DELETE:2 | DELETE TASK 2");
         System.out.println("[STATUS:<Index>_<true/false>] | STATUS:2_false | Indicate if task is done (true/false)");

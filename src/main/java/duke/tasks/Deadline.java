@@ -18,10 +18,22 @@ public class Deadline extends Task {
         this.by = TimeDate.checkFormat(by);
     }
 
+    /**
+     * return deadline string
+     */
+    public String getDeadline(){
+        return this.by;
+    }
+
     @Override
     public String toString() {
+        return "|D|" + super.toString() + " |by= " + by + "|";
+    }
+
+    @Override
+    public String toDisplay() {
         try {
-            return "|D|" + super.toString() + " |by: " + TimeDate.displayFormat(by) + "|";
+            return "|D|" + super.toString() + " |by= " + TimeDate.displayFormat(by) + "|";
         } catch (DukeException e) {
             throw new RuntimeException(e);
         }
