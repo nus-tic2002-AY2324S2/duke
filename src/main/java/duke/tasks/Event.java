@@ -1,6 +1,8 @@
 package duke.tasks;
 
 import duke.exception.DukeException;
+import duke.parser.TimeDate;
+
 public class Event extends Task {
 
     protected String start;
@@ -15,12 +17,17 @@ public class Event extends Task {
         String start = input.split("_")[1].trim();
         String end = input.split("_")[2].trim();
 
-        this.start = start;
-        this.end = end;
+        this.start = TimeDate.checkFormat(start);
+        this.end = TimeDate.checkFormat(end);
     }
 
     @Override
     public String toString() {
-        return "|E|" + super.toString() + " |from: " + start + " to: " + end + " |";
+        try {
+            return "|E|" + super.toString() + " |from: " + TimeDate.displayFormat(start) + " to: "
+                    + TimeDate.displayFormat(end) + " |";
+        } catch (DukeException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

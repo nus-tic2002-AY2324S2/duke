@@ -1,6 +1,7 @@
 package duke.storage;
 
 import duke.exception.DukeException;
+import duke.parser.TimeDate;
 import duke.tasks.TaskList;
 import duke.tasks.ToDo;
 import duke.tasks.Event;
@@ -11,6 +12,8 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+
+import java.util.Arrays;
 
 public class Storage {
     private static final String separator = File.separator;
@@ -60,13 +63,14 @@ public class Storage {
                         break;
 
                     case "E":
+                        String space = " ";
                         String [] durationSplit = taskElement[5].trim().split(" ");
-                        String start = durationSplit[1].trim();
-                        String end = durationSplit[3].trim();
+                        String start = durationSplit[1].trim() + space + durationSplit[2].trim();
+                        String end = durationSplit[4].trim() + space + durationSplit[5].trim();
 
                         System.out.println("Loading ... ");
                         System.out.println("Event " + taskStatus + " " + taskDescription
-                                + " Start: " + start + " End: " + end);
+                                + " Start: " + TimeDate.displayFormat(start) + " End: " + TimeDate.displayFormat(end));
 
                         Event eventTask = new Event(taskDescription+"_"+start+"_"+end);
 
@@ -88,7 +92,7 @@ public class Storage {
 
                         System.out.println("Loading ... ");
                         System.out.println("Deadlline " + taskStatus + " " + taskDescription
-                                + " by: " + by);
+                                + " by: " + TimeDate.displayFormat(by));
 
                         Deadline deadlineTask = new Deadline(taskDescription+"_"+by);
 
