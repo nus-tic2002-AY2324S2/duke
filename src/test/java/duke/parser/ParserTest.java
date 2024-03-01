@@ -3,13 +3,17 @@ package duke.parser;
 import duke.exception.DukeException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class ParserTest {
 
     public ParserTest() throws DukeException {
     }
 
+    /**
+     * Test for user inputs
+     */
     @Test
     public void parserUserInputTest() {
 

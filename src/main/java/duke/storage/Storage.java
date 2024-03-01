@@ -2,10 +2,10 @@ package duke.storage;
 
 import duke.exception.DukeException;
 import duke.parser.TimeDate;
+import duke.tasks.Deadline;
+import duke.tasks.Event;
 import duke.tasks.TaskList;
 import duke.tasks.ToDo;
-import duke.tasks.Event;
-import duke.tasks.Deadline;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,26 +13,19 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-import java.util.Arrays;
-
 public class Storage {
-    private static final String separator = File.separator;
-    private static final String dbPath = System.getProperty("user.dir") + separator + "database";
-    private static final String dbName = "database.txt";
-    private static File dbDir = new File(dbPath);
-    private static File dbFilePath = new File(dbPath + separator + dbName);
+    private static final String SEPARATOR = File.separator;
+    private static final String DB_PATH = System.getProperty("user.dir") + SEPARATOR + "database";
+    private static final String DATABASE_TXT = "database.txt";
+    private static final File dbDir = new File(DB_PATH);
+    private static final File dbFilePath = new File(DB_PATH + SEPARATOR + DATABASE_TXT);
 
-
-    /**
-     * Constructor for DbProcessor
-     * Initialised 2 objects - dbDir and dbFilePath
-     */
     public Storage(){
+
     }
 
     /**
      * Load the task list from the database file
-     *
      */
     public static TaskList load() throws DukeException{
         TaskList tasklist = new TaskList();
@@ -74,8 +67,6 @@ public class Storage {
 
                         Event eventTask = new Event(taskDescription+"_"+start+"_"+end);
 
-
-
                         if (taskStatus.contains("Completed")){
                             eventTask.markAsDone();
                         } else if (!taskStatus.contains("Progress")) {
@@ -96,8 +87,6 @@ public class Storage {
 
                         Deadline deadlineTask = new Deadline(taskDescription+"_"+by);
 
-
-
                         if (taskStatus.contains("Completed")){
                             deadlineTask.markAsDone();
                         } else if (!taskStatus.contains("Progress")) {
@@ -111,9 +100,7 @@ public class Storage {
                     default:
                         throw new DukeException("Task type is invalid. Only accept 'T', 'D', 'E'");
                 }
-
                 System.out.println("END OF LINE");
-
             }
 
         } catch (FileNotFoundException e) {
@@ -124,7 +111,7 @@ public class Storage {
     }
 
     /**
-     * Iterate through the tasklist and write the task into a database
+     * Iterate through the task list and write the task into a database
      */
     public static void save(TaskList list) throws DukeException{
         initialise();

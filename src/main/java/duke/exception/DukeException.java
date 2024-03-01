@@ -1,10 +1,10 @@
 package duke.exception;
 
+
 public class DukeException  extends Exception{
     public DukeException(String error){
         super(error);
     }
-
     /**
      * Helper method to check if string input is number
      * isInteger() method will check input if it is an Integer
@@ -39,14 +39,14 @@ public class DukeException  extends Exception{
      */
     public static void checkNumParameters(String input, int num) throws DukeException {
         if (input.split("_").length != num){
-            throw new DukeException(String.format("Command expects " + String.valueOf(num) + " parameters"));
+            throw new DukeException(String.format("Command expects " + num + " parameters"));
         }
     }
 
     /**
-     * Helper method to check if the index to be updated is valid
+     * Helper method to check if the index to be updated is valid. If it is, return that index.
      */
-    public static int getIndex(String inputSplit, int maxIndex) throws DukeException {
+    public static int checkIndex(String inputSplit, int maxIndex) throws DukeException {
         int index;
 
         if (!DukeException.isInteger(inputSplit.trim())){

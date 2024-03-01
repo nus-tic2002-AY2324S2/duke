@@ -15,6 +15,7 @@ public class TaskList {
      * Constructor
      */
     public TaskList(){
+
         this.tasklist = new ArrayList<Task>();
     }
 
@@ -50,6 +51,7 @@ public class TaskList {
      * @return size of task list
      */
     public int getTaskListSize(){
+
         return this.tasklist.size();
     }
 
@@ -57,6 +59,7 @@ public class TaskList {
      * @return task of specific index from task list
      */
     public Task getTask(int index){
+
         return this.tasklist.get(index);
     }
 
@@ -84,7 +87,7 @@ public class TaskList {
         DukeException.checkNumParameters(input,2);
         String[] inputSplit = input.split("_");
         int maxIndex = this.tasklist.size() -1;
-        int index = DukeException.getIndex(inputSplit[0], maxIndex);
+        int index = DukeException.checkIndex(inputSplit[0], maxIndex);
         boolean status = DukeException.isBoolean(inputSplit[1]);
 
         if (status){
@@ -102,7 +105,7 @@ public class TaskList {
      */
     public void deleteTask(String input) throws DukeException {
         int maxIndex = this.tasklist.size() -1;
-        int index = DukeException.getIndex(input, maxIndex);
+        int index = DukeException.checkIndex(input, maxIndex);
         System.out.println("Deleting task: " + this.tasklist.get(index).taskDescription());
         this.tasklist.remove(index);
         System.out.println("Remaining task in the list: " + this.tasklist.size() + "\n");

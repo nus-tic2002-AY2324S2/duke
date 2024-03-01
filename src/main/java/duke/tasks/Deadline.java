@@ -22,14 +22,16 @@ public class Deadline extends Task {
      * return deadline string
      */
     public String getDeadline(){
+
         return this.by;
     }
 
     /**
-     * Return a string format
+     * Return a string format to include task type -> deadline
      */
     @Override
     public String toString() {
+
         return "|D|" + super.toString() + " |by= " + by + "|";
     }
 

@@ -22,9 +22,7 @@ public class Command {
 
 
     /**
-     * Execute the command
-     * @param tasklist
-     * @throws DukeException
+     * Based on the command given, method will execute a series of operations
      */
     public void execute(TaskList tasklist) throws DukeException {
         switch(commandType) {

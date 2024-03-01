@@ -1,7 +1,7 @@
 package duke.tasks;
 
 import duke.exception.DukeException;
-public class Task {
+public abstract class Task {
     protected String description;
     protected boolean isDone;
 
@@ -21,6 +21,7 @@ public class Task {
      * @return string "Task Completed" if true else string "Task in Progress"
      */
     public String getStatusIcon() {
+
         return (isDone ? "Task Completed" : "Task in Progress");
     }
 
@@ -36,20 +37,23 @@ public class Task {
         System.out.println("Updated task description: " + task);
     }
     /**
-     * Return a string format
+     * Return a string format to include task type
      */
     public String toString(){
+
         return " |" + getStatusIcon() + "| " + this.description;
     }
 
-    public String toDisplay(){
-        return " |" + getStatusIcon() + "| " + this.description;
-    }
+    /**
+     * Abstract method for child classes to display task base on requirement
+     */
+    public abstract String toDisplay();
 
     /**
      * Mark task as done
      */
     public void markAsDone(){
+
         this.isDone = true;
     }
 
@@ -57,6 +61,7 @@ public class Task {
      * Mark task as not done
      */
     public void markAsNotDone(){
+
         this.isDone = false;
     }
 
@@ -64,6 +69,7 @@ public class Task {
      * Return status of task
      */
     public boolean statusCheck(){
+
         return isDone;
     }
 
@@ -71,6 +77,7 @@ public class Task {
      * Return description of task
      */
     public String taskDescription(){
+
         return description;
     }
 

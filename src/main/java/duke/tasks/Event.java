@@ -22,7 +22,7 @@ public class Event extends Task {
     }
 
     /**
-     * Return a string format
+     * Return a string format to include task type -> event
      */
     @Override
     public String toString() {
@@ -46,6 +46,7 @@ public class Event extends Task {
      * Return start time
      */
     public String getStart(){
+
         return this.start;
     }
 
@@ -53,6 +54,7 @@ public class Event extends Task {
      * Return end time
      */
     public String getEnd(){
+
         return this.end;
     }
 }

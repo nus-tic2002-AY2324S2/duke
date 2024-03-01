@@ -15,6 +15,9 @@ public class CommandTest {
     public CommandTest() throws DukeException {
     }
 
+    /**
+     * Test if bye command is executed correctly
+     */
     @Test
     public void byeCommandTest() throws DukeException {
 
@@ -23,6 +26,9 @@ public class CommandTest {
         assertTrue(byeCommand.isExit());
     }
 
+    /**
+     * Test for invalid user input command
+     */
     @Test
     public void invalidCommandTest() throws DukeException{
         try{

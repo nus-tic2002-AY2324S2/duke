@@ -7,8 +7,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 public class TimeDateTest {
 
+    /**
+     * Test methods for various date time user input
+     */
     @Test
     public void dateTimeInputTest() {
 
@@ -28,7 +32,9 @@ public class TimeDateTest {
 
     }
 
-
+    /**
+     * Test  method to check dates in both event and deadline class
+     */
     @Test
     public void eventOnDateTest() throws DukeException {
         Deadline deadlineObject = new Deadline("Task_2023-01-01 0000");

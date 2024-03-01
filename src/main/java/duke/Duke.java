@@ -12,7 +12,7 @@ public class Duke {
 
     /**
      * Constructor
-     * Initialise gui and tasklist object
+     * Initialise gui and task list object
      */
     public Duke() {
         ui = new Ui();
@@ -20,7 +20,7 @@ public class Duke {
     }
 
     /**
-     * Start the chatbox application
+     * Start the chat bot application
      */
     public void run() throws DukeException {
 
