@@ -2,10 +2,8 @@ package duke.storage;
 
 import duke.exception.DukeException;
 import duke.parser.TimeDate;
-import duke.tasks.Deadline;
-import duke.tasks.Event;
-import duke.tasks.TaskList;
-import duke.tasks.ToDo;
+
+import duke.tasks.*; //Usage of all the classes in tasks (Deadline, Event, Task, TaskList, ToDo)
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,7 +23,7 @@ public class Storage {
     }
 
     /**
-     * Load the task list from the database file
+     * Load the task list from the database file and input into TaskList object for runtime usage
      */
     public static TaskList load() throws DukeException{
         TaskList tasklist = new TaskList();
@@ -46,12 +44,9 @@ public class Storage {
                         System.out.println("Loading ... ");
                         System.out.println("Todo " + taskStatus + " " + taskDescription);
                         ToDo toTask = new ToDo(taskDescription);
-                        if (taskStatus.contains("Completed")){
-                            toTask.markAsDone();
-                        } else if (!taskStatus.contains("Progress")) {
-                            throw new DukeException("Task Status is invalid. Only accept Task Completed " +
-                                    "or Task in Progress");
-                        }
+
+                        checkTaskStatus(taskStatus, toTask);
+
                         tasklist.insertTask(toTask);
                         break;
 
@@ -67,12 +62,7 @@ public class Storage {
 
                         Event eventTask = new Event(taskDescription+"_"+start+"_"+end);
 
-                        if (taskStatus.contains("Completed")){
-                            eventTask.markAsDone();
-                        } else if (!taskStatus.contains("Progress")) {
-                            throw new DukeException("Task Status is invalid. Only accept Task Completed " +
-                                    "or Task in Progress");
-                        }
+                        checkTaskStatus(taskStatus, eventTask);
 
                         tasklist.insertTask(eventTask);
                         break;
@@ -87,12 +77,7 @@ public class Storage {
 
                         Deadline deadlineTask = new Deadline(taskDescription+"_"+by);
 
-                        if (taskStatus.contains("Completed")){
-                            deadlineTask.markAsDone();
-                        } else if (!taskStatus.contains("Progress")) {
-                            throw new DukeException("Task Status is invalid. Only accept Task Completed " +
-                                    "or Task in Progress");
-                        }
+                        checkTaskStatus(taskStatus, deadlineTask);
 
                         tasklist.insertTask(deadlineTask);
                         break;
@@ -108,6 +93,18 @@ public class Storage {
         }
         return tasklist;
 
+    }
+
+    /**
+     * Check the status of the task and if it is completed, mark that task as completed
+     */
+    private static void checkTaskStatus(String taskStatus, Task task) throws DukeException {
+        if (taskStatus.contains("Completed")){
+            task.markAsDone();
+        } else if (!taskStatus.contains("Progress")) {
+            throw new DukeException("Task Status is invalid. Only accept Task Completed " +
+                    "or Task in Progress");
+        }
     }
 
     /**
