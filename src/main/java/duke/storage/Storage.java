@@ -31,7 +31,7 @@ public class Storage {
 
         try{
             Scanner scan = new Scanner(dbFilePath);
-            while (scan.hasNext()){
+			while (scan.hasNext()){
                 String taskLine = scan.nextLine();
                 String [] taskElement = taskLine.split("\\|");
                 String taskType = taskElement[1].trim();
@@ -98,6 +98,8 @@ public class Storage {
      * Check the status of the task and if it is completed, mark that task as completed
      */
     private static void checkTaskStatus(String taskStatus, Task task) throws DukeException {
+        assert taskStatus != null : "checkTaskStatus requires a String as 1st input";
+        assert task != null : "checkTaskStatus requires a task object as 2nd input";
         if (taskStatus.contains("Completed")){
             task.markAsDone();
         } else if (!taskStatus.contains("Progress")) {
@@ -110,6 +112,7 @@ public class Storage {
      * Iterate through the task list and write the task into a database
      */
     public static void save(TaskList list) throws DukeException{
+        assert list != null : "save requires a tasklist object as input";
         initialise();
         try{
             FileWriter file = new FileWriter(dbFilePath);

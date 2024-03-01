@@ -12,6 +12,7 @@ public class Ui {
      * Constructor that will initialize a scanner object
      */
     public Ui(){
+
         usrinput = new Scanner(System.in);
     }
 

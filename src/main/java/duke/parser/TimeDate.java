@@ -26,7 +26,7 @@ public class TimeDate {
      * Validate the input if it is in the current date time format
      */
     public static LocalDateTime valiDate(String datetime) throws DukeException {
-
+        assert datetime != null : "valiDate requires a string as input";
         try{
             return LocalDateTime.parse(datetime, YYYY_MM_DD_HHMM);
         }catch (DateTimeParseException e){
@@ -38,7 +38,7 @@ public class TimeDate {
      * Validate the input if it is in the current date format
      */
     public static LocalDate valiDate(String date, boolean x) throws DukeException {
-
+        assert date != null : "valiDate requires a string as input";
         try{
             return LocalDate.parse(date, YYYY_MM_DD);
         }catch (DateTimeParseException e){
@@ -50,6 +50,7 @@ public class TimeDate {
      * Validate user input and convert date to a string using standard format
 	 */
     public static String checkFormat(String datetime) throws DukeException {
+        assert datetime != null : "checkFormat requires a string as input";
         return valiDate(datetime).format(YYYY_MM_DD_HHMM);
     }
 
@@ -57,6 +58,7 @@ public class TimeDate {
      * Validate user input and convert date to a string using display format
      */
     public static String displayFormat(String datetime) throws DukeException {
+        assert datetime != null : "displayFormat requires a string as input";
         return valiDate(datetime).format(MMM_DD_YYYY_HHMM);
     }
 
@@ -64,6 +66,8 @@ public class TimeDate {
      * This method check if the Deadline and Event object has date that falls on or between user input date
      */
     public static boolean isTaskOnDate(Task task, String targetDate) throws DukeException {
+        assert task != null : "isTaskOnDate requires a Task object as 1st input";
+        assert targetDate != null : "isTaskOnDate requires a string as 2nd input";
 
         LocalDate targetDateFormat = valiDate(targetDate, true);
 

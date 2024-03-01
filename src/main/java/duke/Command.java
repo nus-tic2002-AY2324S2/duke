@@ -25,6 +25,7 @@ public class Command {
      * Based on the command given, method will execute a series of operations
      */
     public void execute(TaskList tasklist) throws DukeException {
+        assert tasklist != null : "execute requires tasklist object";
         switch(commandType) {
             case "FIND":
                 tasklist.findTask(commandInput);

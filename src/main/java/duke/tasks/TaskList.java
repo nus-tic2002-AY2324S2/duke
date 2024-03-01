@@ -36,6 +36,7 @@ public class TaskList {
      * Print out the task that falls on the user defined date
      */
     public void checkDate(String date) throws DukeException {
+        assert date != null : "checkDate requires a string as an input";
         System.out.println("*******************Task List on " + date + " ******************");
         System.out.println("******[Index]-- [Task Type] [Status] [Task description]******\n");
         for(int i = 0; i < this.tasklist.size(); i++){
@@ -51,6 +52,7 @@ public class TaskList {
      * Print out the tasks that contain user input keyword
      */
     public void findTask(String keyword) {
+        assert keyword != null : "findTask requires a string as an input";
         System.out.println("*******************Task List ******************");
         System.out.println("******[Index]-- [Task Type] [Status] [Task description]******\n");
         for(int i = 0; i < this.tasklist.size(); i++){
@@ -67,6 +69,7 @@ public class TaskList {
      * Improvement -> Same task description but different task type is accepted
      */
     public boolean detectDuplicate(Task inputTask) {
+        assert inputTask != null : "detectDuplicate requires a task object as an input";
         String inputTaskDescription = inputTask.taskDescription();
 		for (Task task : this.tasklist) {
             boolean sameTaskDescription = task.taskDescription().equals(inputTaskDescription);
@@ -79,25 +82,10 @@ public class TaskList {
     }
 
     /**
-     * @return size of task list
-     */
-    public int getTaskListSize(){
-
-        return this.tasklist.size();
-    }
-
-    /**
-     * @return task of specific index from task list
-     */
-    public Task getTask(int index){
-
-        return this.tasklist.get(index);
-    }
-
-    /**
      * Insert a task into the task list
      */
     public void insertTask(Task task) throws DukeException {
+        assert task != null : "insertTask requires a task object as an input";
         if(detectDuplicate(task)){
             throw new DukeException("[Duplicated task] Task is already entered into task list!");
         }
@@ -118,6 +106,7 @@ public class TaskList {
      * (3) Check if 2nd parameter is a boolean
      */
     public void updateTaskStatus(String input) throws DukeException {
+        assert input != null : "updateTaskStatus requires a string as an input";
         DukeException.checkNumParameters(input,2);
         String[] inputSplit = input.split("_");
 
@@ -139,11 +128,28 @@ public class TaskList {
      * @throws DukeException if input is not integer or not in task list
      */
     public void deleteTask(String input) throws DukeException {
+        assert input != null : "deleteTask requires a string as an input";
         int maxIndex = this.tasklist.size() -1;
         int index = DukeException.checkIndex(input, maxIndex);
         System.out.println("Deleting task: " + this.tasklist.get(index).taskDescription());
         this.tasklist.remove(index);
         System.out.println("Remaining task in the list: " + this.tasklist.size() + "\n");
+    }
+
+    /**
+     * @return size of task list
+     */
+    public int getTaskListSize(){
+
+        return this.tasklist.size();
+    }
+
+    /**
+     * @return task of specific index from task list
+     */
+    public Task getTask(int index){
+
+        return this.tasklist.get(index);
     }
 
 }

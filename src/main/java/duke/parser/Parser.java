@@ -14,6 +14,7 @@ public class Parser {
      * Conduct input validation on the user input syntax
      */
     public static Command parser(String userinput) throws DukeException {
+        assert userinput != null : "parser requires a string input";
         String command;
         String input = "";
         boolean BYE_COMMAND = userinput.split(":")[0].trim().equals("BYE");
