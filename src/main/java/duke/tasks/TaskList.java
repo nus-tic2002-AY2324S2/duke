@@ -48,6 +48,18 @@ public class TaskList {
     }
 
     /**
+     * Detect duplicate task. Return true if task is already in task list
+     */
+    public boolean detectDuplicate(String inputTask) {
+		for (Task task : this.tasklist) {
+			if (task.taskDescription().equals(inputTask)) {
+				return true;
+			}
+		}
+        return false;
+    }
+
+    /**
      * @return size of task list
      */
     public int getTaskListSize(){
@@ -66,14 +78,17 @@ public class TaskList {
     /**
      * Insert a task into the task list
      */
-    public void insertTask(Task task){
+    public void insertTask(Task task) throws DukeException {
+        if(detectDuplicate(task.taskDescription())){
+            throw new DukeException("[Duplicated task] Task is already entered into task list!");
+        }
         this.tasklist.add(task);
         System.out.println("Added task: " + task.taskDescription() + " to the task list.\n\n");
         this.printTaskList();
     }
 
     /**
-     * Update task object in array
+     * Update task status in array
      * @param index of task object to be modified
      * @param status - True = done, False = not done
      * Error handling
@@ -83,9 +98,10 @@ public class TaskList {
      *               -Check if that integer is a valid index
      * (3) Check if 2nd parameter is a boolean
      */
-    public void updateTask(String input) throws DukeException {
+    public void updateTaskStatus(String input) throws DukeException {
         DukeException.checkNumParameters(input,2);
         String[] inputSplit = input.split("_");
+
         int maxIndex = this.tasklist.size() -1;
         int index = DukeException.checkIndex(inputSplit[0], maxIndex);
         boolean status = DukeException.isBoolean(inputSplit[1]);

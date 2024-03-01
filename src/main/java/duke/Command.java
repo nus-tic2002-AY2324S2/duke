@@ -44,7 +44,7 @@ public class Command {
                 Storage.save(tasklist);
                 break;
             case "STATUS":
-                tasklist.updateTask(commandInput);
+                tasklist.updateTaskStatus(commandInput);
                 Storage.save(tasklist);
                 break;
             case "TODO":
