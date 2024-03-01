@@ -40,7 +40,7 @@ public class TaskList {
         System.out.println("******[Index]-- [Task Type] [Status] [Task description]******\n");
         for(int i = 0; i < this.tasklist.size(); i++){
             Task task = this.tasklist.get(i);
-            if (TimeDate.eventOnDate(task, date)){
+            if (TimeDate.isTaskOnDate(task, date)){
                 System.out.println(i+1 + "--" + task.toDisplay() + "\n" );
             }
         }

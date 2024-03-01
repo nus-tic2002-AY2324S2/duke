@@ -40,11 +40,11 @@ public class TimeDateTest {
         Deadline deadlineObject = new Deadline("Task_2023-01-01 0000");
         Event eventObject = new Event("Task_2023-01-01 0000 _ 2023-01-30 0000");
         //Deadline fall on user input date return true
-        assertTrue(TimeDate.eventOnDate(deadlineObject, "2023-01-01"));
+        assertTrue(TimeDate.isTaskOnDate(deadlineObject, "2023-01-01"));
         //Event date fall within user input date return true
-        assertTrue(TimeDate.eventOnDate(eventObject, "2023-01-02"));
+        assertTrue(TimeDate.isTaskOnDate(eventObject, "2023-01-02"));
         //Event date fall outside user input date return false
-        assertFalse(TimeDate.eventOnDate(eventObject, "2023-05-02"));
+        assertFalse(TimeDate.isTaskOnDate(eventObject, "2023-05-02"));
     }
 
 }

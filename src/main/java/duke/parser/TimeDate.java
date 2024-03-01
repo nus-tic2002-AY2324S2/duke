@@ -48,8 +48,7 @@ public class TimeDate {
 
     /**
      * Validate user input and convert date to a string using standard format
-     * @throws DukeException
-     */
+	 */
     public static String checkFormat(String datetime) throws DukeException {
         return valiDate(datetime).format(YYYY_MM_DD_HHMM);
     }
@@ -64,7 +63,7 @@ public class TimeDate {
     /**
      * This method check if the Deadline and Event object has date that falls on or between user input date
      */
-    public static boolean eventOnDate(Task task, String targetDate) throws DukeException {
+    public static boolean isTaskOnDate(Task task, String targetDate) throws DukeException {
 
         LocalDate targetDateFormat = valiDate(targetDate, true);
 
