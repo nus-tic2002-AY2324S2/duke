@@ -35,12 +35,27 @@ public class TaskList {
     /**
      * Print out the task that falls on the user defined date
      */
-    public void check(String date) throws DukeException {
+    public void checkDate(String date) throws DukeException {
         System.out.println("*******************Task List on " + date + " ******************");
         System.out.println("******[Index]-- [Task Type] [Status] [Task description]******\n");
         for(int i = 0; i < this.tasklist.size(); i++){
             Task task = this.tasklist.get(i);
             if (TimeDate.isTaskOnDate(task, date)){
+                System.out.println(i+1 + "--" + task.toDisplay() + "\n" );
+            }
+        }
+        System.out.println("\n*******************Task List******************\n");
+    }
+
+    /**
+     * Print out the tasks that contain user input keyword
+     */
+    public void findTask(String keyword) {
+        System.out.println("*******************Task List ******************");
+        System.out.println("******[Index]-- [Task Type] [Status] [Task description]******\n");
+        for(int i = 0; i < this.tasklist.size(); i++){
+            Task task = this.tasklist.get(i);
+            if (task.taskDescription().contains(keyword)){
                 System.out.println(i+1 + "--" + task.toDisplay() + "\n" );
             }
         }

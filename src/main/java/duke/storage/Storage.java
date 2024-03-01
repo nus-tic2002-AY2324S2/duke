@@ -85,7 +85,6 @@ public class Storage {
                     default:
                         throw new DukeException("Task type is invalid. Only accept 'T', 'D', 'E'");
                 }
-                System.out.println("END OF LINE");
             }
 
         } catch (FileNotFoundException e) {

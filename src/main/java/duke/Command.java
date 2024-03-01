@@ -26,8 +26,11 @@ public class Command {
      */
     public void execute(TaskList tasklist) throws DukeException {
         switch(commandType) {
+            case "FIND":
+                tasklist.findTask(commandInput);
+                break;
             case "CHECK":
-                tasklist.check(commandInput);
+                tasklist.checkDate(commandInput);
                 break;
             case "DELETE":
                 tasklist.deleteTask(commandInput);
@@ -68,7 +71,7 @@ public class Command {
      */
     public boolean isExit(){
         if (this.exit){
-            Ui.bye();
+            Ui.printExitStatement();
         }
         return this.exit;
     }
