@@ -46,4 +46,12 @@ public class Deadline extends Task {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Return class type
+     */
+    @Override
+    public String classType(){
+        return "Deadline";
+    }
 }

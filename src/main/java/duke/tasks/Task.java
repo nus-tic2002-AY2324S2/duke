@@ -81,4 +81,11 @@ public abstract class Task {
         return description;
     }
 
+    /**
+     * Return class type
+     */
+    public String classType(){
+        return "Task";
+    }
+
 }

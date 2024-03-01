@@ -57,4 +57,11 @@ public class Event extends Task {
 
         return this.end;
     }
+    /**
+     * Return class type
+     */
+    @Override
+    public String classType(){
+        return "Event";
+    }
 }

@@ -26,4 +26,12 @@ public class ToDo extends Task {
 
         return "|T|" + super.toString();
     }
+
+    /**
+     * Return class type
+     */
+    @Override
+    public String classType(){
+        return "ToDo";
+    }
 }

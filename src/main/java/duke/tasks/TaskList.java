@@ -64,10 +64,14 @@ public class TaskList {
 
     /**
      * Detect duplicate task. Return true if task is already in task list
+     * Improvement -> Same task description but different task type is accepted
      */
-    public boolean detectDuplicate(String inputTask) {
+    public boolean detectDuplicate(Task inputTask) {
+        String inputTaskDescription = inputTask.taskDescription();
 		for (Task task : this.tasklist) {
-			if (task.taskDescription().equals(inputTask)) {
+            boolean sameTaskDescription = task.taskDescription().equals(inputTaskDescription);
+            boolean sameTaskType = task.classType().equals(inputTask.classType());
+			if (sameTaskDescription && sameTaskType ) {
 				return true;
 			}
 		}
@@ -94,7 +98,7 @@ public class TaskList {
      * Insert a task into the task list
      */
     public void insertTask(Task task) throws DukeException {
-        if(detectDuplicate(task.taskDescription())){
+        if(detectDuplicate(task)){
             throw new DukeException("[Duplicated task] Task is already entered into task list!");
         }
         this.tasklist.add(task);
