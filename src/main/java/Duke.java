@@ -2,67 +2,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-class Task {
-    protected String type; // Added task type
-    protected String description;
-    protected boolean isDone;
-
-    public Task(String type, String description) {
-        this.type = type;
-        this.description = description;
-        this.isDone = false;
-    }
-
-    public String getStatusIcon() {
-        return isDone ? "X" : " ";
-    }
-
-    public void markAsDone() {
-        isDone = true;
-    }
-
-    public void markAsUndone() {
-        isDone = false;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void printTaskInfo(List<Task> taskList) {
-        System.out.println("____________________________________________________________");
-        System.out.println("Got it. I've added this task:");
-        System.out.println("[" + this.getType() + "][" + this.getStatusIcon() + "] " + this.getDescription());
-        System.out.println("Now you have " + taskList.size() + (taskList.size() == 1 ? " task" : " tasks") + " in the list.");
-        System.out.println("____________________________________________________________");
-    }
-}
-
-// Todo inherit Task
-class TodoTask extends Task {
-    public TodoTask(String description) {
-        super("T", description);
-    }
-}
-
-// Deadline inherit Task
-class DeadlineTask extends Task {
-    public DeadlineTask(String description, String by) {
-        super("D", description + " (by: " + by + ")");
-    }
-}
-
-// Event inherit Task
-class EventTask extends Task {
-    public EventTask(String description, String from, String to) {
-        super("E", description + " (from: " + from + " to: " + to + ")");
-    }
-}
-
 public class Duke {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -80,6 +19,17 @@ public class Duke {
 
         while (true) {
             String userInput = scanner.nextLine().trim();
+            try {
+                DukeExceptionHandler.handleExceptions(userInput, taskList);
+            }
+
+            catch (DukeException e) {
+                System.out.println("____________________________________________________________");
+                System.out.println(e.getMessage());
+                System.out.println("____________________________________________________________");
+                continue;
+            }
+
             String[] tokenized = userInput.split("\\s+", 2);
 
             // list
@@ -137,6 +87,20 @@ public class Duke {
                 System.out.println("____________________________________________________________");
             }
 
+            else if (tokenized[0].equals("help")) {
+                System.out.println("____________________________________________________________");
+                System.out.println("Here is a list of valid commands:");
+                System.out.println("help     - Displays this page");
+                System.out.println("list     - Lists all tasks");
+                System.out.println("todo     - Creates a todo task");
+                System.out.println("deadline - Creates a deadline task");
+                System.out.println("event    - Creates an event task");
+                System.out.println("mark     - Marks a task as completed");
+                System.out.println("unmark   - Removes a mark from a task");
+                System.out.println("bye      - Ends the session");
+                System.out.println("____________________________________________________________");
+            }
+
             // bye
             else if (userInput.equals("bye")) {
                 System.out.println("____________________________________________________________");
@@ -144,15 +108,7 @@ public class Duke {
                 System.out.println("____________________________________________________________");
                 break;
             }
-
-            // else error and ignore
-            else {
-                System.out.println("____________________________________________________________");
-                System.out.println("Invalid command. Please try again.");
-                System.out.println("____________________________________________________________");
-            }
         }
-
         scanner.close();
     }
 }
