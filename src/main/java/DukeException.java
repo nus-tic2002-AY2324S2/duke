@@ -12,7 +12,7 @@ class DukeExceptionHandler {
 
         if (tokenized[0].equals("todo")) {
             if (tokenized.length <= 1) {
-                throw new DukeException("Please follow the following format: todo <string>");
+                throw new DukeException("Please follow the following format: todo <description>");
             }
         }
 
@@ -42,7 +42,7 @@ class DukeExceptionHandler {
 
         else if (tokenized[0].equals("mark")) {
             if (tokenized.length <= 1) {
-                throw new DukeException("Please follow the following format: mark <int>");
+                throw new DukeException("Please follow the following format: mark <task number>");
             }
 
             try {
@@ -59,7 +59,7 @@ class DukeExceptionHandler {
 
         else if (tokenized[0].equals("unmark")) {
             if (tokenized.length <= 1) {
-                throw new DukeException("Please follow the following format: unmark <int>");
+                throw new DukeException("Please follow the following format: unmark <task number>");
             }
 
             try {

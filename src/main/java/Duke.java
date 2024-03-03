@@ -14,7 +14,7 @@ public class Duke {
         System.out.println(logo + "\n");
         System.out.println("____________________________________________________________");
         System.out.println("Hello! I'm Firefly!");
-        System.out.println("What can I do for you?");
+        System.out.println("Type help to view all commands!");
         System.out.println("____________________________________________________________");
 
         while (true) {
