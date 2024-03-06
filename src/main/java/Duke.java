@@ -54,6 +54,7 @@ public class Duke {
     //Error handler
     public static String checkUserInput(String userInput) {
         String[] wordList = userInput.split(" ");
+
         try {
             if (wordList[0].equalsIgnoreCase("todo")) {
                 if(wordList.length == 1){
@@ -137,14 +138,24 @@ public class Duke {
                 if(wordList.length == 1){
                     throw new DukeException("Please tell me which task you would like to mark/unmark");
                 }else{
-                    return null;// No error
+                    String checkNum = wordList[1];
+                    if(isInteger(checkNum)){
+                        return null;// No error
+                    }else{
+                        throw new DukeException("Please tell me which number of task you would like to mark/unmark");
+                    }
                 }
             }
             else if(wordList[0].equalsIgnoreCase("delete")){
                 if(wordList.length == 1){
                     throw new DukeException("Please tell me which task you would like to delete");
                 }else{
-                    return null;// No error
+                    String checkNum = wordList[1];
+                    if(isInteger(checkNum)){
+                        return null;// No error
+                    }else{
+                        throw new DukeException("Please tell me which number of task you would like to delete");
+                    }
                 }
             }
             else if(wordList[0].equalsIgnoreCase("list") ||
@@ -186,8 +197,22 @@ public class Duke {
         }
     }
 
-
-
+    // Remove function
+    public static Task[] remove(Task[] array, int targetIndex) {
+        Task[] newArray = new Task[array.length - 1];
+        System.arraycopy(array, 0, newArray, 0, targetIndex);
+        System.arraycopy(array, targetIndex + 1, newArray, targetIndex, newArray.length - targetIndex);
+        return newArray;
+    }
+    //Check integer
+    private static boolean isInteger(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
     public static void main(String[] args) {
         String userInput = new String();
         Scanner in = new Scanner(System.in);
@@ -238,7 +263,7 @@ public class Duke {
 
                 System.out.println("Alright, added "+ taskName +" into todo list");
                 System.out.println("   "+ newTask.toString());
-                System.out.println("You have "+ todoList.length +" things in your todo list");
+                System.out.println("You have "+ todoList.length +" things now in your todo list");
 
             }
             //List function
@@ -314,7 +339,7 @@ public class Duke {
                 newEvent.setEventType('E');
                 System.out.println("Alright, added "+ taskName +" into todo list");
                 System.out.println("   "+ newEvent.toString());
-                System.out.println("You have "+ todoList.length +" things in your todo list");
+                System.out.println("You have "+ todoList.length +" things now in your todo list");
 
             }
             //Deadline function
@@ -342,7 +367,25 @@ public class Duke {
                 newDeadline.setEventType('D');
                 System.out.println("Alright, added "+ taskName +" into todo list");
                 System.out.println("   "+ newDeadline.toString());
-                System.out.println("You have "+ todoList.length +" things in your todo list");
+                System.out.println("You have "+ todoList.length +" things now in your todo list");
+            }
+            //Delete function
+            else if(wordList[0].equalsIgnoreCase("delete")){
+                int itemNum = Integer.parseInt(wordList[1]);
+                if(todoList.length == 0){
+                    System.out.println("////////////////////////////////////////////");
+                    System.out.println("//       You have nothing to delete       //");
+                    System.out.println("////////////////////////////////////////////");
+                }else{
+                    if(itemNum >= 1 && itemNum <= todoList.length){
+                        System.out.println("Okay, I've remove following task:");
+                        System.out.println("   "+ todoList[itemNum-1].toString());
+                        todoList = remove(todoList, itemNum-1);
+                        System.out.println("You have "+ todoList.length +" things now in your todo list");
+                    }else{
+                        System.out.println("No such task in your list :(");
+                    }
+                }
             }
             //Exit program
             else if(userInput.equalsIgnoreCase("bye") || userInput.equalsIgnoreCase("quit") ){
