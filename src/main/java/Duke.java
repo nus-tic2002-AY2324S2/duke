@@ -21,10 +21,15 @@ public class Duke {
     }
 
     public static void addTask(Task task) {
-        tasks.add(task);
-        System.out.println("Meow, added : " + task);
-        printTaskCount();
-        printUnderScoreLine();
+        if (!tasks.contains(task)) {
+            tasks.add(task);
+            System.out.println("Meow, added : " + task);
+            printTaskCount();
+            printUnderScoreLine();
+        } else {
+            System.out.println("Meow, this task already exists in the list!");
+            printUnderScoreLine();
+        }
     }
 
     public static void listTask() {
@@ -32,6 +37,7 @@ public class Duke {
         for (int i = 0; i < tasks.size(); i++) {
             System.out.println((i + 1) + "." + tasks.get(i));
         }
+        printTaskCount();
         printUnderScoreLine();
     }
 
@@ -48,7 +54,7 @@ public class Duke {
     }
 
     public static void printTaskCount() {
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
+        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
     }
 
     public static void echoInput() {
@@ -202,9 +208,12 @@ public class Duke {
                             break;
                         }
                         if (parts.length >= 2) {
-                            String description = parts[1].trim();
-                            int temp = Integer.parseInt(description);
-                            deleteTask(temp);
+                            try {
+                                int index = Integer.parseInt(parts[1].trim());
+                                deleteTask(index);
+                            } catch (NumberFormatException e) {
+                                throw new DukeException(" Meow!!! The delete must come with int meow.");
+                            }
                         } else {
                             throw new DukeException(" Meow!!! The description of a delete cannot be empty.");
                         }
