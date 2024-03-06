@@ -16,10 +16,7 @@ public abstract class Task {
     }
 
     public String getStatusIcon() {
-        return (isDone ? "X" : " ");
-    }
-    public String removeTask() {
-        return (isDone ? "X" : " ");
+        return (isDone ? "X" : " "); // mark done task with X
     }
     @Override
     public String toString() {

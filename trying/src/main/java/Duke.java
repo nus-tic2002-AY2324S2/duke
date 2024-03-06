@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Duke {
     private static Scanner in = new Scanner(System.in);
-    private static ArrayList<Task> tasks = new ArrayList<>();
+    private static Task[] tasks = new Task[100];
     private static int taskCount = 0;
 
     public static void printUnderScoreLine() {
@@ -21,7 +21,9 @@ public class Duke {
     }
 
     public static void addTask(Task task) {
-        tasks.add(task);
+
+        tasks[taskCount] = task;
+        taskCount++;
         System.out.println("Meow, added : " + task);
         printTaskCount();
         printUnderScoreLine();
@@ -29,21 +31,9 @@ public class Duke {
 
     public static void listTask() {
         System.out.println("Here are the tasks in your list:");
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + "." + tasks.get(i));
+        for (int i = 0; i < taskCount; i++) {
+            System.out.println((i + 1) + "." + tasks[i]);
         }
-        printUnderScoreLine();
-    }
-
-    public static void deleteTask(int index) {
-        if (index >= 1 && index <= tasks.size()) {
-            System.out.println("Removed below meow:");
-            System.out.println("  " + tasks.get(index - 1));
-            tasks.remove(index - 1);
-        } else {
-            System.out.println("Invalid task number!");
-        }
-        printTaskCount();
         printUnderScoreLine();
     }
 
@@ -171,9 +161,9 @@ public class Duke {
                         if (parts.length >= 2) {
                             int taskNumber = Integer.parseInt(parts[1]);
                             if (taskNumber > 0 && taskNumber <= taskCount) {
-                                tasks.get(taskNumber - 1).markAsDone();
+                                tasks[taskNumber - 1].markAsDone();
                                 System.out.println("Nice! I've marked this task as done:");
-                                System.out.println(tasks.get(taskNumber - 1));
+                                System.out.println(tasks[taskNumber - 1]);
                             } else {
                                 System.out.println("Meow?");
                             }
@@ -188,25 +178,12 @@ public class Duke {
                         if (parts.length >= 2) {
                             int taskNumber = Integer.parseInt(parts[1]);
                             if (taskNumber > 0 && taskNumber <= taskCount) {
-                                tasks.get(taskNumber - 1).markAsDone();
+                                tasks[taskNumber - 1].markAsDone();
                                 System.out.println("OK, I've marked this task as not done yet:");
-                                System.out.println(tasks.get(taskNumber - 1));
+                                System.out.println(tasks[taskNumber - 1]);
                             } else {
                                 System.out.println("Meow?");
                             }
-                        }
-                    } else if (line.startsWith("delete")) {
-                        String[] parts = line.split(" ");
-                        if (!Objects.equals(parts[0], "delete")) {
-                            options();
-                            break;
-                        }
-                        if (parts.length >= 2) {
-                            String description = parts[1].trim();
-                            int temp = Integer.parseInt(description);
-                            deleteTask(temp);
-                        } else {
-                            throw new DukeException(" Meow!!! The description of a delete cannot be empty.");
                         }
                     } else {
                         throw new DukeException("Fish! Fish! Fish!");
@@ -214,7 +191,7 @@ public class Duke {
                     options();
                     break;
             }
-        } catch (DukeException e) {
+        }catch (DukeException e) {
             System.out.println(e.getMessage());
             options(); // Prompt again after handling exception
         }
