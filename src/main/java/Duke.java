@@ -1,8 +1,13 @@
-import java.util.Scanner;
+import com.sun.jdi.IntegerValue;
 
+import java.lang.reflect.Array;
+import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Duke {
-    private static Task[] tasks = new Task[100];
+//    private static Task[] tasks = new Task[100];
+
+    private static ArrayList<Task> tasks = new ArrayList<Task>();
     private static int taskCount = 0;
 
     public static class Task {
@@ -115,14 +120,34 @@ public class Duke {
                     System.out.println("Invalid input for marking a task as done. Please enter a valid task number.");
                 }
 
+            }
+            else if (input.startsWith("delete")) {
+                try {
+                    String description = input.substring(6).trim();
+                    int index = Integer.parseInt(description);
+                    if (index <= taskCount && taskCount > 0) {
+                        String taskDesc = tasks.get(index - 1).toString();
+                        tasks.remove(index - 1 );
+                        System.out.println("Noted. I've removed this task:");
+                        System.out.println(taskDesc);
+                        System.out.printf("There are currently %d tasks \n", tasks.size());
+                        taskCount--;
+                    } else {
+                        System.out.printf("Task number %d not found \n", index);
+                        System.out.printf("There are currently %d tasks \n", taskCount);
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input for removing a task. Please enter a valid task number to remove.");
+                }
 
-            } else if (input.startsWith("todo")) {
+            }
+            else if (input.startsWith("todo")) {
 
                 String description = input.substring(5).trim();
                 if (!checkError(description)) {
                     if (!checkDuplicate(description)) {
                         Todo td = new Todo(description);
-                        tasks[taskCount] = td;
+                        tasks.add(td);
                         taskCount++;
                         System.out.println("Got it. I've added this task:");
                         System.out.println(td.toString());
@@ -148,7 +173,7 @@ public class Duke {
                         }
 
                         Deadline dl = new Deadline(parts[0], parts[1]);
-                        tasks[taskCount] = dl;
+                        tasks.add(dl);
                         taskCount++;
                         System.out.println("Got it. I've added this task:");
                         System.out.println(dl.toString());
@@ -172,7 +197,7 @@ public class Duke {
                             if (!checkDuplicate(parts[0])) {
                                 if (!parts[1].trim().isEmpty() && !parts[2].trim().isEmpty()) {
                                     Events evt = new Events(parts[0], parts[1], parts[2]);
-                                    tasks[taskCount] = evt;
+                                    tasks.add(evt);
                                     taskCount++;
                                     System.out.println("Got it. I've added this task:");
                                     System.out.println(evt.toString());
@@ -198,8 +223,8 @@ public class Duke {
     }
 
     public static boolean checkDuplicate(String description) {
-        for (int i = 0; i < taskCount; i++) {
-            if (tasks[i] != null && tasks[i].description.equals(description)) {
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i) != null && tasks.get(i).description.equals(description)) {
                 System.out.println("This task's description already exists in the list");
                 return true;
             }
@@ -230,8 +255,8 @@ public class Duke {
             System.out.println("No tasks added yet.");
         } else {
             System.out.println("Tasks:");
-            for (int i = 0; i < taskCount; i++) {
-                String marked = tasks[i].toString();
+            for (int i = 0; i < tasks.size(); i++) {
+                String marked = tasks.get(i).toString();
 
                 System.out.printf("%d. %s \n", i + 1, marked);
 
@@ -245,8 +270,8 @@ public class Duke {
             int taskIndex = Integer.parseInt(input.substring(5).trim()) - 1;
 
             if (taskIndex >= 0 && taskIndex < taskCount) {
-                tasks[taskIndex].markAsDone();
-                System.out.println("Marked task as done: " + tasks[taskIndex].description);
+                tasks.get(taskIndex).markAsDone();
+                System.out.println("Marked task as done: " + tasks.get(taskIndex).description);
             } else {
                 System.out.println("Invalid task index.");
             }
