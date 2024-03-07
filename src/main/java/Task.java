@@ -30,7 +30,7 @@ public class Task {
     }
 
 //    public void removeTask(Task t){
-//        //please continue here!
+//        //please continue here for Level 6
 //    }
 
     //Methods to filter Information
@@ -42,26 +42,23 @@ public class Task {
         return taskSize;
     }
 
-    public String getBy() {
-        return "Deadline class will override me";
-    }
-    public String getFrom(){
-        return "Event class to be override me 1 of 2";
-    }
-    public String getTo(){
-        return "Event class to be override me 2 of 2";
-    }
-
     public void printWordDiary(){
         if (taskSize == 0){
-            System.out.println("List is empty!");
+            System.out.println("Sorry, I found no task :(");
             return;
         }
 
-        for (int i = 0; i< this.tasksStorage.size(); i++){
+        //1 way to improve is having an enum to store high medium low amount of task.
+        if (getTaskSize() == 1){
+            System.out.println("Marvelous, There's only 1 outstanding task left to complete!");
+        }
 
-            Task t = this.tasksStorage.get(i);
-            System.out.print(i+1 + " " + t.toString() + "\n" );
+        else {
+            System.out.println("Right away! I found " + getTaskSize() + " tasks!");
+            for (int i = 0; i < this.tasksStorage.size(); i++) {
+                Task t = this.tasksStorage.get(i);
+                System.out.print(i + 1 + " " + t.toString() + "\n");
+            }
         }
     }
 
@@ -76,8 +73,6 @@ public class Task {
         return isDone;
     }
     public void markAsDone(String s){
-//        this.isDone = true;
-
 
         // Define a regular expression pattern to match numbers
         Pattern pattern = Pattern.compile("\\d+");
@@ -102,7 +97,6 @@ public class Task {
 
                 System.out.println("Task " + counter + " marked as " + (task.isDone ? "done!" : "undone!"));
 
-
                 System.out.print(counter + ".");
                 System.out.print("[" + task.getStatusIcon() + "] ");
                 System.out.println(task.getTaskDescription());
@@ -116,12 +110,6 @@ public class Task {
 
 
     }
-
-
-
-
-
-
 
 
 }
