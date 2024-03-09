@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Duke {
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         greetUser();
         runDuke();
         sayGoodbye();
@@ -23,11 +23,8 @@ public class Duke {
         do {
             userInput = in.nextLine().trim();
             if (userInput.isEmpty()) {
-                System.out.println("    Enter a valid command.");
-                printHorizontalLine();
-                continue;
+                System.out.println(new DukeException("Enter a valid command").getErrorMessage());
             }
-
             if (userInput.equalsIgnoreCase("bye")) {
                 continue;
             } else if (userInput.equalsIgnoreCase("list")) {
@@ -47,16 +44,24 @@ public class Duke {
                 break;
             case "mark":
                 if (commandParts.length > 1) {
-                    Task.markTaskAsDone(Integer.parseInt(commandParts[1]));
+                    try {
+                        Task.markTaskAsDone(Integer.parseInt(commandParts[1]));
+                    } catch (NumberFormatException e) {
+                        DukeException.handleGracefulError(DukeException.invalidTaskNumber());
+                    }
                 } else {
-                    System.out.println("    Specify the task number to mark as done.");
+                    DukeException.handleGracefulError(DukeException.invalidTaskNumber());
                 }
                 break;
             case "unmark":
                 if (commandParts.length > 1) {
-                    Task.unmarkTaskAsDone(Integer.parseInt(commandParts[1]));
+                    try {
+                        Task.unmarkTaskAsDone(Integer.parseInt(commandParts[1]));
+                    } catch (NumberFormatException e) {
+                        DukeException.handleGracefulError(DukeException.invalidTaskNumber());
+                    }
                 } else {
-                    System.out.println("    Specify the task number to mark as not done.");
+                    DukeException.handleGracefulError(DukeException.invalidTaskNumber());
                 }
                 break;
             case "todo":
@@ -65,10 +70,10 @@ public class Duke {
                     if (toDoTask != null) {
                         TaskListManager.addTask(toDoTask);
                     } else {
-                        System.out.println("    Specify the task ToDo properly, if you dare!");
+                        DukeException.handleGracefulError(DukeException.invalidToDoFormat());
                     }
                 } else {
-                    System.out.println("    Specify the task ToDo properly, if you dare!");
+                    DukeException.handleGracefulError(DukeException.invalidToDoFormat());
                 }
                 break;
             case "deadline":
@@ -77,22 +82,21 @@ public class Duke {
                     if (deadlineTask != null) {
                         TaskListManager.addTask(deadlineTask);
                     } else {
-                        System.out.println("    Enter the correct format, mortal!");
+                        DukeException.handleGracefulError(DukeException.invalidDeadlineFormat());
                     }
                 } else {
-                    System.out.println("   Specify the task deadline properly, if you dare!");
+                    DukeException.handleGracefulError(DukeException.invalidDeadlineFormat());
                 }
-                break;
             case "event":
                 if (commandParts.length > 1) {
                     Event eventTask = Event.createEventFromCommand(command);
                     if (eventTask != null) {
                         TaskListManager.addTask(eventTask);
                     } else {
-                        System.out.println("    Enter the correct format for the event command, mortal!");
+                        DukeException.handleGracefulError(DukeException.invalidEventFormat());
                     }
                 } else {
-                    System.out.println("   Specify the event details properly, if you dare!");
+                    DukeException.handleGracefulError(DukeException.invalidEventFormat());
                 }
                 break;
             default:
@@ -100,6 +104,6 @@ public class Duke {
         }
     }
     public static void printHorizontalLine() {
-        System.out.println("-------------------------------------------------");
+        System.out.println("    -------------------------------------------------");
     }
 }
