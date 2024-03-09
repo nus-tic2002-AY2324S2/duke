@@ -1,25 +1,19 @@
+import java.util.ArrayList;
 public class TaskListManager {
-    private static final int MAX_TASKS = 100;
-    protected static Task[] taskList = new Task[MAX_TASKS];
-    protected static int taskCount = 0;
+    protected static ArrayList<Task> taskList = new ArrayList<>();
 
     public static void addTask(Task task) {
-        if (taskCount < MAX_TASKS) {
-            taskList[taskCount] = task;
-            taskCount++;
-            Task.echoUserCommand(task);
-            System.out.println("    Now you have " + taskCount + " task(s) in your list");
-        } else {
-            System.out.println("    The list of tasks is full! I shall not be burdened further.");
-        }
+        taskList.add(task);
+        Task.echoUserCommand(task);
+        System.out.println("    Now you have" + taskList.size() + " task(s) in your list.");
     }
     public static void displayList() {
-        if (taskCount == 0) {
+        if (taskList.isEmpty()) {
             System.out.println("    Your feeble Task List is Empty!");
         } else {
             System.out.println("    ======= Scroll of Puny Tasks =======");
-            for (int i = 0; i < taskCount; i++) {
-                System.out.println("        " + (i + 1) + ". " + taskList[i]);
+            for (int i = 0; i < taskList.size(); i++) {
+                System.out.println("        " + (i + 1) + ". " + taskList.get(i));
             }
         }
         Duke.printHorizontalLine();

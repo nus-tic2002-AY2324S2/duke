@@ -84,9 +84,11 @@ public class Duke {
                     } else {
                         DukeException.handleGracefulError(DukeException.invalidDeadlineFormat());
                     }
-                } else {
+                }
+                else {
                     DukeException.handleGracefulError(DukeException.invalidDeadlineFormat());
                 }
+                break;
             case "event":
                 if (commandParts.length > 1) {
                     Event eventTask = Event.createEventFromCommand(command);
