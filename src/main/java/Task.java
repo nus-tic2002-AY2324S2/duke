@@ -18,12 +18,14 @@ public abstract class Task {
     public String getStatusIcon() {
         return (isDone ? "X" : " ");
     }
-    public String removeTask() {
-        return (isDone ? "X" : " ");
-    }
+
     @Override
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;
+    }
+
+    public Object getDescription() {
+        return description;
     }
 }
 
