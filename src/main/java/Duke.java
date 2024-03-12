@@ -1,14 +1,157 @@
 import src.main.java.Deadline;
 import src.main.java.Event;
 import src.main.java.Task;
+import src.main.java.Todo;
 import src.main.java.DukeException;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 public class Duke {
     //private static Task[] todoList = new Task[0];
     private static ArrayList<Task> todoList = new ArrayList<>();
     private static boolean format = true;
+
+
+    private static void writeToFile(String filePath) {
+        try {
+            // Create the directory if it doesn't exist
+            File directory = new File("./data/");
+            if (!directory.exists()) {
+                directory.mkdirs();  // Creates parent directories as needed
+            }
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                for (Task task : todoList) {
+                    writer.write(task.toString());
+                    writer.newLine(); // Add a new line after each task description
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static ArrayList<Task> readFromFile(String filePath) {
+        ArrayList<Task> readDataList = new ArrayList<>();
+
+        Path path = Paths.get(filePath);
+        // Check if the file exists before attempting to read
+        if (!Files.exists(path) || !Files.isRegularFile(path)) {
+            return readDataList;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] wordList = line.split(" ");
+                //Seprate the message:
+                String header = wordList[0];
+                String taskName = "";
+                String from = "";
+                String by = "";
+                int indexOfFrom = wordList.length;
+                int indexOfBy = wordList.length;
+
+                //form the related data.
+                if(header.charAt(1) == 'T'){
+                    for(int i = 1; i < wordList.length; i++){
+                        if(header.length() <= 4 && i == 1){
+                            continue;
+                        }
+                        taskName += wordList[i];
+                        if (i == wordList.length - 1) {
+                            break;
+                        }
+                        taskName += " ";
+                    }
+                    Todo task = new Todo(taskName);
+                    if(header.length() > 4){
+                        task.setStatus(true);
+                    }
+                    readDataList.add(task);
+                }else{
+                    // Get the keyword index
+                    for(int x = wordList.length - 1; x > 0; x--){
+                        if(header.charAt(1) == 'E'){
+                            if(wordList[x].equalsIgnoreCase("to:")){
+                                indexOfBy = x;
+                            }else if(wordList[x].equalsIgnoreCase("(from:")){
+                                indexOfFrom = x;
+                                break;
+                            }
+                        } else if (header.charAt(1) == 'D' && wordList[x].equalsIgnoreCase("(by:")) {
+                            indexOfBy = x;
+                            break;
+                        }
+                    }
+                    //Get the by info
+                    for(int i = indexOfBy + 1; i < wordList.length; i++){
+                        by += wordList[i];
+                        if (i == wordList.length - 2) {
+                            break;
+                        }
+                        by += " ";
+                    }
+
+                    if(header.charAt(1) == 'D'){
+                        //Get the taskname
+                        for(int i = 1; i < indexOfBy; i++){
+                            if(header.length() <= 4 && i == 1){
+                                continue;
+                            }
+                            taskName += wordList[i];
+                            if (i == indexOfBy - 1) {
+                                break;
+                            }
+                            taskName += " ";
+                        }
+                        Deadline task = new Deadline(taskName, by);
+                        readDataList.add(task);
+                        if(header.length() > 4){
+                            task.setStatus(true);
+                        }
+                    }else if(header.charAt(1) == 'E'){
+                        //Get the from info:
+                        for(int i = indexOfFrom + 1; i < indexOfBy; i++){
+                            from += wordList[i];
+                            if (i == indexOfBy - 1) {
+                                break;
+                            }
+                            from += " ";
+                        }
+                        //Get taskName:
+                        for(int i = 1; i < indexOfFrom; i++){
+                            if(header.length() <= 4 && i == 1){
+                                continue;
+                            }
+                            taskName += wordList[i];
+                            if (i == indexOfFrom - 1) {
+                                break;
+                            }
+                            taskName += " ";
+                        }
+                        Event task = new Event(taskName, from, by);
+                        readDataList.add(task);
+                        if(header.length() > 4){
+                            task.setStatus(true);
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return readDataList;
+    }
 
     public static void helpMenu(){
         System.out.println("**********************************************");
@@ -39,13 +182,13 @@ public class Duke {
                 String from = todoList.get(i).getFrom();
                 String by = todoList.get(i).getBy();
                 if(type.equals('T')){
-                    System.out.println("["+ type +"]"+ "["+ status +"]" +" "+ (i+1) +"."+ todoList.get(i).getTaskName());
+                    System.out.println((i+1)+"." +"["+ type +"]"+ "["+ status +"]" +" "+ todoList.get(i).getTaskName());
                 }else if(type.equals('E')){
-                    System.out.println("["+ type +"]"+ "["+ status +"]" +" "+ (i+1) +"."+ todoList.get(i).getTaskName() +
-                            " ( From: " + from + " To: " + by + ")");
+                    System.out.println((i+1)+"." + "["+ type +"]"+ "["+ status +"]" +" "+ todoList.get(i).getTaskName() +
+                            " (From: " + from + " To: " + by + ")");
                 }else if(type.equals('D')){
-                    System.out.println("["+ type +"]"+ "["+ status +"]" +" "+ (i+1) +"."+ todoList.get(i).getTaskName() +
-                            " ( By: " + by + ")");
+                    System.out.println((i+1)+"." + "["+ type +"]"+ "["+ status +"]" +" "+ todoList.get(i).getTaskName() +
+                            " (By: " + by + ")");
                 }
             }
             System.out.println("                                            ");
@@ -227,6 +370,11 @@ public class Duke {
         //String todoListp[][][][][] = new String[100][100][100][100][100];
         //String todo[] = new String[0];
 
+        //Read file
+        String filePath = "./data/task.txt";
+        // Read data from the file
+        todoList = readFromFile(filePath);
+
         //Start running
         while(true){
             in = new Scanner(System.in);
@@ -252,7 +400,7 @@ public class Duke {
             //Todo function
             if(wordList[0].equalsIgnoreCase("todo")){
                 taskName = combineArray(wordList);
-                Task newTask = new Task(taskName);
+                Todo newTask = new Todo(taskName);
                 todoList.add(newTask);
                 newTask.setEventType('T');
 
@@ -385,6 +533,7 @@ public class Duke {
             //Exit program
             else if(userInput.equalsIgnoreCase("bye") || userInput.equalsIgnoreCase("quit") ){
                 System.out.println("Bye! See you next time!");
+                writeToFile(filePath);
                 break;
             }else{
                 break;//Code should never reach here.

@@ -1,9 +1,9 @@
 package src.main.java;
 
-public class Task {
+public abstract class Task {
     protected String description;
     protected boolean isDone;
-    protected Character type = 'T';
+    protected Character type;
 
     public Task(String description) {
         this.description = description;
@@ -30,7 +30,7 @@ public class Task {
     }
 
     public String toString() {
-        return "["+ type +"]["+ getStatusIcon() +"]" + description;
+        return "["+ type +"]["+ getStatusIcon() +"] " + description;
     }
     public String getFrom(){return "";}
     public String getBy(){return "";}
