@@ -1,9 +1,8 @@
 import src.storage.Storage;
+import src.task.*;
 import src.ui.Ui;
-import src.task.Deadline;
-import src.task.Event;
-import src.task.Task;
-import src.task.Todo;
+import src.commands.*;
+import src.main.java.Parser;
 import src.main.java.DukeException;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -18,6 +17,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 public class Duke {
+    private TaskList taskList;
     private static ArrayList<Task> todoList;
     private static boolean format;
     private static Storage storage;
@@ -139,15 +139,6 @@ public class Duke {
             return e.getMessage();// Return the error message
         }
     }
-    //Add string array function
-    public static Task[] add(Task[] array, Task element) {
-        Task[] result = new Task[array.length + 1];
-        for (int i = 0; i < array.length; i++) {
-            result[i] = array[i];
-        }
-        result[array.length] = element;
-        return result;
-    }
     //Check integer
     private static boolean isInteger(String str) {
         try {
@@ -161,11 +152,26 @@ public class Duke {
     public Duke(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
-        todoList = new ArrayList<Task>(storage.readFromFile());
-        format = true;
+        //todoList = new ArrayList<Task>(storage.readFromFile());
+        //format = true;
+        //New impletment:
+        taskList = new TaskList();
+        taskList.setList(storage.readFromFile());
     }
 
-    public void run() {
+    public void run() throws DukeException {
+        ui.welcomeMenu();
+        ui.listMenu(taskList.getList());
+        boolean isExit = false;
+        while (!isExit) {
+            String fullCommand = ui.readCommand();
+            Command c = Parser.parse(fullCommand);
+            c.execute(taskList, ui, storage);
+            isExit = c.Exit();
+        }
+    }
+
+    public void run1() {
         String userInput = new String();
         Scanner in = new Scanner(System.in);
         ui.welcomeMenu();
@@ -180,6 +186,7 @@ public class Duke {
             String by = new String();
             String from = new String();
             format = true;
+
             //Check error function
             String errorMessage = checkUserInput(userInput);
             if (errorMessage != null) {
@@ -330,7 +337,7 @@ public class Duke {
             } else {break;}//Code should never reach here.
         }
     }
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DukeException {
         new Duke("./data/task.txt").run();
     }
 }

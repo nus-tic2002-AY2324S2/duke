@@ -4,6 +4,9 @@ import java.util.Scanner;
 import src.task.Task;
 
 public class Ui {
+    private static Scanner userInput;
+    public Ui(){userInput = new Scanner(System.in);}
+
     public void welcomeMenu(){
         Scanner in = new Scanner(System.in);
         String logo = "         ____        _        \n"
@@ -57,4 +60,10 @@ public class Ui {
         }
 
     }
+    public void exitProgram(){
+        System.out.println("Bye! See you next time!");
+    }
+    public String readCommand(){return userInput.nextLine();}
+
 }
+

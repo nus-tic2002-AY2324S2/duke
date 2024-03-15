@@ -135,7 +135,7 @@ public class Storage{
         return readDataList;
     }
     //Helper function to combine string
-    public String combineArray(String[] array) {
+    public static String combineArray(String[] array) {
         if (array.length > 1) {
             StringBuilder result = new StringBuilder(array[1]);
             result.append(" ");
