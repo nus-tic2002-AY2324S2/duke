@@ -1,4 +1,4 @@
-package src.main.java;
+package src.task;
 
 public class Deadline extends Task{
     protected String by;
@@ -15,4 +15,6 @@ public class Deadline extends Task{
     public String toString() {
         return super.toString() + " (by: " + by + " )";
     }
+    @Override
+    public String format(){return super.format() + "|by: " + by;}
 }

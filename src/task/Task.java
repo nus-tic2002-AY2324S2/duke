@@ -1,4 +1,4 @@
-package src.main.java;
+package src.task;
 
 public abstract class Task {
     protected String description;
@@ -34,4 +34,5 @@ public abstract class Task {
     }
     public String getFrom(){return "";}
     public String getBy(){return "";}
+    public String format(){return type + "|" + isDone + "|Name: " + description;}
 }

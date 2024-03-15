@@ -1,4 +1,4 @@
-package src.main.java;
+package src.task;
 public class Event extends Task {
     protected String from;
     protected String by;
@@ -21,4 +21,7 @@ public class Event extends Task {
     public String toString() {
         return super.toString() + " (from: " + from + " to: "+ by +" )";
     }
+
+    @Override
+    public String format(){return super.format() + "|from: "+from + "|by: " + by;}
 }
