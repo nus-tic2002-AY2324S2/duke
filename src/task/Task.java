@@ -1,5 +1,7 @@
 package src.task;
 
+import src.main.java.DukeException;
+
 public abstract class Task {
     protected String description;
     protected boolean isDone;

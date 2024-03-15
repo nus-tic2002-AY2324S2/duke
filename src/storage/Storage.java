@@ -1,30 +1,52 @@
 package src.storage;
+import src.main.java.DukeException;
 import src.task.Deadline;
 import src.task.Event;
 import src.task.Task;
 import src.task.Todo;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.logging.*;
 
-public class Storage {
-    private static ArrayList<Task> todoList = new ArrayList<>();
-
-    private static String filePath;
-
+public class Storage{
+    protected String filePath;
+    private static final Logger logger = Logger.getLogger(Storage.class.getName());
     public Storage(String filePath) {
         this.filePath = filePath;
     }
-
-    private static void writeToFile() {
+    //Bug log
+    private static void configureLogger() {
+        try {
+            // Create a directory named "bug" if it doesn't exist
+            File directory = new File("bug");
+            if (!directory.exists()) {
+                boolean created = directory.mkdirs();  // Creates parent directories as needed
+                if (!created) {
+                    throw new IOException("Failed to create directory 'bug'.");
+                }
+            }
+            // Configure logger to write to a log file in the "bug" directory
+            File logFile = new File(directory, "error.log");
+            FileHandler fileHandler = new FileHandler(logFile.getAbsolutePath(), true);
+            fileHandler.setFormatter(new SimpleFormatter());
+            logger.addHandler(fileHandler);
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Failed to configure logger", e);
+        }
+    }
+    //Write data in file
+    public void writeToFile(ArrayList<Task> todoList) {
         try {
             // Create the directory if it doesn't exist
             File directory = new File("./data/");
             if (!directory.exists()) {
-                directory.mkdirs();  // Creates parent directories as needed
+                boolean created = directory.mkdirs();
+                if (!created) {
+                    throw new IOException("Failed to create directory data.");
+                }
             }
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 for (Task task : todoList) {
@@ -33,29 +55,28 @@ public class Storage {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            configureLogger();
+            logger.log(Level.SEVERE, "An IOException occurred", e);
         }
     }
-
-    private static ArrayList<Task> readFromFile(String filePath) {
+    //Read data from file
+    public ArrayList<Task> readFromFile() {
         ArrayList<Task> readDataList = new ArrayList<>();
-
         java.nio.file.Path path = Paths.get(filePath);
         // Check if the file exists before attempting to read
         if (!Files.exists(path) || !Files.isRegularFile(path)) {
             return readDataList;
         }
-
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
-            String type = new String();
-            String taskName = new String();
-            String by = new String();
-            String from = new String();
             boolean status = false;
             while ((line = reader.readLine()) != null) {
+                String type = "";
+                String taskName = "";
+                String by = "";
+                String from = "";
                 String[] txtList = line.split("\\|");
-                //Analyis txt file data
+                //Analysis txt file data
                 for(String item : txtList){
                     if(item.equalsIgnoreCase("T") ||
                             item.equalsIgnoreCase("E")||
@@ -66,50 +87,65 @@ public class Storage {
                     }else if(item.equalsIgnoreCase("false")){
                         status = false;
                     }else{
-                        String[] itemlist = item.split(" ");
-                        if(itemlist[0].equalsIgnoreCase("Name:")){
-                            taskName = combineArray(itemlist);
-                        }else if (itemlist[0].equalsIgnoreCase("from:")){
-                            from = combineArray(itemlist);
-                        }else if (itemlist[0].equalsIgnoreCase("by:")){
-                            by = combineArray(itemlist);
+                        String[] itemList = item.split(" ");
+                        if(itemList[0].equalsIgnoreCase("Name:")){
+                            taskName = combineArray(itemList);
+                        }else if (itemList[0].equalsIgnoreCase("from:")){
+                            from = combineArray(itemList);
+                        }else if (itemList[0].equalsIgnoreCase("by:")){
+                            by = combineArray(itemList);
                         }
                     }
                 }
+                if(type.isEmpty()){
+                    throw new IOException("Failed to read one or more lines of data. Reason: Bad format\n" +
+                            "Warning: System will ignore the bad format data, beware of data loss!");
+                }
                 //Install data
                 if(type.equalsIgnoreCase("T")){
+                    if(taskName.isEmpty()){
+                        throw new IOException("Failed to read one or more lines of data. Reason: Bad format\n" +
+                                "Warning: System will ignore the bad format data, beware of data loss!");
+                    }
                     Todo task = new Todo(taskName);
                     task.setStatus(status);
                     readDataList.add(task);
                 }else if(type.equalsIgnoreCase("E")){
+                    if(taskName.isEmpty() || by.isEmpty() || from.isEmpty()){
+                        throw new IOException("Failed to read one or more lines of data. Reason: Bad format\n" +
+                                "Warning: System will ignore the bad format data, beware of data loss!");
+                    }
                     Event task = new Event(taskName, from, by);
                     task.setStatus(status);
                     readDataList.add(task);
                 }else if(type.equalsIgnoreCase("D")){
+                    if(taskName.isEmpty() || by.isEmpty()){
+                        throw new IOException("Failed to read one line of data. Reason: Bad format\n" +
+                                "System will ignore the bad format data.");
+                    }
                     Deadline task = new Deadline(taskName, by);
                     task.setStatus(status);
                     readDataList.add(task);
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            configureLogger();
+            logger.log(Level.SEVERE, "An data input error occurred", e);
         }
         return readDataList;
     }
-
-    public static String combineArray(String[] array) {
+    //Helper function to combine string
+    public String combineArray(String[] array) {
         if (array.length > 1) {
-            String result = array[1];
-            result += " ";
+            StringBuilder result = new StringBuilder(array[1]);
+            result.append(" ");
             for (int i = 2; i < array.length; i++) {
-                result += array[i];
-                if(i < array.length){
-                    result += " ";
-                }
+                result.append(array[i]);
+                result.append(" ");
             }
-            return result;
+            return result.toString();
         } else {
-            return "";
+            return null;
         }
     }
 

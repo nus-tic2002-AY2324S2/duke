@@ -1,4 +1,5 @@
 import src.storage.Storage;
+import src.ui.Ui;
 import src.task.Deadline;
 import src.task.Event;
 import src.task.Task;
@@ -17,132 +18,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 public class Duke {
-    private static ArrayList<Task> todoList = new ArrayList<>();
-    private static boolean format = true;
-
-    private static void writeToFile(String filePath) {
-        try {
-            // Create the directory if it doesn't exist
-            File directory = new File("./data/");
-            if (!directory.exists()) {
-                directory.mkdirs();  // Creates parent directories as needed
-            }
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-                for (Task task : todoList) {
-                    writer.write(task.format());
-                    writer.newLine(); // Add a new line after each task description
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    private static ArrayList<Task> readFromFile(String filePath) {
-        ArrayList<Task> readDataList = new ArrayList<>();
-
-        Path path = Paths.get(filePath);
-        // Check if the file exists before attempting to read
-        if (!Files.exists(path) || !Files.isRegularFile(path)) {
-            return readDataList;
-        }
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            String type = new String();
-            String taskName = new String();
-            String by = new String();
-            String from = new String();
-            boolean status = false;
-            while ((line = reader.readLine()) != null) {
-                String[] txtList = line.split("\\|");
-                //Analyis txt file data
-                for(String item : txtList){
-                    if(item.equalsIgnoreCase("T") ||
-                            item.equalsIgnoreCase("E")||
-                            item.equalsIgnoreCase("D")){
-                        type = item;
-                    }else if(item.equalsIgnoreCase("true")){
-                        status = true;
-                    }else if(item.equalsIgnoreCase("false")){
-                        status = false;
-                    }else{
-                        String[] itemlist = item.split(" ");
-                        if(itemlist[0].equalsIgnoreCase("Name:")){
-                            taskName = combineArray(itemlist);
-                        }else if (itemlist[0].equalsIgnoreCase("from:")){
-                            from = combineArray(itemlist);
-                        }else if (itemlist[0].equalsIgnoreCase("by:")){
-                            by = combineArray(itemlist);
-                        }
-                    }
-                }
-                //Install data
-                if(type.equalsIgnoreCase("T")){
-                    Todo task = new Todo(taskName);
-                    task.setStatus(status);
-                    readDataList.add(task);
-                }else if(type.equalsIgnoreCase("E")){
-                    Event task = new Event(taskName, from, by);
-                    task.setStatus(status);
-                    readDataList.add(task);
-                }else if(type.equalsIgnoreCase("D")){
-                    Deadline task = new Deadline(taskName, by);
-                    task.setStatus(status);
-                    readDataList.add(task);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return readDataList;
-    }
-    public static void helpMenu(){
-        System.out.println("**********************************************");
-        System.out.println("*        Please use following commands       *");
-        System.out.println("**********************************************");
-        System.out.println("* 1. todo itemName                           *");
-        System.out.println("* 2. event eventName /by Date                *");
-        System.out.println("* 3. deadline eventName /from Date /to Date  *");
-        System.out.println("* 4. mark/unmark itemNumber                  *");
-        System.out.println("* 5. list                                    *");
-        System.out.println("* 6. quit/bye             (To exit program)  *");
-        System.out.println("*                                            *");
-        System.out.println("**********************************************");
-    }
-    public static void listMenu(){
-
-        if(todoList.size() == 0){
-            System.out.println("////////////////////////////////////////////");
-            System.out.println("//     You have nothing need to be done   //");
-            System.out.println("////////////////////////////////////////////");
-        }else{
-            System.out.println("////////////////////////////////////////////");
-            System.out.println("//  Here are the things need to follow up //");
-            System.out.println("////////////////////////////////////////////");
-            for(int i = 0; i < todoList.size(); i++){
-                String status = todoList.get(i).getStatusIcon();
-                Character type = todoList.get(i).getEventType();
-                String from = todoList.get(i).getFrom();
-                String by = todoList.get(i).getBy();
-                if(type.equals('T')){
-                    System.out.println((i+1)+"." +"["+ type +"]"+ "["+ status +"]" +" "+ todoList.get(i).getTaskName());
-                }else if(type.equals('E')){
-                    System.out.println((i+1)+"." + "["+ type +"]"+ "["+ status +"]" +" "+ todoList.get(i).getTaskName() +
-                            " (From: " + from + " To: " + by + ")");
-                }else if(type.equals('D')){
-                    System.out.println((i+1)+"." + "["+ type +"]"+ "["+ status +"]" +" "+ todoList.get(i).getTaskName() +
-                            " (By: " + by + ")");
-                }
-            }
-            System.out.println("                                            ");
-            System.out.println("============================================");
-        }
-
-    }
+    private static ArrayList<Task> todoList;
+    private static boolean format;
+    private static Storage storage;
+    private static Ui ui;
     //Error handler
     public static String checkUserInput(String userInput) {
         String[] wordList = userInput.split(" ");
-
         try {
             if (wordList[0].equalsIgnoreCase("todo")) {
                 if(wordList.length == 1){
@@ -194,7 +76,6 @@ public class Duke {
                 if(wordList.length == 1){
                     throw new DukeException("Please give your deadline a name");
                 }else{
-
                     boolean byChecker = false;
                     //Check From stage and to stage
                     for (int i = 0; i < wordList.length; i++) {
@@ -210,7 +91,6 @@ public class Duke {
                             }
                         }
                     }
-
                     //Handle error
                     if(byChecker == false){
                         throw new DukeException("Your deadline format seems wrong, please try following pattern:\n" +
@@ -268,22 +148,6 @@ public class Duke {
         result[array.length] = element;
         return result;
     }
-    //Combine array function
-    public static String combineArray(String[] array) {
-        if (array.length > 1) {
-            String result = array[1];
-            result += " ";
-            for (int i = 2; i < array.length; i++) {
-                result += array[i];
-                if(i < array.length){
-                    result += " ";
-                }
-            }
-            return result;
-        } else {
-            return "";
-        }
-    }
     //Check integer
     private static boolean isInteger(String str) {
         try {
@@ -293,29 +157,22 @@ public class Duke {
             return false;
         }
     }
-    public static void main(String[] args) {
+
+    public Duke(String filePath) {
+        ui = new Ui();
+        storage = new Storage(filePath);
+        todoList = new ArrayList<Task>(storage.readFromFile());
+        format = true;
+    }
+
+    public void run() {
         String userInput = new String();
         Scanner in = new Scanner(System.in);
-        String logo = "         ____        _        \n"
-                + "        |  _ \\ _   _| | _____ \n"
-                + "        | | | | | | | |/ / _ \\\n"
-                + "        | |_| | |_| |   <  __/\n"
-                + "        |____/ \\__,_|_|\\_\\___|\n";
-        System.out.println(logo + "             Hi! I'm Neuro.\n        Glad to see you again:)");
-        //Press to continue
-        System.out.println("********** Press to continue ************");
-        in.nextLine();
-        listMenu();
+        ui.welcomeMenu();
+        ui.listMenu(todoList);
         System.out.println("How can I help you today?");
-
-        //Read file
-        String filePath = "./data/task.txt";
-        Storage storage = new Storage(filePath);
-        // Read data from the file
-        todoList = readFromFile(filePath);
-
         //Start running
-        while(true){
+        while (true) {
             in = new Scanner(System.in);
             userInput = in.nextLine();
             String[] wordList = userInput.split(" ");
@@ -327,156 +184,153 @@ public class Duke {
             String errorMessage = checkUserInput(userInput);
             if (errorMessage != null) {
                 System.out.println(errorMessage);
-                if(format == false){
-                    helpMenu();
+                if (format == false) {
+                    ui.helpMenu();
                 }
                 continue; // Continue the loop if there's an error
             }
-            //test output
-            //System.out.println(userInput);
 
             //Proceed to main function if input no error
             //Todo function
-            if(wordList[0].equalsIgnoreCase("todo")){
-                taskName = combineArray(wordList);
+            if (wordList[0].equalsIgnoreCase("todo")) {
+                taskName = storage.combineArray(wordList);
                 Todo newTask = new Todo(taskName);
                 todoList.add(newTask);
                 newTask.setEventType('T');
 
-                System.out.println("Alright, added "+ taskName +" into todo list");
-                System.out.println("   "+ newTask.toString());
-                System.out.println("You have "+ todoList.size() +" things now in your todo list");
+                System.out.println("Alright, added " + taskName + " into todo list");
+                System.out.println("   " + newTask.toString());
+                System.out.println("You have " + todoList.size() + " things now in your todo list");
 
             }
             //List function
-            else if(wordList[0].equalsIgnoreCase("list")){
-                listMenu();
+            else if (wordList[0].equalsIgnoreCase("list")) {
+                ui.listMenu(todoList);
             }
             //Mark function
-            else if(wordList[0].equalsIgnoreCase("mark") || wordList[0].equalsIgnoreCase("unmark")){
+            else if (wordList[0].equalsIgnoreCase("mark") || wordList[0].equalsIgnoreCase("unmark")) {
                 int itemNum = Integer.parseInt(wordList[1]);
                 boolean status = false;
-                if(wordList[0].equalsIgnoreCase("mark")){
+                if (wordList[0].equalsIgnoreCase("mark")) {
                     status = true;
                 }
-                if(todoList.size() == 0){
+                if (todoList.size() == 0) {
                     System.out.println("////////////////////////////////////////////");
                     System.out.println("//        You have nothing to mark        //");
                     System.out.println("////////////////////////////////////////////");
-                }else{
-                    if(itemNum >= 1 && itemNum <= todoList.size()){
-                        if(todoList.get(itemNum-1).getStatus() == status && todoList.get(itemNum-1).getStatus() == true){
-                            System.out.println("The task "+ itemNum +" is already marked as done");
-                        }else if(todoList.get(itemNum-1).getStatus() == status && todoList.get(itemNum-1).getStatus() == false){
-                            System.out.println("The task "+ itemNum +" is already marked as not done");
-                        }else{
-                            if(status == true){
-                                System.out.println("Okay, I've marked task "+ itemNum + " as done");
-                            }else{
-                                System.out.println("Okay, I've marked task "+ itemNum + " as not done yet");
+                } else {
+                    if (itemNum >= 1 && itemNum <= todoList.size()) {
+                        if (todoList.get(itemNum - 1).getStatus() == status && todoList.get(itemNum - 1).getStatus() == true) {
+                            System.out.println("The task " + itemNum + " is already marked as done");
+                        } else if (todoList.get(itemNum - 1).getStatus() == status && todoList.get(itemNum - 1).getStatus() == false) {
+                            System.out.println("The task " + itemNum + " is already marked as not done");
+                        } else {
+                            if (status == true) {
+                                System.out.println("Okay, I've marked task " + itemNum + " as done");
+                            } else {
+                                System.out.println("Okay, I've marked task " + itemNum + " as not done yet");
                             }
-                            todoList.get(itemNum-1).setStatus(status);
-                            System.out.println("   "+ "["+ todoList.get(itemNum-1).getStatusIcon() +"] " + todoList.get(itemNum-1).getTaskName());
+                            todoList.get(itemNum - 1).setStatus(status);
+                            System.out.println("   " + "[" + todoList.get(itemNum - 1).getStatusIcon() + "] " + todoList.get(itemNum - 1).getTaskName());
 
                         }
-                    }else{
+                    } else {
                         System.out.println("No such task in your list :(");
                     }
 
                 }
             }
             //Event function
-            else if(wordList[0].equalsIgnoreCase("event")){
+            else if (wordList[0].equalsIgnoreCase("event")) {
                 String stage = "name";
                 //Seprate the input and record the eventName, EventFrom, EventTo
                 boolean fromChecker = false;
                 boolean toChecker = false;
-                for(String item:wordList){
-                    if(item.equalsIgnoreCase("event")){
+                for (String item : wordList) {
+                    if (item.equalsIgnoreCase("event")) {
                         continue;
-                    }
-                    else if(item.equalsIgnoreCase("/from")){
+                    } else if (item.equalsIgnoreCase("/from")) {
                         stage = "from";
                         fromChecker = true;
                         continue;
-                    }else if(item.equalsIgnoreCase("/to")){
+                    } else if (item.equalsIgnoreCase("/to")) {
                         stage = "to";
                         toChecker = true;
                         continue;
                     }
-                    if(stage.equalsIgnoreCase("name")){
+                    if (stage.equalsIgnoreCase("name")) {
                         taskName += item;
                         taskName += " ";
-                    }else if(stage.equalsIgnoreCase("from")){
+                    } else if (stage.equalsIgnoreCase("from")) {
                         from += item;
-                        from +=" ";
+                        from += " ";
 
-                    }else if (stage.equalsIgnoreCase("to")){
+                    } else if (stage.equalsIgnoreCase("to")) {
                         by += item;
                         by += " ";
                     }
                 }
-                Event newEvent = new Event(taskName,from,by);
+                Event newEvent = new Event(taskName, from, by);
                 todoList.add(newEvent);
                 newEvent.setEventType('E');
-                System.out.println("Alright, added "+ taskName +" into todo list");
-                System.out.println("   "+ newEvent.toString());
-                System.out.println("You have "+ todoList.size() +" things now in your todo list");
+                System.out.println("Alright, added " + taskName + " into todo list");
+                System.out.println("   " + newEvent.toString());
+                System.out.println("You have " + todoList.size() + " things now in your todo list");
 
             }
             //Deadline function
-            else if(wordList[0].equalsIgnoreCase("deadline")){
+            else if (wordList[0].equalsIgnoreCase("deadline")) {
                 //Seprate the input and record the deadlineName, deadlineBy
                 boolean byChecker = false;
-                for(String item:wordList){
-                    if(item.equalsIgnoreCase("deadline")){
+                for (String item : wordList) {
+                    if (item.equalsIgnoreCase("deadline")) {
                         continue;
-                    }
-                    else if(item.equalsIgnoreCase("/by")){
+                    } else if (item.equalsIgnoreCase("/by")) {
                         byChecker = true;
                         continue;
                     }
-                    if(!byChecker){
+                    if (!byChecker) {
                         taskName += item;
                         taskName += " ";
-                    }else{
+                    } else {
                         by += item;
                         by += " ";
                     }
                 }
-                Deadline newDeadline = new Deadline(taskName,by);
+                Deadline newDeadline = new Deadline(taskName, by);
                 todoList.add(newDeadline);
                 newDeadline.setEventType('D');
-                System.out.println("Alright, added "+ taskName +" into todo list");
-                System.out.println("   "+ newDeadline.toString());
-                System.out.println("You have "+ todoList.size() +" things now in your todo list");
+                System.out.println("Alright, added " + taskName + " into todo list");
+                System.out.println("   " + newDeadline.toString());
+                System.out.println("You have " + todoList.size() + " things now in your todo list");
             }
             //Delete function
-            else if(wordList[0].equalsIgnoreCase("delete")){
+            else if (wordList[0].equalsIgnoreCase("delete")) {
                 int itemNum = Integer.parseInt(wordList[1]);
-                if(todoList.size() == 0){
+                if (todoList.size() == 0) {
                     System.out.println("////////////////////////////////////////////");
                     System.out.println("//       You have nothing to delete       //");
                     System.out.println("////////////////////////////////////////////");
-                }else{
-                    if(itemNum >= 1 && itemNum <= todoList.size()){
+                } else {
+                    if (itemNum >= 1 && itemNum <= todoList.size()) {
                         System.out.println("Okay, I've remove following task:");
-                        System.out.println("   "+ todoList.get(itemNum-1).toString());
-                        todoList.remove(itemNum-1);
-                        System.out.println("You have "+ todoList.size() +" things now in your todo list");
-                    }else{
+                        System.out.println("   " + todoList.get(itemNum - 1).toString());
+                        todoList.remove(itemNum - 1);
+                        System.out.println("You have " + todoList.size() + " things now in your todo list");
+                    } else {
                         System.out.println("No such task in your list :(");
                     }
                 }
             }
             //Exit program
-            else if(userInput.equalsIgnoreCase("bye") || userInput.equalsIgnoreCase("quit") ){
+            else if (userInput.equalsIgnoreCase("bye") || userInput.equalsIgnoreCase("quit")) {
                 System.out.println("Bye! See you next time!");
-                writeToFile(filePath);
+                storage.writeToFile(todoList);
                 break;
-            }else{
-                break;//Code should never reach here.
-            }
+            } else {break;}//Code should never reach here.
         }
+    }
+    public static void main(String[] args) {
+        new Duke("./data/task.txt").run();
     }
 }
