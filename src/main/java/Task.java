@@ -35,6 +35,7 @@ public class Task {
             if (!task.isDone()) {
                 task.markAsDone();
                 System.out.println("    Hmph! I've smitten this task from the list:\n      " + task.toString());
+                TaskFileManager.saveTasksToFile(TaskListManager.taskList);
             } else {
                 System.out.println("    Fool! This task has already been marked as done!\n      " + task.toString());
             }
@@ -48,6 +49,7 @@ public class Task {
             if (task.isDone()) {
                 task.unmarkAsDone();
                 System.out.println("    Bah! I've restored this task to its pathetic existence:\n      " + task.toString());
+                TaskFileManager.saveTasksToFile(TaskListManager.taskList);
             } else {
                 System.out.println("    Fool! This task is already in its wretched, incomplete state!\n      " + task.toString());
             }
@@ -58,6 +60,7 @@ public class Task {
     public static void deleteTask(int taskNumber, ArrayList<Task> taskList) {
         if (isValidTaskNumber(taskNumber, taskList)) {
             Task deletedTask = taskList.remove(taskNumber - 1);
+            TaskFileManager.saveTasksToFile(TaskListManager.taskList);
             System.out.println("    Witness the eradication of this feeble task:\n      " + deletedTask.toString());
             System.out.println("    Now you have " + taskList.size() + " task(s) in the list. Tremble!");
         } else {
@@ -67,4 +70,5 @@ public class Task {
     public static boolean isValidTaskNumber(int taskNumber, ArrayList<Task> taskList) {
         return taskNumber > 0 && taskNumber <= taskList.size();
     }
+
 }

@@ -5,11 +5,19 @@ public class Deadline extends Task {
         super(description);
         this.by = by;
     }
+    public String getBy() {
+        return by;
+    }
     public static Deadline createDeadlineFromCommand(String command) {
-        int byIndex = command.indexOf("/by");
-        if (byIndex != -1) {
-            String deadlineDescription = command.substring(8, byIndex).trim(); // Assuming "deadline ".length() is 8
-            String by = command.substring(byIndex + 3).trim(); // Assuming "/by".length() is 3
+        String prefix = "deadline";
+        String byKeyword = "/by";
+
+        int prefixIndex = command.toLowerCase().indexOf(prefix);
+        int byIndex = command.indexOf(byKeyword);
+
+        if (prefixIndex != -1 && byIndex != -1) {
+            String deadlineDescription = command.substring(prefixIndex + prefix.length(), byIndex).trim();
+            String by = command.substring(byIndex + byKeyword.length()).trim();
 
             if (!deadlineDescription.isEmpty() && !by.isEmpty()) {
                 return new Deadline(deadlineDescription, by);
@@ -17,6 +25,8 @@ public class Deadline extends Task {
         }
         return null;
     }
+
+
     @Override
     public String toString() {
         return "[D]" + super.toString() + " (by: " + by + ")";

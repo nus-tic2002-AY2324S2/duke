@@ -1,8 +1,15 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Duke {
 
     public static void main(String[] args){
+        ArrayList<Task> loadedTasks = TaskFileManager.loadTasksFromFile();
+        if (!loadedTasks.isEmpty()) {
+            System.out.println("    Tasks loaded!");
+            for (Task task : loadedTasks)
+                TaskListManager.addTask(task);
+        }
         greetUser();
         runDuke();
         sayGoodbye();
@@ -13,6 +20,7 @@ public class Duke {
         printHorizontalLine();
     }
     public static void sayGoodbye() {
+        TaskFileManager.saveTasksToFile(TaskListManager.taskList);
         System.out.println("    Flee, mortal! Until our paths cross again!");
         printHorizontalLine();
     }

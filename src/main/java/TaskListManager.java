@@ -1,11 +1,14 @@
 import java.util.ArrayList;
-public class TaskListManager {
-    protected static ArrayList<Task> taskList = new ArrayList<>();
 
-    public static void addTask(Task task) {
+public class TaskListManager {
+    public static ArrayList<Task> taskList = new ArrayList<>();
+
+    protected static void addTask(Task task) {
         taskList.add(task);
         Task.echoUserCommand(task);
         System.out.println("    Now you have " + taskList.size() + " task(s) in your list.");
+        Duke.printHorizontalLine();
+        TaskFileManager.saveTasksToFile(taskList);
     }
     public static void displayList() {
         if (taskList.isEmpty()) {
@@ -18,4 +21,5 @@ public class TaskListManager {
         }
         Duke.printHorizontalLine();
     }
+
 }
