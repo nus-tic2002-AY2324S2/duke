@@ -101,6 +101,18 @@ public class Duke {
                     DukeException.handleGracefulError(DukeException.invalidEventFormat());
                 }
                 break;
+            case "delete":
+                if (commandParts.length > 1) {
+                    try {
+                        int taskNumber = Integer.parseInt(commandParts[1]);
+                        Task.deleteTask(taskNumber, TaskListManager.taskList);
+                    } catch (NumberFormatException e) {
+                        DukeException.handleGracefulError(DukeException.invalidTaskNumber());
+                    }
+                } else {
+                    DukeException.handleGracefulError(DukeException.invalidTaskNumber());
+                }
+                break;
             default:
                 TaskListManager.addTask(new Task(command));
         }

@@ -5,7 +5,7 @@ public class TaskListManager {
     public static void addTask(Task task) {
         taskList.add(task);
         Task.echoUserCommand(task);
-        System.out.println("    Now you have" + taskList.size() + " task(s) in your list.");
+        System.out.println("    Now you have " + taskList.size() + " task(s) in your list.");
     }
     public static void displayList() {
         if (taskList.isEmpty()) {
