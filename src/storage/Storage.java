@@ -1,12 +1,10 @@
 package src.storage;
-import src.main.java.DukeException;
 import src.task.Deadline;
 import src.task.Event;
 import src.task.Task;
 import src.task.Todo;
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.logging.*;

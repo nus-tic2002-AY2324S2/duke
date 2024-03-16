@@ -119,7 +119,7 @@ public class Parser {
                         }
                     }
                     //Handle error
-                    if(byChecker == false){
+                    if(!byChecker){
                         throw new DukeException("Your deadline format seems wrong, please try following pattern:\n" +
                                 "deadline + deadline Name + /by + Date");
                     }else{
