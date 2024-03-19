@@ -5,7 +5,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskFileManager {
+public class Storage {
     private static final String FILE_PATH = "./data/duke.txt";
 
     public static void saveTasksToFile(ArrayList<Task> taskList) {
