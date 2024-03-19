@@ -16,7 +16,7 @@ public class TaskList {
         taskList.add(task);
         Task.echoUserCommand(task);
         System.out.println("    Now you have " + taskList.size() + " task(s) in your list.");
-        Ui.printHorizontalLine();
+//        Ui.printHorizontalLine();
         Storage.saveTasksToFile(taskList);
     }
     public static void displayList() {
