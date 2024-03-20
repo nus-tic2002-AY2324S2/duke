@@ -15,8 +15,8 @@ public class Storage {
     private static final String SEPARATOR = File.separator;
     private static final String DB_PATH = System.getProperty("user.dir") + SEPARATOR + "database";
     private static final String DATABASE_TXT = "database.txt";
-    private static final File dbDir = new File(DB_PATH);
-    private static final File dbFilePath = new File(DB_PATH + SEPARATOR + DATABASE_TXT);
+    private static final File DB_OBJECT = new File(DB_PATH);
+    private static final File DB_FILE_PATH = new File(DB_PATH + SEPARATOR + DATABASE_TXT);
 
     public Storage(){
 
@@ -30,7 +30,7 @@ public class Storage {
         initialise();
 
         try{
-            Scanner scan = new Scanner(dbFilePath);
+            Scanner scan = new Scanner(DB_FILE_PATH);
 			while (scan.hasNext()){
                 String taskLine = scan.nextLine();
                 String [] taskElement = taskLine.split("\\|");
@@ -115,7 +115,7 @@ public class Storage {
         assert list != null : "save requires a tasklist object as input";
         initialise();
         try{
-            FileWriter file = new FileWriter(dbFilePath);
+            FileWriter file = new FileWriter(DB_FILE_PATH);
             for(int i = 0; i < list.getTaskListSize(); i++){
                 System.out.println("writing to db: " + list.getTask(i));
                 file.write(list.getTask(i).toString());
@@ -132,15 +132,15 @@ public class Storage {
      * If they do not exist, this method will create them
      */
     public static void initialise() throws DukeException{
-        if (!dbDir.exists()){
-            dbDir.mkdirs();
-            System.out.println("Database directory don't exist. Creating directory: " + dbDir);
+        if (!DB_OBJECT.exists()){
+            DB_OBJECT.mkdirs();
+            System.out.println("Database directory don't exist. Creating directory: " + DB_OBJECT);
         }
 
-        if (!dbFilePath.exists()){
+        if (!DB_FILE_PATH.exists()){
             try{
-                dbFilePath.createNewFile();
-                System.out.println("Database file does not exist. Created DB file at : " + dbFilePath);
+                DB_FILE_PATH.createNewFile();
+                System.out.println("Database file does not exist. Created DB file at : " + DB_FILE_PATH);
             } catch (IOException error){
                 throw new RuntimeException(error);
             }

@@ -10,8 +10,8 @@ import duke.ui.Ui;
 
 public class Command {
 
-    private final String commandType;
-    private final String commandInput;
+    private String commandType;
+    private String commandInput;
     private boolean exit;
 
     public Command(String commandType, String commandInput) throws DukeException {

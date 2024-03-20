@@ -39,7 +39,7 @@ public class Ui {
                 "[COMMAND SYNTAX] | EXAMPLE | Description\n");
         System.out.println("******Commands List******");
         System.out.println("[TODO:<Input Task>] | TODO:read a book | Task without date/time");
-        System.out.println("[DEADLINE:<Input Task>_<Deadline>] | DEADLINE:return a book_22-01-01 2200 " +
+        System.out.println("[DEADLINE:<Input Task>_<Deadline>] | DEADLINE:return a book_2022-01-01 2200 " +
                 "| Task to be completed by");
         System.out.println("[Event:<Input Task>_<Start Time>_<End Time] | " +
                 "Event:project meeting_2022-01-01 2200 _ 2022-02-01 2300 | Task with a duration");
