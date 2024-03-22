@@ -1,7 +1,7 @@
-package src.
+package ui;
 import java.util.ArrayList;
 import java.util.Scanner;
-import src.task.Task;
+import task.Task;
 
 public class Ui {
     private static Scanner userInput;

@@ -1,7 +1,7 @@
-package src.commands;
-import src.storage.Storage;
-import src.task.TaskList;
-import src.ui.Ui;
+package commands;
+import storage.Storage;
+import task.TaskList;
+import ui.Ui;
 
 public class DeleteCommand extends Command {
     private final String index;
@@ -11,13 +11,13 @@ public class DeleteCommand extends Command {
     }
     /***
      * Function to execute the command
-     * @param tasklist: the task list
+     * @param taskList: the task list
      * @param ui: ui functions
      * @param storage： make use of the storage
      */
     @Override
-    public void execute(TaskList tasklist, Ui ui, Storage storage){
-        tasklist.deleteTask(index);
+    public void execute(TaskList taskList, Ui ui, Storage storage){
+        taskList.deleteTask(index);
     }
     /***
      * function to set if this command will end the program

@@ -1,17 +1,18 @@
 package duke;
+import org.junit.jupiter.api.Test;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class DateTime {
+public class DateTimeTest {
     //Date time format for program
     private static final DateTimeFormatter formatYYYY_MM_DD_HHmm = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
     //Display format for user to view
     private static final DateTimeFormatter displayDateTimeFormat = DateTimeFormatter.ofPattern("MMM dd yyyy HHmm");
     private static final DateTimeFormatter displayDateFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
-
-
-    public DateTime(){}
+    public DateTimeTest(){}
 
     /***
      * Function to check if user input is a correct date-time format
@@ -32,38 +33,26 @@ public class DateTime {
         }
     }
     /***
-     * Function to convert the correct format date time to a string
-     * @param datetime: input date time
+     * Test date valid function
      */
-    public static String dateString(String datetime) throws DukeException {
-        LocalDateTime DateTime = checkDate(datetime.trim());
-        // Check if the  date has time, if so, use HHmm format, otherwise use yyyy-MM-dd format
-        if (DateTime.getHour() != 0 || DateTime.getMinute() != 0) {
-            return DateTime.format(displayDateTimeFormat);
-        } else {
-            return DateTime.format(displayDateFormat);
-        }
-    }
-
-    /***
-     * Function to check if the input date time is later than the current date time
-     * @param input input date time
-     */
-    public static boolean isDateValid(String input) throws DukeException {
-        LocalDateTime targetDate = checkDate(input.trim());
+    @Test
+    public void isDateValid() throws DukeException {
+        String date = "2020-10-10";
+        LocalDateTime targetDate = checkDate(date);
         LocalDateTime currentDateTime = LocalDateTime.now();
-        return targetDate.isAfter(currentDateTime);
+        assertFalse(targetDate.isAfter(currentDateTime));
     }
 
     /***
-     * Function to check if current date is before target date
-     * @param startingDate date time for from date
-     * @param targetDate date time for by date
+     * Test date valid function for 2 dates
      */
-    public static boolean isEventValid(String startingDate,String targetDate) throws DukeException {
-        LocalDateTime startingDateTime = checkDate(startingDate.trim());
-        LocalDateTime targetDateTime = checkDate(targetDate.trim());
-        return targetDateTime.isAfter(startingDateTime);
+    @Test
+    public void isEventValid() throws DukeException {
+        String startDate = "2020-10-10 2359";
+        String targetDate = "2024-01-01 1023";
+        LocalDateTime startingDateTime = checkDate(startDate);
+        LocalDateTime targetDateTime = checkDate(targetDate);
+        assertTrue(targetDateTime.isAfter(startingDateTime));
     }
 
 

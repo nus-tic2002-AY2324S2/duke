@@ -1,8 +1,8 @@
-package src.commands;
+package commands;
 
-import src.storage.Storage;
-import src.task.TaskList;
-import src.ui.Ui;
+import storage.Storage;
+import task.TaskList;
+import ui.Ui;
 
 public class ExitCommand extends Command {
     public ExitCommand(String commandType) {
@@ -11,15 +11,15 @@ public class ExitCommand extends Command {
 
     /***
      * Function to execute the command
-     * @param tasklist: the task list
+     * @param taskList: the task list
      * @param ui: ui functions
      * @param storage： make use of the storage
      */
     @Override
-    public void execute(TaskList tasklist, Ui ui, Storage storage) {
+    public void execute(TaskList taskList, Ui ui, Storage storage) {
         Exit();
         ui.exitProgram();
-        storage.writeToFile(tasklist.getList());
+        storage.writeToFile(taskList.getList());
     }
     /***
      * function to set if this command will end the program

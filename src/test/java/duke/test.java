@@ -1,4 +1,4 @@
-package src.test;
+package duke;
 
 public class test {
 

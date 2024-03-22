@@ -1,7 +1,6 @@
-package src.task;
-import src.main.java.DukeException;
-import src.storage.Storage;
-
+package task;
+import duke.DukeException;
+import storage.Storage;
 import java.util.ArrayList;
 
 

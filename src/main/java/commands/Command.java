@@ -1,7 +1,7 @@
-package src.commands;
-import src.storage.Storage;
-import src.task.TaskList;
-import src.ui.Ui;
+package commands;
+import storage.Storage;
+import task.TaskList;
+import ui.Ui;
 
 public abstract class Command {
 

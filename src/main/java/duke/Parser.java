@@ -1,12 +1,11 @@
-import src.commands.*;
-import src.storage.Storage;
-import src.task.Deadline;
-import src.task.Event;
-import src.task.Todo;
-import src.ui.Ui;
-
-
-import static DukeException.isInteger;
+package duke;
+import commands.*;
+import storage.Storage;
+import task.Deadline;
+import task.Event;
+import task.Todo;
+import ui.Ui;
+import static duke.DukeException.isInteger;
 
 
 public class Parser extends DateTime {
@@ -98,7 +97,7 @@ public class Parser extends DateTime {
                         }
                         if(!isDateValid(by)){
                             throw new DukeException("Your event already ended");
-                        }else if(!isEventValid(from,by)){
+                        }else if(isEventValid(from, by)){
                             throw new DukeException("The end date of your event is earlier than the starting date.");
                         }else{
                             Event task = new Event(taskName, dateString(from), dateString(by));

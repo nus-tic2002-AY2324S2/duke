@@ -1,10 +1,11 @@
-import src.storage.Storage;
-import src.task.*;
-import src.ui.Ui;
-import src.commands.*;
+package duke;
+import storage.Storage;
+import task.*;
+import ui.Ui;
+import commands.*;
 
 public class Duke {
-    private TaskList taskList;
+    private final TaskList taskList;
     private static Storage storage;
     private static Ui ui;
 

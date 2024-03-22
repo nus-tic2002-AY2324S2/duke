@@ -1,8 +1,7 @@
-package src.commands;
-import src.storage.Storage;
-import src.task.Task;
-import src.task.TaskList;
-import src.ui.Ui;
+package commands;
+import task.*;
+import ui.Ui;
+import storage.Storage;
 
 public class AddCommand extends Command {
     private final Task task;
@@ -13,13 +12,13 @@ public class AddCommand extends Command {
 
     /***
      * Function to execute the command
-     * @param tasklist: the task list
+     * @param taskList: the task list
      * @param ui: ui functions
      * @param storage： make use of the storage
      */
     @Override
-    public void execute(TaskList tasklist, Ui ui, Storage storage) {
-        tasklist.insertTask(task);
+    public void execute(TaskList taskList, Ui ui, Storage storage) {
+        taskList.insertTask(task);
     }
 
     /***

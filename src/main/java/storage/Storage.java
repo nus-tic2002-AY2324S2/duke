@@ -1,8 +1,8 @@
-package src.storage;
-import src.task.Deadline;
-import src.task.Event;
-import src.task.Task;
-import src.task.Todo;
+package storage;
+import task.Deadline;
+import task.Event;
+import task.Task;
+import task.Todo;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;

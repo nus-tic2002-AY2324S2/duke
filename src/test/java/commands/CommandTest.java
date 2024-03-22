@@ -1,28 +1,20 @@
 package commands;
+import org.junit.jupiter.api.Test;
 import storage.Storage;
 import task.TaskList;
 import ui.Ui;
+import static org.junit.jupiter.api.Assertions.*;
 
-public abstract class Command {
+public class CommandTest {
 
-    private final String commandType;
-    public Command(String commandType){
-        this.commandType = commandType;
-    }
+    Command byeCommand = new ExitCommandTest("BYE");
 
     /***
-     * abstract function for Command classes
+     * Test exit command
      */
-    public abstract void execute(TaskList tasklist, Ui ui, Storage storage);
-    /***
-     * abstract function for Command classes
-     */
-    public abstract boolean Exit();
-
-    /***
-     * Return a type of command e.g. mark, unmark, deadline, event, etc.
-     */
-    public String getCommandType() {
-        return commandType;
+    @Test
+    public void byeCommandTest() {
+        // Bye command is executed so method will return true
+        assertTrue(byeCommand.Exit());
     }
 }

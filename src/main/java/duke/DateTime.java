@@ -63,7 +63,7 @@ public class DateTime {
     public static boolean isEventValid(String startingDate,String targetDate) throws DukeException {
         LocalDateTime startingDateTime = checkDate(startingDate.trim());
         LocalDateTime targetDateTime = checkDate(targetDate.trim());
-        return targetDateTime.isAfter(startingDateTime);
+        return !targetDateTime.isAfter(startingDateTime);
     }
 
 

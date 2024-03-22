@@ -4,8 +4,8 @@ import storage.Storage;
 import task.TaskList;
 import ui.Ui;
 
-public class ExitCommand extends Command {
-    public ExitCommand(String commandType) {
+public class ExitCommandTest extends Command {
+    public ExitCommandTest(String commandType) {
         super(commandType);
     }
 
