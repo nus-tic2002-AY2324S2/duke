@@ -35,7 +35,11 @@ public class Storage{
             logger.log(Level.SEVERE, "Failed to configure logger", e);
         }
     }
-    //Write data in file
+
+    /***
+     * Function to write data into storage file
+     * @param todoList task list to write into the storage file
+     */
     public void writeToFile(ArrayList<Task> todoList) {
         try {
             // Create the directory if it doesn't exist
@@ -57,7 +61,10 @@ public class Storage{
             logger.log(Level.SEVERE, "An IOException occurred", e);
         }
     }
-    //Read data from file
+
+    /***
+     *Function to read data from local storage file
+     */
     public ArrayList<Task> readFromFile() {
         ArrayList<Task> readDataList = new ArrayList<>();
         java.nio.file.Path path = Paths.get(filePath);
@@ -132,7 +139,11 @@ public class Storage{
         }
         return readDataList;
     }
-    //Helper function to combine string
+
+    /***
+     * Helper function to combine array into a single string
+     * @param array: the array needs to combine from index 1
+     */
     public static String combineArray(String[] array) {
         if (array.length > 1) {
             StringBuilder result = new StringBuilder(array[1]);

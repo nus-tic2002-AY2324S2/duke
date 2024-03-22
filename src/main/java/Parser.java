@@ -5,14 +5,20 @@ import src.task.Deadline;
 import src.task.Event;
 import src.task.Todo;
 import src.ui.Ui;
+import src.main.java.DateTime;
 
 
 import static src.main.java.DukeException.isInteger;
 
 
-public class Parser {
+public class Parser extends DateTime{
 
     private Command command;
+
+    /***
+     * Function to check the user input and make sure the input is a valid command
+     * @param userInput: String get from user
+     */
     public static Command parse(String userInput) throws DukeException {
         String[] wordList = userInput.split(" ");
         String taskName = "";
@@ -92,8 +98,15 @@ public class Parser {
                                 by += " ";
                             }
                         }
-                        Event task = new Event(taskName, from, by);
-                        return new AddCommand("event",task);
+                        if(!isDateValid(by)){
+                            throw new DukeException("Your event already ended");
+                        }else if(!isEventValid(from,by)){
+                            throw new DukeException("The end date of your event is earlier than the starting date.");
+                        }else{
+                            Event task = new Event(taskName, dateString(from), dateString(by));
+                            return new AddCommand("event",task);
+                        }
+
                     }
                 }
 
@@ -139,8 +152,15 @@ public class Parser {
                                 by += " ";
                             }
                         }
-                        Deadline task = new Deadline(taskName, by);
-                        return new AddCommand("deadline",task);
+
+                        if(isDateValid(by)){
+                            Deadline task = new Deadline(taskName, dateString(by));
+                            return new AddCommand("deadline",task);
+                        }else{
+                            throw new DukeException("Your Deadline Date is not a valid date or earlier than today");
+                        }
+
+
                     }
                 }
 

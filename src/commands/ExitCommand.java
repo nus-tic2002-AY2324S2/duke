@@ -9,12 +9,21 @@ public class ExitCommand extends Command {
         super(commandType);
     }
 
+    /***
+     * Function to execute the command
+     * @param tasklist: the task list
+     * @param ui: ui functions
+     * @param storage： make use of the storage
+     */
     @Override
     public void execute(TaskList tasklist, Ui ui, Storage storage) {
         Exit();
         ui.exitProgram();
         storage.writeToFile(tasklist.getList());
     }
+    /***
+     * function to set if this command will end the program
+     */
     @Override
     public boolean Exit(){return true;}
 

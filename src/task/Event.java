@@ -16,12 +16,16 @@ public class Event extends Task {
     }
     public void setFrom(String From){from = From;}
     public void setBy(String By){by = By;}
-
+    /***
+     * Override function to show the task info
+     */
     @Override
     public String toString() {
         return super.toString() + " (from: " + from + " to: "+ by +" )";
     }
-
+    /***
+     * Override function to format the task data into correct format when store into local storage
+     */
     @Override
     public String format(){return super.format() + "|from: "+from + "|by: " + by;}
 }

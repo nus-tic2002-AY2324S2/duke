@@ -7,6 +7,9 @@ public class Ui {
     private static Scanner userInput;
     public Ui(){userInput = new Scanner(System.in);}
 
+    /***
+     * Welcome Page everytime when program startup
+     */
     public void welcomeMenu(){
         Scanner in = new Scanner(System.in);
         String logo = "         ____        _        \n"
@@ -18,6 +21,10 @@ public class Ui {
         System.out.println("********** Press to continue ************");
         in.nextLine();
     }
+
+    /***
+     * Help manu when user key in a wrong command
+     */
     public void helpMenu(){
         System.out.println("**********************************************");
         System.out.println("*        Please use following commands       *");
@@ -27,10 +34,16 @@ public class Ui {
         System.out.println("* 3. deadline eventName /from Date /to Date  *");
         System.out.println("* 4. mark/unmark itemNumber                  *");
         System.out.println("* 5. list                                    *");
-        System.out.println("* 6. quit/bye             (To exit program)  *");
+        System.out.println("* 6. delete itemID                           *");
+        System.out.println("* 7. quit/bye             (To exit program)  *");
         System.out.println("*                                            *");
         System.out.println("**********************************************");
     }
+
+    /**
+     * Print out the item in the task list (for list function)
+     * @param todoList the task list to print out
+     */
     public void listMenu(ArrayList<Task> todoList){
         if(todoList.isEmpty()){
             System.out.println("////////////////////////////////////////////");
@@ -42,7 +55,7 @@ public class Ui {
             System.out.println("////////////////////////////////////////////");
             for(int i = 0; i < todoList.size(); i++){
                 String status = todoList.get(i).getStatusIcon();
-                Character type = todoList.get(i).getEventType();
+                Character type = todoList.get(i).getTaskType();
                 String from = todoList.get(i).getFrom();
                 String by = todoList.get(i).getBy();
                 if(type.equals('T')){
@@ -60,9 +73,17 @@ public class Ui {
         }
 
     }
+
+    /***
+     * Greeting when user exit the program
+     */
     public void exitProgram(){
         System.out.println("Bye! See you next time!");
     }
+
+    /***
+     * Return the string read from user
+     */
     public String readCommand(){return userInput.nextLine();}
 
 }
