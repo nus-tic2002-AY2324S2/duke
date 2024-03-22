@@ -1,11 +1,12 @@
+package duke.ui;
+
 import java.util.ArrayList;
-import java.util.Scanner;
+
+import duke.task.Task;
+import duke.task.TaskList;
+import duke.storage.Storage;
 public class Ui {
     private static final String HORIZONTAL_LINE = "    -------------------------------------------------";
-
-    public Ui() {
-        Scanner scanner = new Scanner(System.in);
-    }
 
     public static void greetUser() {
         System.out.println("    Greetings, mortal! I am Balrog, the fiery demon.");

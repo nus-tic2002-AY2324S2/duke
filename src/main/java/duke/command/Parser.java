@@ -1,4 +1,9 @@
+package duke.command;
+
 import java.util.Scanner;
+import duke.task.*;
+import duke.ui.Ui;
+import duke.exception.DukeException;
 public class Parser {
     public static void executeCommand(String command) {
         String[] commandParts = command.split(" ", 2);
