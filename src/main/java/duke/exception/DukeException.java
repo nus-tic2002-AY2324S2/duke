@@ -4,6 +4,8 @@ public class DukeException extends Exception {
     public DukeException(String message) {
         super(message);
     }
+
+
     public String getErrorMessage() {
         return "    Arise, ERROR!: " + getMessage();
     }
@@ -24,5 +26,9 @@ public class DukeException extends Exception {
 
     public static DukeException invalidEventFormat() {
         return new DukeException("Worthless Being! Enter the Event format as follows: event <description> /from <date> /to <date>");
+    }
+
+    public static DukeException invalidDateTimeFormat() {
+        return new DukeException("You ignorant fool! Enter date and time in the correct format: yyyy-MM-dd HH:mm");
     }
 }

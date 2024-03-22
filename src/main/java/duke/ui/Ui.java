@@ -2,6 +2,7 @@ package duke.ui;
 
 import java.util.ArrayList;
 
+import duke.exception.DukeException;
 import duke.task.Task;
 import duke.task.TaskList;
 import duke.storage.Storage;
@@ -14,7 +15,7 @@ public class Ui {
         printHorizontalLine();
     }
 
-    public static void sayGoodbye() {
+    public static void sayGoodbye() throws DukeException {
         Storage.saveTasksToFile(TaskList.taskList);
         displayMessage("    Flee, mortal! Until our paths cross again!");
         printHorizontalLine();

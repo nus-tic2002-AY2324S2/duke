@@ -5,7 +5,7 @@ import duke.task.*;
 import duke.ui.Ui;
 import duke.exception.DukeException;
 public class Parser {
-    public static void executeCommand(String command) {
+    public static void executeCommand(String command) throws DukeException {
         String[] commandParts = command.split(" ", 2);
 
         switch (commandParts[0].toLowerCase()) {
@@ -18,6 +18,8 @@ public class Parser {
                         TaskList.markTaskAsDone(Integer.parseInt(commandParts[1]));
                     } catch (NumberFormatException e) {
                         DukeException.handleGracefulError(DukeException.invalidTaskNumber());
+                    } catch (DukeException e) {
+                        throw new DukeException("Error: " + e.getMessage());
                     }
                 } else {
                     DukeException.handleGracefulError(DukeException.invalidTaskNumber());
@@ -87,7 +89,7 @@ public class Parser {
                 TaskList.addTask(new Task(command));
         }
     }
-    public static void runDuke() {
+    public static void runDuke() throws DukeException {
         String userInput;
         Scanner in = new Scanner(System.in);
 

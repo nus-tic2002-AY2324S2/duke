@@ -1,5 +1,6 @@
 package duke.task;
 
+import duke.exception.DukeException;
 import duke.ui.Ui;
 import duke.storage.Storage;
 
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 public class TaskList {
     public static ArrayList<Task> taskList = new ArrayList<>();
 
-    public static void readTasksFromFile() {
+    public static void readTasksFromFile() throws DukeException {
         ArrayList<Task> loadedTasks = Storage.loadTasksFromFile();
         if (!loadedTasks.isEmpty()) {
             taskList.addAll(loadedTasks);
@@ -17,7 +18,7 @@ public class TaskList {
         }
     }
 
-    public static void addTask(Task task) {
+    public static void addTask(Task task) throws DukeException {
         taskList.add(task);
         Task.echoUserCommand(task);
         System.out.println("    Now you have " + taskList.size() + " task(s) in your list.");
@@ -34,7 +35,7 @@ public class TaskList {
         }
         Ui.printHorizontalLine();
     }
-    public static void deleteTask(int taskNumber, ArrayList<Task> taskList) {
+    public static void deleteTask(int taskNumber, ArrayList<Task> taskList) throws DukeException {
         if (isValidTaskNumber(taskNumber, taskList)) {
             Task deletedTask = taskList.remove(taskNumber - 1);
             Storage.saveTasksToFile(TaskList.taskList);
@@ -47,7 +48,7 @@ public class TaskList {
     public static boolean isValidTaskNumber(int taskNumber, ArrayList<Task> taskList) {
         return taskNumber > 0 && taskNumber <= taskList.size();
     }
-    public static void markTaskAsDone(int taskNumber) {
+    public static void markTaskAsDone(int taskNumber) throws DukeException {
         if (TaskList.isValidTaskNumber(taskNumber, TaskList.taskList)) {
             Task task = TaskList.taskList.get(taskNumber - 1);
             if (!task.isDone()) {
@@ -61,7 +62,7 @@ public class TaskList {
             System.out.println("    Fool! That task number is beyond the realm of your pitiful list!");
         }
     }
-    public static void unmarkTaskAsDone(int taskNumber) {
+    public static void unmarkTaskAsDone(int taskNumber) throws DukeException {
         if (TaskList.isValidTaskNumber(taskNumber, TaskList.taskList)) {
             Task task = TaskList.taskList.get(taskNumber - 1);
             if (task.isDone()) {
