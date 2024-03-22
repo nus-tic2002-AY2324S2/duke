@@ -74,7 +74,7 @@ public class Storage {
             return String.format("T | %d | %s", task.isDone() ? 1 : 0, task.getDescription());
         } else if (task instanceof Deadline) {
             Deadline deadlineTask = (Deadline) task;
-            String formattedDate = String.valueOf(deadlineTask.getBy());
+            String formattedDate = deadlineTask.getBy().format(DateTimeFormatter.ofPattern("d/M/yyyy HHmm"));
             return String.format("D | %d | %s | %s", task.isDone() ? 1 : 0, task.getDescription(), formattedDate);
         } else if (task instanceof Event) {
             Event eventTask = (Event) task;

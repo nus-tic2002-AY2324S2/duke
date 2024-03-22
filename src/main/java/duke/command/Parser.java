@@ -109,4 +109,3 @@ public class Parser {
         } while (!userInput.equalsIgnoreCase("bye"));
     }
 }
-
