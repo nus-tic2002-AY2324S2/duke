@@ -1,13 +1,18 @@
 package duke.task;
-public class Deadline extends Task {
-    protected String by;
 
-    public Deadline(String description, String by) {
+import duke.command.DateTimeParser;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class Deadline extends Task {
+    private LocalDateTime byDateTime;
+
+    public Deadline(String description, LocalDateTime byDateTime) {
         super(description);
-        this.by = by;
+        this.byDateTime = byDateTime;
     }
-    public String getBy() {
-        return by;
+    public LocalDateTime getBy() {
+        return byDateTime;
     }
     public static Deadline createDeadlineFromCommand(String command) {
         String prefix = "deadline";
@@ -18,18 +23,19 @@ public class Deadline extends Task {
 
         if (prefixIndex != -1 && byIndex != -1) {
             String deadlineDescription = command.substring(prefixIndex + prefix.length(), byIndex).trim();
-            String by = command.substring(byIndex + byKeyword.length()).trim();
+            String byDateTimeString = command.substring(byIndex + byKeyword.length()).trim();
 
-            if (!deadlineDescription.isEmpty() && !by.isEmpty()) {
-                return new Deadline(deadlineDescription, by);
+            LocalDateTime byDateTime = DateTimeParser.parseDateTime(byDateTimeString);
+
+            if (!deadlineDescription.isEmpty() && !byDateTimeString.isEmpty()) {
+                return new Deadline(deadlineDescription, byDateTime);
             }
         }
         return null;
     }
 
-
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + by + ")";
+        return "[D]" + super.toString() + " (by: " + byDateTime.format(DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm")) + ")";
     }
 }
