@@ -1,17 +1,15 @@
-package src.main.java;
 import src.commands.*;
 import src.storage.Storage;
 import src.task.Deadline;
 import src.task.Event;
 import src.task.Todo;
 import src.ui.Ui;
-import src.main.java.DateTime;
 
 
-import static src.main.java.DukeException.isInteger;
+import static DukeException.isInteger;
 
 
-public class Parser extends DateTime{
+public class Parser extends DateTime {
 
     private Command command;
 

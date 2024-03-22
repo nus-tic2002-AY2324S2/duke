@@ -1,9 +1,4 @@
-package src.main.java;
-import src.main.java.*;
-import src.task.Deadline;
-import src.task.Event;
-import src.task.Task;
-import java.time.LocalDate;
+package duke;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;

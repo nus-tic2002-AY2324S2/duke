@@ -1,4 +1,4 @@
-package src.ui;
+package src.
 import java.util.ArrayList;
 import java.util.Scanner;
 import src.task.Task;
