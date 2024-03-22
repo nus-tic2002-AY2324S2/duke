@@ -48,6 +48,7 @@ public class Ui {
         System.out.println("[LIST] | LIST | Print out task list");
         System.out.println("[DELETE:<Index>] | DELETE:2 | DELETE TASK 2");
         System.out.println("[STATUS:<Index>_<true/false>] | STATUS:2_false | Indicate if task is done (true/false)");
+        System.out.println("[UPDATE:<Index>_<New Description>] | UPDATE:2_NEW TASK NAME | Change task ID 2 description");
         System.out.println("[BYE] | BYE | To exit =(");
         System.out.println("******Commands List******\n");
         System.out.println("Please input commands:");

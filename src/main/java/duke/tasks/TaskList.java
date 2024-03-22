@@ -137,6 +137,23 @@ public class TaskList {
     }
 
     /**
+     * Update task description task based on index given
+     * @param input string
+     * @throws DukeException if input is not integer or not in task list
+     */
+    public void updateTaskDescription(String input) throws DukeException {
+        assert input != null : "updateTaskDescription requires an index";
+        DukeException.checkNumParameters(input,2);
+        String[] inputSplit = input.split("_");
+
+        int maxIndex = this.TASK_LIST.size() -1;
+        int index = DukeException.checkIndex(inputSplit[0], maxIndex);
+        System.out.println("Updating task description: " + this.TASK_LIST.get(index).taskDescription());
+        this.TASK_LIST.get(index).updateTaskDescription(inputSplit[1]);
+        System.out.println("New task description: " + this.TASK_LIST.get(index).taskDescription());
+    }
+
+    /**
      * @return size of task list
      */
     public int getTaskListSize(){

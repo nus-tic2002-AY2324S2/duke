@@ -23,10 +23,15 @@ public class Command {
 
     /**
      * Based on the command given, method will execute a series of operations
+     * @param tasklist object that contains tasks in memory
      */
     public void execute(TaskList tasklist) throws DukeException {
         assert tasklist != null : "execute requires tasklist object";
         switch(commandType) {
+            case "UPDATE":
+                tasklist.updateTaskDescription(commandInput);
+                Storage.save(tasklist);
+                break;
             case "FIND":
                 tasklist.findTask(commandInput);
                 break;
