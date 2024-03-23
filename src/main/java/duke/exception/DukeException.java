@@ -5,13 +5,14 @@ public class DukeException extends Exception {
         super(message);
     }
 
-
     public String getErrorMessage() {
         return "    Arise, ERROR!: " + getMessage();
     }
+
     public static void handleGracefulError(DukeException exception) {
         System.out.println(exception.getErrorMessage());
     }
+
     public static DukeException invalidTaskNumber() {
         return new DukeException("Foolish mortal! Specify a valid task number.");
     }
@@ -21,7 +22,7 @@ public class DukeException extends Exception {
     }
 
     public static DukeException invalidDeadlineFormat() {
-        return new DukeException("Pathetic creature! Enter the Deadline format as follows: deadline <description> /by <date>");
+        return new DukeException("Pathetic creature! Enter the Deadline format as follows: deadline <description> /by <dd/mm/yyyy HHmm>");
     }
 
     public static DukeException invalidEventFormat() {
@@ -29,6 +30,6 @@ public class DukeException extends Exception {
     }
 
     public static DukeException invalidDateTimeFormat() {
-        return new DukeException("You ignorant fool! Enter date and time in the correct format: yyyy-MM-dd HH:mm");
+        return new DukeException("You ignorant fool! Enter date and time in the correct format: dd/mm/yyyy HHmm");
     }
 }

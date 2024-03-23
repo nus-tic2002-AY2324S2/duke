@@ -78,8 +78,8 @@ public class Storage {
             return String.format("D | %d | %s | %s", task.isDone() ? 1 : 0, task.getDescription(), formattedDate);
         } else if (task instanceof Event) {
             Event eventTask = (Event) task;
-            String formattedFrom = eventTask.getFrom().replace('T', ' ');
-            String formattedTo = eventTask.getTo().replace('T', ' ');
+            String formattedFrom = eventTask.getFromDateTime().format(DateTimeFormatter.ofPattern("d/M/yyyy HHmm"));
+            String formattedTo = eventTask.getToDateTime().format(DateTimeFormatter.ofPattern("d/M/yyyy HHmm"));
             return String.format("E | %d | %s | %s - %s", task.isDone() ? 1 : 0, task.getDescription(), formattedFrom, formattedTo);
         } else {
             throw new DukeException("Error formatting task to string: Unknown task type.");
@@ -125,9 +125,12 @@ public class Storage {
                     System.err.println("Invalid event format: " + fileString);
                     return null;
                 }
-                String from = fromTo[0];
-                String to = fromTo[1];
-                Event event = new Event(description, from, to);
+                String fromDateTimeString = fromTo[0];
+                String toDateTimeString = fromTo[1];
+                LocalDateTime fromDateTime = DateTimeParser.parseDateTime(fromDateTimeString);
+                LocalDateTime toDateTime = DateTimeParser.parseDateTime(toDateTimeString);
+                Event event = new Event(description, fromDateTime, toDateTime);
+
                 if (isDone) {
                     event.markAsDone();
                 }

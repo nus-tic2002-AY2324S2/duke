@@ -28,5 +28,4 @@ public class Task {
     public static void echoUserCommand(Task task) {
         System.out.println("    A foolish command, mortal! You dare to utter:\n      " + task.toString());
     }
-
 }

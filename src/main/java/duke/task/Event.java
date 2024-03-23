@@ -1,19 +1,28 @@
 package duke.task;
+
+import duke.command.DateTimeParser;
+import duke.exception.DukeException;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+// enter format as "event <description> /from <dd/mm/yyyy HHmm> /to <dd/mm/yyyy HHmm>"
 public class Event extends Task {
-    private final String from;
-    private final String to;
+    private final LocalDateTime fromDateTime;
+    private final LocalDateTime toDateTime;
 
-    public Event(String description, String from, String to) {
+    public Event(String description, LocalDateTime fromDateTime, LocalDateTime toDateTime) {
         super(description);
-        this.from = from;
-        this.to = to;
-    }
-    public String getFrom() {
-        return from;
+        this.fromDateTime = fromDateTime;
+        this.toDateTime = toDateTime;
     }
 
-    public String getTo() {
-        return to;
+    public LocalDateTime getFromDateTime() {
+        return fromDateTime;
+    }
+
+    public LocalDateTime getToDateTime() {
+        return toDateTime;
     }
 
     public static Event createEventFromCommand(String command) {
@@ -25,20 +34,40 @@ public class Event extends Task {
         int fromIndex = command.indexOf(fromKeyword);
         int toIndex = command.indexOf(toKeyword);
 
-        if (prefixIndex != -1 && fromIndex != -1 && toIndex != -1) {
-            String eventDescription = command.substring(prefixIndex + prefix.length(), fromIndex).trim();
-            String from = command.substring(fromIndex + fromKeyword.length(), toIndex).trim();
-            String to = command.substring(toIndex + toKeyword.length()).trim();
-
-            if (!eventDescription.isEmpty() && !from.isEmpty() && !to.isEmpty()) {
-                return new Event(eventDescription, from, to);
+        try {
+            if (prefixIndex == -1 || fromIndex == -1 || toIndex == -1) {
+                throw DukeException.invalidEventFormat();
             }
+
+            String eventDescription = command.substring(prefixIndex + prefix.length(), fromIndex).trim();
+            String fromDateTimeString = command.substring(fromIndex + fromKeyword.length(), toIndex).trim();
+            String toDateTimeString = command.substring(toIndex + toKeyword.length()).trim();
+
+            if (eventDescription.isEmpty() || fromDateTimeString.isEmpty() || toDateTimeString.isEmpty()) {
+                throw DukeException.invalidEventFormat();
+            }
+
+            LocalDateTime fromDateTime = DateTimeParser.parseDateTime(fromDateTimeString);
+            LocalDateTime toDateTime = DateTimeParser.parseDateTime(toDateTimeString);
+
+            if (fromDateTime.isAfter(toDateTime)) {
+                throw new DukeException("Start time cannot be after end time");
+            }
+
+            if (fromDateTime.isBefore(LocalDateTime.now())) {
+                throw new DukeException("Start time must be in the future");
+            }
+
+            return new Event(eventDescription, fromDateTime, toDateTime);
+        } catch (DukeException e) {
+            DukeException.handleGracefulError(e);
+            return null;
         }
-        return null;
     }
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
+        return "[E]" + super.toString() + " (from: " + fromDateTime.format(DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm")) +
+                " to: " + toDateTime.format(DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm")) + ")";
     }
 }
