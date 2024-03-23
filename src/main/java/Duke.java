@@ -1,9 +1,10 @@
+import java.util.ArrayList;
 import java.util.DuplicateFormatFlagsException;
 import java.util.Scanner;
 
 public class Duke {
-    protected static Task[] taskList = new Task[100];
-    protected static int index = 0;
+    protected static ArrayList<Task> taskList = new ArrayList<>();
+  //  protected static int index = 0;
 
     public static void handleTodo(String input) throws DukeException {
         if(input.substring(4).trim().isEmpty()) {
@@ -19,12 +20,12 @@ public class Duke {
         }
         addTodo(input);
     }
-
     public static void addTodo(String input){
-        taskList[index++] = new Todo(input);
-        System.out.println("Got it. I've added this task:");
-        System.out.println(index + ". " + taskList[index - 1].toString());
-        System.out.println("Now you have " + index + " tasks in the list.");
+
+       taskList.add(taskList.size(), new Todo(input));
+       System.out.println("Got it. I've added this task:");
+       System.out.println((taskList.size()) + ". " + taskList.get(taskList.size() - 1).toString());
+       System.out.println("Now you have " + taskList.size() + " tasks in the list.");
     }
 
     public static void handleDeadLine(String input) throws DukeException {
@@ -56,14 +57,16 @@ public class Duke {
         else {
             checkDuplicate(desc);
         }
-        addDeadline(desc, by);
+        addDeadline(desc,by);
     }
     public static void addDeadline(String desc, String by) {
-        taskList[index++] = new Deadline(desc, by);
+        taskList.add(taskList.size(), new Deadline(desc, by));
         System.out.println("Got it. I've added this task:");
-        System.out.println(index + ". " + taskList[index - 1].toString());
-        System.out.println("Now you have " + index + " tasks in the list.");
+        System.out.println((taskList.size()) + ". " + taskList.get(taskList.size() - 1).toString());
+        System.out.println("Now you have " + taskList.size() + " tasks in the list.");
     }
+
+
     public static void handleEvent(String input) throws DukeException {
         if(input.substring(5).trim().isEmpty()) {
             throw new DukeException("Input task is empty. Input the task you want to add " +
@@ -104,11 +107,12 @@ public class Duke {
         addEvent(desc, from, to);
     }
     public static void addEvent(String desc, String from, String to) {
-        taskList[index++] = new Event(desc, from, to);
+        taskList.add(taskList.size(), new Event(desc, from, to));
         System.out.println("Got it. I've added this task:");
-        System.out.println(index + ". " + taskList[index - 1].toString());
-        System.out.println("Now you have " + index + " tasks in the list.");
+        System.out.println((taskList.size()) + ". " + taskList.get(taskList.size() - 1).toString());
+        System.out.println("Now you have " + taskList.size() + " tasks in the list.");
     }
+
 
     public static void markTask(String input) {
         try {
@@ -120,14 +124,14 @@ public class Duke {
                 throw new DukeException("Invalid format. Please add a space after the command.");
             }
             int getIndex = Integer.parseInt(input.substring(5)) - 1;
-            if(getIndex >= 0 && getIndex < index) {
-                Task task = taskList[getIndex];
+            if(getIndex >= 0 && getIndex < taskList.size()) {
+                Task task = taskList.get(getIndex);
                 if(task.getStatusIcon().equals("X")){
                     throw new DukeException("Task has already been marked.");
                 }
                 task.markAsDone();
                 System.out.println("Nice! I've marked this task as done: ");
-                System.out.println(taskList[getIndex].toString());
+                System.out.println((taskList.indexOf(task) + 1) + ". " + taskList.get(getIndex).toString());
             } else {
                 throw new IndexOutOfBoundsException();
             }
@@ -151,14 +155,14 @@ public class Duke {
                 throw new DukeException("Invalid format. Please add a space after the command.");
             }
             int getIndex = Integer.parseInt(input.substring(7)) - 1;
-            if (getIndex >= 0 && getIndex < index) {
-                Task task = taskList[getIndex];
+            if (getIndex >= 0 && getIndex < taskList.size()) {
+                Task task = taskList.get(getIndex);
                 if(!task.getStatusIcon().equals("X")){
                     throw new DukeException("Task is currently unmarked already.");
                 }
                 task.unmarkAsDone();
                 System.out.println("OK, I've marked this task as not done yet: ");
-                System.out.println(taskList[getIndex].toString());
+                System.out.println((taskList.indexOf(task) + 1) + ". " + taskList.get(getIndex).toString());
             } else {
                 throw new IndexOutOfBoundsException();
             }
@@ -173,21 +177,21 @@ public class Duke {
     }
 
     public static void checkIfEmpty() throws DukeException {
-        if(index == 0) {
+        if(taskList.isEmpty()) {
             throw new DukeException("List is empty. Please add a task first.");
         }
     }
     public static void checkDuplicate(String desc) throws DukeException {
-        for (int i = 0; i < index; i++) {
-            if (taskList[i].description.equals(desc)) {
+        for (Task task : taskList) {
+            if (task.description.equals(desc)) {
                 throw new DukeException("Task already exists in the list.");
             }
         }
     }
     public static void showList(){
         System.out.println("Here are the tasks in your list:");
-        for (int i = 0; i < index; i++) {
-            System.out.println((i+1) + ". " + taskList[i].toString());
+        for (int i = 0; i < taskList.size(); i++) {
+            System.out.println((i+1) + ". " + taskList.get(i).toString());
         }
     }
     public static void main(String[] args) {
