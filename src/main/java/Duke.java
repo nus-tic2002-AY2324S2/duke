@@ -109,28 +109,12 @@ public class Duke{
         System.out.print(getChatBotName() + ": Bye. Hope to see you again soon!\n");
     }
 
-    public void scanKeyword(String userInput) {
+    public void scanKeyword(String userInput)  {
         blankUserInputCount = 0; // resets inpatient meter
         boolean markedEvent = false; //important flag. #1 Don't confuse (mark, deadlines and events) with Task.
         String[] keyword = userInput.split(" ", 2);
 
-//        for (String[] s : keyword){
-//            int by = 0, from = 0, to = 0;
-//
-//            if (s.equals("by")){
-//                by++;
-//            }
-//            else if (s.equals("from")){
-//                from++;
-//            }
-//            else if (s.equals("to")){
-//                to++;
-//            }
-//
-//            if (by > 1){
-//                System.out.println("Error: Too many by");
-//            }
-//        }
+
 
         //Level 4 Mark
         switch (keyword[0]){
@@ -139,6 +123,24 @@ public class Duke{
                 task.markAsDone(keyword[1]);
                 markedEvent = true;
                 break;
+            case "delete":
+                try {
+                int taskNumber = Integer.parseInt(keyword[1]); //problems comes from converting string to number
+                task.deleteTask(taskNumber);
+                } catch (DukeException e) {
+                    throw new RuntimeException(e);
+                } catch (NumberFormatException e) {
+                    DukeException.getError(DukeException.invalidTaskNumber());
+                } catch (IllegalArgumentException e) {
+                    DukeException.getError(DukeException.expectIntbutInputString());
+                }
+
+//                finally {
+//                    System.out.println("Sorry, There's no such task number");
+//                }
+                markedEvent = true; //corner case delete [No] should not be added as task
+                task.printWordDiary();
+
         }
 
         // Level 4-2 Deadlines
