@@ -4,6 +4,7 @@ import duke.command.DateTimeParser;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+// enter format as "deadline <description> /by <dd/mm/yyyy HHmm>"
 public class Deadline extends Task {
     private LocalDateTime byDateTime;
 
@@ -27,9 +28,10 @@ public class Deadline extends Task {
 
             LocalDateTime byDateTime = DateTimeParser.parseDateTime(byDateTimeString);
 
-            if (!deadlineDescription.isEmpty() && !byDateTimeString.isEmpty()) {
-                return new Deadline(deadlineDescription, byDateTime);
-            }
+            if (byDateTime.isAfter(LocalDateTime.now())) //has to be in the future
+                if (!deadlineDescription.isEmpty() && !byDateTimeString.isEmpty()) {
+                    return new Deadline(deadlineDescription, byDateTime);
+                }
         }
         return null;
     }

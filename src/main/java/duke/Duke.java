@@ -13,5 +13,3 @@ public class Duke {
         Ui.sayGoodbye();
     }
 }
-
-// deadline return book /by 2/12/2019 1800
