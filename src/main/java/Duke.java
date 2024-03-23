@@ -10,7 +10,7 @@ public class Duke{
     private String chatBotName = "Jenkins";
     public static String userInput = "";
     public static Boolean chatBotOnline = false;
-    public static byte blankUserInput = 0;
+    public static byte blankUserInputCount = 0;
 
     public Duke(){
         chatBotOnline = false;
@@ -63,7 +63,7 @@ public class Duke{
     }
 
     //Level 1 Echo
-    public void echoUserInput(String s){
+    public void echoUserInputAdded(String s){
         System.out.println("added: " + s);
         listenForInput();
     }
@@ -110,22 +110,64 @@ public class Duke{
     }
 
     public void scanKeyword(String userInput) {
-        blankUserInput = 0;
+        blankUserInputCount = 0; // resets inpatient meter
+        boolean markedEvent = false; //important flag. #1 Don't confuse (mark, deadlines and events) with Task.
         String[] keyword = userInput.split(" ", 2);
 
+//        for (String[] s : keyword){
+//            int by = 0, from = 0, to = 0;
+//
+//            if (s.equals("by")){
+//                by++;
+//            }
+//            else if (s.equals("from")){
+//                from++;
+//            }
+//            else if (s.equals("to")){
+//                to++;
+//            }
+//
+//            if (by > 1){
+//                System.out.println("Error: Too many by");
+//            }
+//        }
+
+        //Level 4 Mark
         switch (keyword[0]){
             case "mark":
             case "unmark":
                 task.markAsDone(keyword[1]);
+                markedEvent = true;
                 break;
         }
 
-        if (userInput.equalsIgnoreCase("change bot name")){
-            changeChatBotName();
+        // Level 4-2 Deadlines
+        if (userInput.contains("by ")){
+
+            Pattern pattern = Pattern.compile("(.+) by (.+)");
+            Matcher matcher = pattern.matcher(userInput);
+
+            if (matcher.find()) {
+
+                String eventDescription = matcher.group(1);
+                String deadline = matcher.group(2);
+
+                Deadline d = new Deadline(eventDescription, deadline);
+                task.createTask(d);
+                System.out.print("Deadline ");
+                echoUserInputAdded(userInput);
+            }
+
+            else {
+                System.out.println("I noticed your intent to create a deadline with \"by\"");
+                System.out.println("Please input as follows: [Task] by [timing]");
+                markedEvent = true; //corner case - by from to
+            }
+
         }
 
         // Level 4-3 Events
-        else if (userInput.contains("from ") && userInput.contains("to ")){
+        if (userInput.contains("from ") && userInput.contains("to ")){
             Pattern pattern = Pattern.compile("(.+) from (.+) to (.+)");
             Matcher matcher = pattern.matcher(userInput);
 
@@ -139,53 +181,30 @@ public class Duke{
                 task.createTask(event);
 
                 System.out.print("Event ");
-                echoUserInput(userInput);
+                echoUserInputAdded(userInput);
             }
 
             else {
-                System.out.println("Invalid input format for event");
+                System.out.println("Seems like you want to create an event with \"from\" & \"to\"");
+                System.out.println("Please input as follows: [Task] from [time] to [time]");
+                markedEvent = true; //corner case from from to to
             }
-
         }
 
-        // Level 4-2 Deadlines
-        else if (userInput.contains("deadline ") || userInput.contains("by ")){
-
-            Pattern pattern = Pattern.compile("(.+) by (.+)");
-            Matcher matcher = pattern.matcher(userInput);
-
-            if (matcher.find()) {
-
-                String eventDescription = matcher.group(1);
-                String deadline = matcher.group(2);
-
-                Deadline d = new Deadline(eventDescription, deadline);
-                task.createTask(d);
-            }
-
-            else {
-                System.out.println("Invalid input format");
-            }
-
-            System.out.print("Deadline ");
-            echoUserInput(userInput);
-        }
-
-        //        //case: future implementations
-        //        else if (true){
-        //            //future implementations do something
-        //        }
-
-
-
-
-        else { // Level 4-1 Task To do
+        // Level 4-1 Task To do
+        if (!markedEvent){
             ToDo todo = new ToDo(userInput);
             task.createTask(todo);
             System.out.print("Task to do ");
-            echoUserInput(userInput);
+            echoUserInputAdded(userInput);
         }
 
+/*
+            //case: future implementations
+            else if (true){
+                //future implementations do something
+            }
+*/
     }
 
 
@@ -199,7 +218,7 @@ public class Duke{
             String trimmedUserInput = userInput.trim();
 
             if (userInput.isBlank()) {
-                botGetsImpatient(blankUserInput++);
+                botGetsImpatient(blankUserInputCount++);
             }
 
             else if (userInput.equalsIgnoreCase("bye")){
@@ -212,6 +231,10 @@ public class Duke{
 
             else if (userInput.equalsIgnoreCase("help")){
                 help();
+            }
+
+            else if (userInput.equalsIgnoreCase("change bot name")){
+                changeChatBotName();
             }
 
             else{

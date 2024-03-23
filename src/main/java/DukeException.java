@@ -5,6 +5,6 @@ public class DukeException extends Exception {
     }
 
     public String getErrorMessage() {
-        return ("    Arise, ERROR!: " + getMessage());
+        return ("error get message" + getMessage());
     }
 }
