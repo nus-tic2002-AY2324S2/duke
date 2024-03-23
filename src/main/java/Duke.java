@@ -21,9 +21,7 @@ public class Duke {
             String userInput = scanner.nextLine().trim();
             try {
                 DukeExceptionHandler.handleExceptions(userInput, taskList);
-            }
-
-            catch (DukeException e) {
+            } catch (DukeException e) {
                 System.out.println("____________________________________________________________");
                 System.out.println(e.getMessage());
                 System.out.println("____________________________________________________________");
@@ -87,6 +85,17 @@ public class Duke {
                 System.out.println("____________________________________________________________");
             }
 
+            // delete <int>
+            else if (tokenized[0].equals("delete") && tokenized.length > 1) {
+                int taskIndexToDelete = Integer.parseInt(tokenized[1]) - 1;
+                Task removedTask = taskList.remove(taskIndexToDelete);
+                System.out.println("____________________________________________________________");
+                System.out.println("Noted. I've removed this task:");
+                System.out.println("[" + removedTask.getType() + "][" + removedTask.getStatusIcon() + "] " + removedTask.getDescription());
+                System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+                System.out.println("____________________________________________________________");
+            }
+
             else if (tokenized[0].equals("help")) {
                 System.out.println("____________________________________________________________");
                 System.out.println("Here is a list of valid commands:");
@@ -97,6 +106,7 @@ public class Duke {
                 System.out.println("event    - Creates an event task");
                 System.out.println("mark     - Marks a task as completed");
                 System.out.println("unmark   - Removes a mark from a task");
+                System.out.println("delete   - Deletes a task");
                 System.out.println("bye      - Ends the session");
                 System.out.println("____________________________________________________________");
             }

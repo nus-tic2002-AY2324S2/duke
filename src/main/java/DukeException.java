@@ -74,9 +74,25 @@ class DukeExceptionHandler {
             }
         }
 
+        else if (tokenized[0].equals("delete")) {
+            if (tokenized.length <= 1) {
+                throw new DukeException("Please follow the following format: delete <task number>");
+            }
+
+            try {
+                int taskNumber = Integer.parseInt(tokenized[1]);
+                if (taskNumber < 1 || taskNumber > taskList.size()) {
+                    throw new DukeException("Task number is out of range.");
+                }
+            }
+
+            catch (NumberFormatException e) {
+                throw new DukeException("Please enter a number value.");
+            }
+        }
+
         else if (!tokenized[0].equals("list") && !tokenized[0].equals("help") && !userInput.equals("bye")) {
             throw new DukeException("Please enter a valid command.");
         }
     }
 }
-
