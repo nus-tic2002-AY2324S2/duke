@@ -29,9 +29,23 @@ public class Task {
         taskSize++;
     }
 
-//    public void removeTask(Task t){
-//        //please continue here for Level 6
-//    }
+    public void deleteTask(int taskNo) throws DukeException{
+
+
+            if (isValidTaskNumber(taskNo)) {
+                System.out.println("I've deleted " + tasksStorage.get(taskNo - 1));
+                tasksStorage.remove(taskNo - 1);
+                taskSize--;
+            }
+
+
+
+    }
+
+    public static boolean isValidTaskNumber(int taskNo) {
+        //System.out.println("yes is valid task no");
+        return taskNo <= taskSize && taskNo > 0;
+    }
 
     //Methods to filter Information
     public String getStatusIcon() {
