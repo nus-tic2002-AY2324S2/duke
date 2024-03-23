@@ -50,7 +50,8 @@ public class Task {
 
         //1 way to improve is having an enum to store high medium low amount of task.
         if (getTaskSize() == 1){
-            System.out.println("Marvelous, There's only 1 outstanding task left to complete!");
+            System.out.print(this.tasksStorage.get(0).toString() + "\n");
+            System.out.println("Marvelous, Only 1 outstanding task left to complete!");
         }
 
         else {
@@ -102,6 +103,7 @@ public class Task {
                 System.out.println(task.getTaskDescription());
 
             } else {
+                
                 System.out.println("We don't have that task yet!");
             }
         } else {

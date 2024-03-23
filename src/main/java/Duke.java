@@ -9,20 +9,70 @@ public class Duke{
 
     private String chatBotName = "Jenkins";
     public static String userInput = "";
-    public static Boolean chatBotOnline = true;
+    public static Boolean chatBotOnline = false;
     public static byte blankUserInput = 0;
 
-
-
     public Duke(){
-        chatBotGreetings();
-        task = new Task();
-        listenForInput();
+        chatBotOnline = false;
     }
 
     public String getChatBotName(){
         return this.chatBotName;
     }
+
+    public void changeChatBotName(){
+        System.out.println(getChatBotName() + ": Sure! Please key in my new name");
+        Scanner sc = new Scanner(System.in); //open scanner!
+        userInput = sc.nextLine();
+
+        String name = userInput.trim();
+        setChatBotName(name);
+
+        System.out.println(getChatBotName() + ": Right away!");
+        sc.close();
+
+    }
+
+    public void powerOn(){
+        chatBotOnline = true;
+        chatBotGreetings();
+        task = new Task();
+        listenForInput();
+    }
+
+    //Extra 1 - Impatience Meter
+    public void botGetsImpatient(int blankUserInput){
+        final int botMaxPatience = 2;
+        int botPatience = botMaxPatience - blankUserInput;
+
+        if (botPatience > 1) {
+            System.out.println("Sorry, I did not receive any commands");
+            System.out.println("I will leave if there's no one around. " + botPatience + " more chance");
+            listenForInput();
+        }
+
+        else if (botPatience == 1) {
+            System.out.println("Last Chance! Please issue a command or I will leave!");
+            listenForInput();
+        }
+
+        else {
+            System.out.println("Looks like no one's here. Good bye");
+            quitProgram();
+        }
+    }
+
+    //Level 1 Echo
+    public void echoUserInput(String s){
+        System.out.println("added: " + s);
+        listenForInput();
+    }
+
+    //Extra 2 - just a drawing a line
+    public void drawLine() {
+        System.out.println("____________________________________________________________");
+    }
+
 
     //Level 0-1 Rename
     public void setChatBotName(String userInput){
@@ -35,7 +85,7 @@ public class Duke{
         System.out.println("What can I do for you?");
     }
 
-    //Exhaustive list for user, easy reference for programmers
+    //Exhaustive HELP list for user, easy reference for programmers
     public void help(){
         System.out.println(getChatBotName() + ": Certainly! Here are all commands that I can understand:");
         System.out.println("help or {.} - prints this help list to help recall");
@@ -46,48 +96,32 @@ public class Duke{
         System.out.println("[Task] - records Tasks");
         System.out.println("[Task] by [timing] - records Deadlines");
         System.out.println("[Task] from [time] to [time] - records Events");
+
+        System.out.println("mark OR unmark [Task number] - Marks/Unmarks Task number");
         System.out.println("list - prints all recorded events");
+        System.out.println("Delete [Task number] - Delete Task");
     }
 
-    public void stopProgram(){
+    //case 1 User press enters 3 times, bots impatient then quits.
+    //case 2 user enters "bye"
+    public void quitProgram(){
         chatBotOnline = false;
         System.out.print(getChatBotName() + ": Bye. Hope to see you again soon!\n");
     }
 
-//Can't terminate early, else program stops prematurely
-    public void scanKeyword(String userInput){
+    public void scanKeyword(String userInput) {
         blankUserInput = 0;
+        String[] keyword = userInput.split(" ", 2);
 
-        //Level 0-3 Exit
-        if (userInput.equalsIgnoreCase("bye")) {
-            stopProgram();
-            return;
-        }
-
-        //Extra
-        if (userInput.equalsIgnoreCase("help")) {
-            help();
+        switch (keyword[0]){
+            case "mark":
+            case "unmark":
+                task.markAsDone(keyword[1]);
+                break;
         }
 
         if (userInput.equalsIgnoreCase("change bot name")){
-            System.out.println(getChatBotName() + ": Sure! Please key in my new name");
-            Scanner sc = new Scanner(System.in); //open scanner!
-            userInput = sc.nextLine();
-
-            String name = userInput.trim();
-            setChatBotName(name);
-
-            System.out.println(getChatBotName() + ": Right away!");
-            chatBotGreetings();
-        }
-
-        //Level 2-2 List
-        else if (userInput.equalsIgnoreCase("list")){
-            task.printWordDiary();
-        }
-
-        else if (userInput.contains("mark ") || userInput.contains("unmark ")){
-            task.markAsDone(userInput);
+            changeChatBotName();
         }
 
         // Level 4-3 Events
@@ -144,75 +178,56 @@ public class Duke{
 
 
 
-        //
-        else if (!userInput.equals("help")){ // Level 4-1 Task To do
+
+        else { // Level 4-1 Task To do
             ToDo todo = new ToDo(userInput);
             task.createTask(todo);
             System.out.print("Task to do ");
             echoUserInput(userInput);
         }
 
-        listenForInput(); //important function to keep program alive. After you scan, Listen again
     }
+
+
 
     public void listenForInput() {
 
-        if (chatBotOnline) {
-            drawLine();
-            Scanner sc = new Scanner(System.in);
+        drawLine();
+        Scanner sc = new Scanner(System.in);
+        userInput = sc.nextLine();
 
-            userInput = sc.nextLine();
+            String trimmedUserInput = userInput.trim();
 
             if (userInput.isBlank()) {
                 botGetsImpatient(blankUserInput++);
             }
 
-            else{
-                String cleanText = userInput.trim();
-                scanKeyword(cleanText);
+            else if (userInput.equalsIgnoreCase("bye")){
+                quitProgram();
             }
 
-        }
+            else if (userInput.equalsIgnoreCase("list")){
+                task.printWordDiary();
+            }
 
-        //chatBot Offline, program will return until it closes itself
-    }
+            else if (userInput.equalsIgnoreCase("help")){
+                help();
+            }
 
-    //Extra 1 - Impatience Meter
-    public void botGetsImpatient(int blankUserInput){
-        final int botMaxPatience = 2; //Feel free to change, I think 2 is good enough
-        int botPatience = botMaxPatience - blankUserInput;
+            else{
+                scanKeyword(trimmedUserInput);
+            }
 
-        if (botPatience > 1) {
-            System.out.println("Sorry, I did not receive any commands");
-            System.out.println("I will leave if there's no one around. " + botPatience + " more chance");
-            listenForInput();
-        }
+            //recursive on purpose until user terminates using "bye"
+            if (chatBotOnline){
+                listenForInput();
+            }
 
-        else if (botPatience == 1) {
-            System.out.println("Last Chance! Please issue a command or I will leave!");
-            listenForInput();
-        }
-
-        else {
-            System.out.println("Looks like no one's here. Good bye");
-            stopProgram();
-        }
-    }
-
-    //Level 1 Echo
-    public void echoUserInput(String s){
-        System.out.println("added: " + s);
-        listenForInput();
-    }
-
-    //Extra 2 - just a drawing a line
-    public void drawLine() {
-        System.out.println("____________________________________________________________");
     }
 
     public static void main(String[] args) {
         Duke Jenkins = new Duke();
-
+        Jenkins.powerOn();
     }
 
 }
