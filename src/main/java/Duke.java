@@ -113,6 +113,35 @@ public class Duke {
         System.out.println("Now you have " + taskList.size() + " tasks in the list.");
     }
 
+    public static void handleDeletion(String input) {
+        try {
+            if(input.substring(6).trim().isEmpty()) {
+                throw new DukeException("No index found. Please input the index of the task" +
+                        " you want to delete.");
+            }
+            else if (input.charAt(6) != ' ') {
+                throw new DukeException("Invalid format. Please add a space after the \"delete\" " +
+                        "command.");
+            }
+            int getIndex = (Integer.parseInt(input.substring(7))) - 1;
+            if(getIndex < 0 || getIndex >= taskList.size()) {
+                throw new IndexOutOfBoundsException();
+            }
+
+            System.out.println("Noted. I've removed this task:");
+            System.out.println((getIndex + 1) + ". " + taskList.get(getIndex).toString());
+            taskList.remove(getIndex);
+            System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+
+        } catch (NumberFormatException e) {
+            System.out.println("Please enter a valid number.");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.print("Index does not exist. ");
+            showList();
+        } catch (DukeException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     public static void markTask(String input) {
         try {
@@ -123,7 +152,7 @@ public class Duke {
             else if(input.charAt(4) != ' ') {
                 throw new DukeException("Invalid format. Please add a space after the command.");
             }
-            int getIndex = Integer.parseInt(input.substring(5)) - 1;
+            int getIndex = (Integer.parseInt(input.substring(5))) - 1;
             if(getIndex >= 0 && getIndex < taskList.size()) {
                 Task task = taskList.get(getIndex);
                 if(task.getStatusIcon().equals("X")){
@@ -154,7 +183,7 @@ public class Duke {
             if(input.charAt(6) != ' ') {
                 throw new DukeException("Invalid format. Please add a space after the command.");
             }
-            int getIndex = Integer.parseInt(input.substring(7)) - 1;
+            int getIndex = (Integer.parseInt(input.substring(7))) - 1;
             if (getIndex >= 0 && getIndex < taskList.size()) {
                 Task task = taskList.get(getIndex);
                 if(!task.getStatusIcon().equals("X")){
@@ -229,6 +258,9 @@ public class Duke {
                 }
                 else if(input.startsWith("event")) {
                    handleEvent(input);
+                }
+                else if(input.startsWith("delete")) {
+                    handleDeletion(input);
                 }
                 else {
                     throw new DukeException("Please input a valid command to add new task " +
