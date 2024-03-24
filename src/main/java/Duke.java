@@ -6,7 +6,6 @@ import java.util.Scanner;
 public class Duke {
     private static Scanner in = new Scanner(System.in);
     private static ArrayList<Task> tasks = new ArrayList<>();
-    private static int taskCount = 0;
 
     public static void printUnderScoreLine() {
         char[] underScoreLine = new char[50];
