@@ -1,29 +1,35 @@
+<<<<<<< HEAD
 # User Guide
-
 ## Features 
+=======
+# Duke User Guide
 
-### Feature-ABC
+// Update the title above to match the actual product name
+>>>>>>> origin/add-gradle-support
 
-Description of the feature.
+// Product screenshot goes here
 
-### Feature-XYZ
+// Product intro goes here
 
-Description of the feature.
+## Adding deadlines
 
-## Usage
+// Describe the action and its outcome.
 
-### `Keyword` - Describe action
+// Give examples of usage
 
-Describe the action and its outcome.
+Example: `keyword (optional arguments)`
 
-Example of usage: 
-
-`keyword (optional arguments)`
-
-Expected outcome:
-
-Description of the outcome.
+// A description of the expected outcome goes here
 
 ```
 expected output
 ```
+
+## Feature ABC
+
+// Feature details
+
+
+## Feature XYZ
+
+// Feature details
