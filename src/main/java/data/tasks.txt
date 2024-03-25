@@ -1,3 +1,16 @@
+<<<<<<< Updated upstream
 T|task1|false
 T|task2|false
 E|task3|false|3pm|4pm
+=======
+T|task10|false
+T|task11|false
+D|return book6|false|2000-12-12T15:00
+D|return book|false|2019-02-12T18:00
+D|return book2|false|2019-02-12T19:00
+D|return book4|false|2019-10-15T00:00
+D|return book5|false|2019-10-15T00:00
+D|return book3|false|2019-12-15T00:00
+E|function1|false|2020-12-19T00:00|2020-12-20T00:00
+E|function3|false|2020-01-02T00:00|2020-02-02T00:00
+>>>>>>> Stashed changes

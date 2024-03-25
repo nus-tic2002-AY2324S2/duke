@@ -1,3 +1,4 @@
+
 plugins {
     id 'java'
     id 'application'
@@ -25,10 +26,12 @@ test {
         showStackTraces true
         showStandardStreams = false
     }
+
+
 }
 
 application {
-    mainClass.set("seedu.duke.Duke")
+    mainClass.set("Duke")
 }
 
 shadowJar {
