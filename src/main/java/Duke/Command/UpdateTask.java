@@ -3,8 +3,6 @@ package Duke.Command;
 import Duke.Tasks.*;
 import Duke.Utility.*;
 
-import java.io.IOException;
-
 public class UpdateTask extends Command {
     private final String[] userInputs;
     private InputParser inputParser = new InputParser();
