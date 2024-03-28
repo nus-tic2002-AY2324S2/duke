@@ -15,7 +15,6 @@ public class InvalidCommand extends Command {
      */
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) {
-
     }
     /***
      * function to set if this command will end the program

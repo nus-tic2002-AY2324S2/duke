@@ -108,6 +108,7 @@ public class Storage{
                 }
                 //Install data
                 if(type.equalsIgnoreCase("T")){
+                    assert taskName != null;
                     if(taskName.isEmpty()){
                         throw new IOException("Failed to read one or more lines of data. Reason: Bad format\n" +
                                 "Warning: System will ignore the bad format data, beware of data loss!");
@@ -116,6 +117,9 @@ public class Storage{
                     task.setStatus(status);
                     readDataList.add(task);
                 }else if(type.equalsIgnoreCase("E")){
+                    assert taskName != null;
+                    assert by != null;
+                    assert from != null;
                     if(taskName.isEmpty() || by.isEmpty() || from.isEmpty()){
                         throw new IOException("Failed to read one or more lines of data. Reason: Bad format\n" +
                                 "Warning: System will ignore the bad format data, beware of data loss!");
@@ -124,6 +128,8 @@ public class Storage{
                     task.setStatus(status);
                     readDataList.add(task);
                 }else if(type.equalsIgnoreCase("D")){
+                    assert taskName != null;
+                    assert by != null;
                     if(taskName.isEmpty() || by.isEmpty()){
                         throw new IOException("Failed to read one line of data. Reason: Bad format\n" +
                                 "System will ignore the bad format data.");

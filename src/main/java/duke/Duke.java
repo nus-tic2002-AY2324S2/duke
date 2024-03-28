@@ -23,9 +23,9 @@ public class Duke {
     /***
      * Function to run the Duke program
      */
-    public void run() throws DukeException {
+    public void run() {
         ui.welcomeMenu();
-        ui.listMenu(taskList.getList());
+        Ui.listMenu(taskList.getList());
         boolean isExit = false;
         while (!isExit) {
             String fullCommand = ui.readCommand();
@@ -34,7 +34,7 @@ public class Duke {
             isExit = c.Exit();
         }
     }
-    public static void main(String[] args) throws DukeException {
+    public static void main(String[] args) {
         new Duke("./data/task.txt").run();
     }
 }

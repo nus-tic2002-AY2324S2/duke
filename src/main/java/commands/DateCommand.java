@@ -3,13 +3,14 @@ package commands;
 import storage.Storage;
 import task.TaskList;
 import ui.Ui;
+import java.time.LocalDateTime;
 
-public class FindCommand extends Command {
-    private final String keyWord;
+public class DateCommand extends Command {
+    private final LocalDateTime inputDate;
 
-    public FindCommand(String commandType, String keyWord) {
+    public DateCommand(String commandType, LocalDateTime inputDate) {
         super(commandType);
-        this.keyWord = keyWord;
+        this.inputDate = inputDate;
     }
 
     /***
@@ -19,7 +20,7 @@ public class FindCommand extends Command {
      * @param storage： make use of the storage
      */
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) { taskList.findTask(keyWord);
+    public void execute(TaskList taskList, Ui ui, Storage storage) { taskList.findDate(inputDate);
     }
     /***
      * function to set if this command will end the program

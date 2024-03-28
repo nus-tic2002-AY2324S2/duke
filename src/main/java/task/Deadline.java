@@ -14,7 +14,6 @@ public class Deadline extends Task{
     public String getBy() {
         return by;
     }
-    public void setBy(String By){by = By;}
 
     /***
      * Override function to show the task info

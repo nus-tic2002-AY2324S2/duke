@@ -5,22 +5,22 @@ import task.Deadline;
 import task.Event;
 import task.Todo;
 import ui.Ui;
+
+import java.time.LocalDateTime;
+
 import static duke.DukeException.isInteger;
 
 
 public class Parser extends DateTime {
-
-    private Command command;
-
     /***
      * Function to check the user input and make sure the input is a valid command
      * @param userInput: String get from user
      */
-    public static Command parse(String userInput) throws DukeException {
+    public static Command parse(String userInput) {
         String[] wordList = userInput.split(" ");
-        String taskName = "";
-        String by = "";
-        String from = "";
+        String taskName;
+        String by;
+        String from;
         boolean format = true;
 
         try {
@@ -36,6 +36,9 @@ public class Parser extends DateTime {
             }
             //Event checker
             else if (wordList[0].equalsIgnoreCase("event")) {
+                StringBuilder taskNameBuilder = new StringBuilder();
+                StringBuilder fromBuilder = new StringBuilder();
+                StringBuilder byBuilder = new StringBuilder();
                 if(wordList.length == 1){
                     throw new DukeException("Please give your event a name");
                 }else{
@@ -66,35 +69,35 @@ public class Parser extends DateTime {
                     if(!fromChecker || !toChecker){
                         throw new DukeException("Your event format seems wrong, please try following pattern:\n" +
                                 "event + event Name + /from + Date + /to + Date");
-                    }else{//No error
-                        String stage = "name";
-                        //Separate the input and record the eventName, EventFrom, EventTo
-                        fromChecker = false;
-                        toChecker = false;
+                    }else{//If no error
+                        String currentStage = "name";
                         for (String item : wordList) {
-                            if (item.equalsIgnoreCase("event")) {
-                                continue;
-                            } else if (item.equalsIgnoreCase("/from")) {
-                                stage = "from";
-                                fromChecker = true;
-                                continue;
-                            } else if (item.equalsIgnoreCase("/to")) {
-                                stage = "to";
-                                toChecker = true;
-                                continue;
+                            switch (item.toLowerCase()) {
+                                case "event":
+                                    continue; // Skip "event" keyword
+                                case "/from":
+                                    currentStage = "from"; // Switch to "from" stage
+                                    continue;
+                                case "/to":
+                                    currentStage = "to"; // Switch to "to" stage
+                                    continue;
                             }
-                            if (stage.equalsIgnoreCase("name")) {
-                                taskName += item;
-                                taskName += " ";
-                            } else if (stage.equalsIgnoreCase("from")) {
-                                from += item;
-                                from += " ";
-
-                            } else if (stage.equalsIgnoreCase("to")) {
-                                by += item;
-                                by += " ";
+                            // Append item to the corresponding stage
+                            switch (currentStage) {
+                                case "name":
+                                    taskNameBuilder.append(item).append(" ");
+                                    break;
+                                case "from":
+                                    fromBuilder.append(item).append(" ");
+                                    break;
+                                case "to":
+                                    byBuilder.append(item).append(" ");
+                                    break;
                             }
                         }
+                        taskName = taskNameBuilder.toString();
+                        from =fromBuilder.toString();
+                        by = byBuilder.toString();
                         if(!isDateValid(by)){
                             throw new DukeException("Your event already ended");
                         }else if(isEventValid(from, by)){
@@ -110,6 +113,8 @@ public class Parser extends DateTime {
             }
             //deadline
             else if (wordList[0].equalsIgnoreCase("deadline")) {
+                StringBuilder taskNameBuilder = new StringBuilder();
+                StringBuilder byBuilder = new StringBuilder();
                 if(wordList.length == 1){
                     throw new DukeException("Please give your deadline a name");
                 }else{
@@ -142,14 +147,13 @@ public class Parser extends DateTime {
                                 continue;
                             }
                             if (!byChecker) {
-                                taskName += item;
-                                taskName += " ";
+                                taskNameBuilder.append(item).append(" ");
                             } else {
-                                by += item;
-                                by += " ";
+                                byBuilder.append(item).append(" ");
                             }
                         }
-
+                        taskName = taskNameBuilder.toString();
+                        by = byBuilder.toString();
                         if(isDateValid(by)){
                             Deadline task = new Deadline(taskName, dateString(by));
                             return new AddCommand("deadline",task);
@@ -190,11 +194,37 @@ public class Parser extends DateTime {
                     }
                 }
             }
+            //find
+            else if(wordList[0].equalsIgnoreCase("find")){
+                if(wordList.length == 1){
+                    throw new DukeException("Please tell me the keywords of the task you would like to find");
+                }else{
+                    String keyWord = Storage.combineArray(wordList);
+                    return new FindCommand("find", keyWord);
+                }
+            }
+            //date
+            else if(wordList[0].equalsIgnoreCase("date")){
+                if(wordList.length == 1){
+                    throw new DukeException("Please tell me a specific date you would like to search");
+                }else if(wordList.length == 2 || wordList.length == 3) {
+                    String dateString = Storage.combineArray(wordList);
+                    assert dateString != null;
+                    LocalDateTime date = DateTime.checkDate(dateString);
+                    return new DateCommand("find", date);
+                }else{
+                    throw new DukeException("Your date format seems wrong. please try following pattern " +
+                            "date + yyyy-MM-dd or date + yyyy-MM-dd HHmm");
+                }
+
+            }
             //quit
             else if(wordList[0].equalsIgnoreCase("bye")  ||
                     wordList[0].equalsIgnoreCase("quit")  ){// Single command no need to check
                 return new ExitCommand("exit");
-            }else if(wordList[0].equalsIgnoreCase("list")){
+            }
+            //list
+            else if(wordList[0].equalsIgnoreCase("list")){
                 return new ListCommand("list");
             }
             else {
@@ -208,7 +238,6 @@ public class Parser extends DateTime {
             }
             return new InvalidCommand("Error");
         }
-
     }
 
 }

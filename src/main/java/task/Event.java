@@ -14,8 +14,6 @@ public class Event extends Task {
     public String getBy() {
         return by;
     }
-    public void setFrom(String From){from = From;}
-    public void setBy(String By){by = By;}
     /***
      * Override function to show the task info
      */

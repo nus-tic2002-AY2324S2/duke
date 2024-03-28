@@ -46,6 +46,25 @@ public class DateTime {
     }
 
     /***
+     * A function to convert string to date format
+     * @param dateTime user input date format with string
+     * @return return a converted date format
+     */
+    public static LocalDateTime stringToDate(String dateTime) {
+        try {
+            return LocalDateTime.parse(dateTime.trim(), displayDateTimeFormat);
+        } catch (DateTimeParseException e) {
+            try {
+                // Parsing without time, append "0000" to indicate midnight
+                return LocalDateTime.parse(dateTime.trim() + " 0000", displayDateTimeFormat);
+            } catch (DateTimeParseException ex) {
+                System.out.println("The dateTime format is wrong");
+                return null;
+            }
+        }
+    }
+
+    /***
      * Function to check if the input date time is later than the current date time
      * @param input input date time
      */
@@ -64,6 +83,26 @@ public class DateTime {
         LocalDateTime startingDateTime = checkDate(startingDate.trim());
         LocalDateTime targetDateTime = checkDate(targetDate.trim());
         return !targetDateTime.isAfter(startingDateTime);
+    }
+    /***
+     * Function to check if a date is within the given period
+     * @param targetDate a date from user input
+     * @param startingDate a starting date of an event
+     * @param endingDate an ending date of an event
+     * @return return true if the date is within the period
+     */
+    public static boolean isDateValid(LocalDateTime targetDate, LocalDateTime startingDate, LocalDateTime endingDate) {
+        return !targetDate.isBefore(startingDate) && !targetDate.isAfter(endingDate);
+    }
+
+    /***
+     * Function to check if the date is before the given date
+     * @param targetDate a date from user input
+     * @param endingDate an ending date of an event
+     * @return true if the date is before the ending date
+     */
+    public static boolean isDateValid(LocalDateTime targetDate, LocalDateTime endingDate) {
+        return !targetDate.isAfter(endingDate);
     }
 
 

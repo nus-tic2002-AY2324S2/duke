@@ -1,5 +1,4 @@
 package task;
-import duke.DukeException;
 
 public abstract class Task {
     protected String description;
@@ -38,24 +37,18 @@ public abstract class Task {
     public Character getTaskType(){
         return type;
     }
-    public void setTaskType(Character type){
-        this.type = type;
-    }
-
     /***
      * Setter to set if a task is marked or unmarked
      */
     public void setStatus(boolean status) {
         isDone = status;
     }
-
     /***
      * Function to convert a task info into a string
      */
     public String toString() {
         return "["+ type +"]["+ getStatusIcon() +"] " + description;
     }
-
     /***
      * Getter function to get from date, this function is override function
      */
