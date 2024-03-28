@@ -73,6 +73,10 @@ public class Parser {
             ErrorHandling.wrongSyntax();
             return new InvalidCommand();
         }
+            catch (NumberFormatException e1) {
+                return new InvalidCommand();
+
+            }
     }
 
     /**
@@ -87,18 +91,11 @@ public class Parser {
         String taskType = parts[0].trim();
         String description = parts[1].trim();
 
-//        boolean isDone = Boolean.parseBoolean(parts[2].trim());
-
 
         switch (taskType) {
             case "T":
                 return new Todo(description);
             case "D":
-
-                return new Deadline(description, parts[3].trim());
-            case "E":
-                return new Event(description, parts[3].trim(), parts[4].trim());
-
                 try {
                     LocalDate by = parseAsLocalDate(parts[3].trim());
                     return new Deadline(description, by.atStartOfDay());
@@ -152,7 +149,7 @@ public class Parser {
                 LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
                 return dateTime;
             }
-        } catch (DateTimeParseException e) {
+        } catch (DateTimeParseException ignored) {
         }
         throw new DateTimeParseException("Unable to parse the date string", date, 0);
     }
@@ -166,20 +163,21 @@ public class Parser {
      */
     public static LocalDate parseDate(String date) throws DateTimeParseException {
         List<String> datePatterns = List.of(
-                "MMM/dd/yyyy",
-                "MMM dd yyyy",
-                "dd MMM yyyy",
-                "yyyy MM dd",
+                "MM/dd/yyyy",
+                "MMMM dd yyyy",
+                "dd MMMM yyyy",
+                "yyyy MMMM dd",
                 "yyyy/MM/dd",
                 "yyyy-MM-dd",
-                "dd/MM/yyyy"
+                "dd/MM/yyyy",
+                "dd/M/yyyy"
         );
         for (String pattern : datePatterns) {
             try {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ENGLISH);
-                LocalDate parsedDate = LocalDate.parse(date, formatter);
+                LocalDate parsedDate = LocalDate.parse(date.trim(), formatter);
                 return parsedDate;
-            } catch (DateTimeParseException e) {
+            } catch (DateTimeParseException ignored) {
             }
         }
         throw new DateTimeParseException("Unable to parse the date string", date, 0);

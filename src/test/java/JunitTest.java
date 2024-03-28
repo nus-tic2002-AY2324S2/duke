@@ -15,26 +15,6 @@ public class JunitTest {
         assertNotNull(duke.storage);
     }
 
-//    @Test
-//    public void testTaskLoading() {
-//        Duke duke = new Duke("test_tasks.txt");
-//        assertEquals(3, duke.taskList.size()); // Assuming 3 tasks are loaded from the test_tasks.txt file
-//    }
-//
-//    @Test
-//    public void testCommandExecution() {
-//        Duke duke = new Duke("test_tasks.txt");
-//        duke.run(); // Assuming the test_tasks.txt file contains tasks and ends with "bye"
-//        // Validate the state of Duke after executing commands, e.g., taskList size, UI messages
-//    }
-
-//    @Test
-//    public void testInput() {
-//        Ui ui = new Ui();
-//
-//        String input = ui.getUserInput();
-//
-//    }
 
     @Test
     public void testCommandParsing() {
